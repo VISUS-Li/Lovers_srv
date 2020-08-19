@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package lovers.srv.user;
+
+service User{
+    rpc Login(LoginReq) returns (LoginResp){}
+
+    rpc Logout(LogoutReq) returns (LogoutResp){}
+
+    rpc RegisterUser(RegisterReq) returns (RegisterResp){}
+
+    rpc BindLover(BindLoverReq) returns (BindLoverResp){}
+
+    rpc UnBindLover(UnBindLoverReq) returns (UnBindLoverResp){}
+
+    rpc GetLoverInfo(GetLoverInfoReq) returns (GetLoverInfoResp){}
+}
+
+/*用户基本信息*/
+message BaseInfo{
+     string UserId = 1; /*系统中对每个账号的唯一ID*/
+     string RealName = 2;
+     string Phone = 3;
+     string Sex = 4;
+     string Birth = 5;
+     string Sculpture = 6; /*头像地址*/
+     string HomeTown = 7;
+     LoverInfo AnotherInfo = 8; /*另一半信息*/
+}
+
+/*另一半信息*/
+message LoverInfo{
+     string LoverId = 1; /*另一半ID*/
+     string LoverPhone = 2; /*另一半的电话*/
+     string LoverNickName = 3; /*对另一半的昵称*/
+     string LoveDuration = 4; /*相爱时长*/
+}
+
+message LoginReq{
+     string UserName = 1;
+     string PassWord = 2;
+     string Type = 3; /*phone = 1, qq = 2, wechat = 3*/
+     string Phone = 4;
+     string VertifyCode = 5; /*登录验证码*/
+}
+
+message LoginResp{
+     string Token = 1;
+     BaseInfo UserInfo = 2;
+     string LoginTime = 3;
+}
+
+message LogoutReq{
+     string Phone = 1;
+     string UserId = 2;
+}
+
+message LogoutResp{
+     string Phone = 1;
+     string LogoutTime = 2;
+}
+
+message RegisterReq{
+     string UserName = 1;
+     string PassWord = 2;
+     BaseInfo UserInfo = 3;
+     string BindId = 4; /*和另一半配对的ID*/
+     string RecommendID = 5; /*邀请码*/
+     string VertifyCode = 6; /*验证码*/
+}
+
+message RegisterResp{
+     LoginResp RegisteredInfo = 1;
+}
+
+message BindLoverReq{
+     string UserId = 1;
+     string Phone = 2;
+     string BindLoverId = 3; /*绑定ID*/
+}
+
+message BindLoverResp{
+     LoverInfo BindLoverInfo = 1;
+     string BindTime = 2;
+}
+
+message UnBindLoverReq{
+     string UserId = 1;
+     string Phone = 2;
+     string PassWord = 3;
+     LoverInfo UnBindLoverInfo = 4;
+}
+
+message UnBindLoverResp{
+     string UnBindTime = 1;
+}
+
+message GetLoverInfoReq{
+     string UserId = 1;
+     string Phone = 2;
+}
+
+message GetLoverInfoResp{
+     LoverInfo GotLoverInfo = 1;
+}
+
+

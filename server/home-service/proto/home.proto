@@ -1,0 +1,17 @@
+syntax = "proto3"
+
+package lovers.srv.home
+
+import ""
+
+service HomeService{
+    rpc GetIndexPage(HomeContentsReq) returns (HomeContentsResp){}
+}
+
+message HomeContentsReq{
+
+}
+
+message HomeContentsResp{
+    repeated
+}
