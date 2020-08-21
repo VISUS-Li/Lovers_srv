@@ -21,11 +21,19 @@ func NewUserClient() *UserClient{
 }
 
 func (user *UserClient) Client_Login(ctx context.Context, req *proto.LoginReq) (*proto.LoginResp,error){
-	resp := new(proto.LoginResp)
+	//resp := new(proto.LoginResp)
 	resp, err := user.client.Login(ctx,req)
 	if err != nil{
 		return resp, err
 	}
 
 	return resp, nil
+}
+
+func (user *UserClient)Client_Register(ctx context.Context, req *proto.RegisterReq)(*proto.RegisterResp,error){
+	resp ,err := user.client.RegisterUser(ctx, req)
+	if err != nil{
+		return resp,err
+	}
+	return resp,nil
 }

@@ -1,4 +1,4 @@
-package helper
+package DB
 
 import (
 	"fmt"
@@ -9,21 +9,6 @@ import (
 
 type DBUtil struct{
 	DB *gorm.DB
-}
-
-type UserBaseInfo struct{
-	gorm.Model
-	UserId 		string `gorm:"unique;not null"`
-	RealName 	string
-	Phone 		int
-	Sex 		int /*1.男，2.女*/
-	Birth 		string
-	Sculpture	string /*头像地址*/
-	HomeTown	string /*所在地*/
-	LoverId			string
-	LoverPhone		int
-	LoverNickName 	string /*对另一半的昵称*/
-	LoveDuration	int64 `gorm:type:BIGINT`
 }
 
 func (unit *DBUtil)CreateTable(tableModel interface{})(error){
@@ -52,5 +37,7 @@ func (unit *DBUtil)GetDBByHost(user string, password string, host string) (error
 	}
 	unit.DB.DB().SetMaxIdleConns(10)
 	unit.DB.DB().SetMaxOpenConns(100)
+	unit.DB.AutoMigrate(&UserBaseInfo{})
+	unit.DB.AutoMigrate(&LoginInfo{})
 	return nil
 }
