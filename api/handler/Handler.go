@@ -42,6 +42,7 @@ func ClientEngine() *gin.Engine{
 	//api.Use(AuthMiddleWare.MiddlewareParseUser)
 	userGroup := api.Group("/user")
 	userGroup.POST("/login",Login)
+	userGroup.POST("/register",Register)
 	/*/api/client*/
 
 	return router

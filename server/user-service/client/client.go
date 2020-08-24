@@ -21,7 +21,6 @@ func NewUserClient() *UserClient{
 }
 
 func (user *UserClient) Client_Login(ctx context.Context, req *proto.LoginReq) (*proto.LoginResp,error){
-	//resp := new(proto.LoginResp)
 	resp, err := user.client.Login(ctx,req)
 	if err != nil{
 		return resp, err

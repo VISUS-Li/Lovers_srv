@@ -28,8 +28,8 @@ message LoginInfo{
 message BaseInfo{
      string UserId = 1; /*系统中对每个账号的唯一ID*/
      string RealName = 2;
-     int32 Phone = 3;
-     int32 Sex = 4;
+     string Phone = 3;
+     string Sex = 4;
      string Birth = 5;
      string Sculpture = 6; /*头像地址*/
      string HomeTown = 7;
@@ -39,9 +39,9 @@ message BaseInfo{
 /*另一半信息*/
 message LoverInfo{
      string LoverId = 1; /*另一半ID*/
-     int32 LoverPhone = 2; /*另一半的电话*/
+     string LoverPhone = 2; /*另一半的电话*/
      string LoverNickName = 3; /*对另一半的昵称*/
-     int64 LoveDuration = 4; /*相爱时长*/
+     string LoveDuration = 4; /*相爱时长*/
 }
 
 message LoginReq{
@@ -56,7 +56,7 @@ message LoginResp{
      string Token = 1;
      BaseInfo UserInfo = 2;
      string LoginTime = 3;
-     int32 LoginRes = 4; //登录错误信息，0表示登录成功
+     string LoginRes = 4; //登录错误信息，0表示登录成功
 }
 
 message LogoutReq{

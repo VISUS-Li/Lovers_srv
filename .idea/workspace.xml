@@ -2,20 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3bee77c2-4319-4fa5-af53-a35fd70f9152" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/helper/DB/DBModel.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/helper/LogHelper/LogrusHelper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Lovers_Micro_Test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Lovers_srv.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/status_info.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/helper/Utils/CommonUtils.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/handler/Handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handler/Handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/handler/HandlerFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handler/HandlerFunc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/globalConfig.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/globalConfig.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helper/dbHelper.go" beforeDir="false" afterPath="$PROJECT_DIR$/helper/DB/dbHelper.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helper/DB/DBModel.go" beforeDir="false" afterPath="$PROJECT_DIR$/helper/DB/DBModel.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/user-service/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/user-service/client/client.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/user-service/handler/user_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/user-service/handler/user_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/user-service/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/user-service/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/user-service/proto/user.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/user-service/proto/user.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/user-service/proto/user.pb.micro.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/user-service/proto/user.pb.micro.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/user-service/proto/user.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/user-service/proto/user.proto" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -143,56 +141,56 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="398" y="23" key="#go_build_user_handler.go/0.0.1366.728@0.0.1366.728" timestamp="1597767428087" />
-    <state width="801" height="438" key="DebuggerActiveHint" timestamp="1597942923019">
+    <state width="938" height="438" key="DebuggerActiveHint" timestamp="1598184210173">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="801" height="438" key="DebuggerActiveHint/0.0.1366.728@0.0.1366.728" timestamp="1597942923019" />
+    <state width="938" height="438" key="DebuggerActiveHint/0.0.1366.728@0.0.1366.728" timestamp="1598184210173" />
     <state width="1122" height="626" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1597922410808" />
     <state x="740" y="276" key="FileChooserDialogImpl" timestamp="1597715502070">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="526" y="193" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1596942917568" />
     <state x="740" y="276" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1597715502070" />
-    <state width="1876" height="247" key="GridCell.Tab.0.bottom" timestamp="1597985112278">
+    <state width="1876" height="176" key="GridCell.Tab.0.bottom" timestamp="1598245182252">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1322" height="247" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1597942736572" />
-    <state width="1876" height="247" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597985112278" />
-    <state width="1876" height="247" key="GridCell.Tab.0.center" timestamp="1597985112278">
+    <state width="1322" height="176" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598184430302" />
+    <state width="1876" height="176" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1598245182252" />
+    <state width="1876" height="176" key="GridCell.Tab.0.center" timestamp="1598245182252">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1322" height="247" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1597942736572" />
-    <state width="1876" height="247" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597985112278" />
-    <state width="1876" height="247" key="GridCell.Tab.0.left" timestamp="1597985112277">
+    <state width="1322" height="176" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1598184430302" />
+    <state width="1876" height="176" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1598245182252" />
+    <state width="1876" height="176" key="GridCell.Tab.0.left" timestamp="1598245182252">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1322" height="247" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1597942736556" />
-    <state width="1876" height="247" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597985112277" />
-    <state width="1876" height="247" key="GridCell.Tab.0.right" timestamp="1597985112278">
+    <state width="1322" height="176" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1598184430302" />
+    <state width="1876" height="176" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1598245182252" />
+    <state width="1876" height="176" key="GridCell.Tab.0.right" timestamp="1598245182252">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1322" height="247" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1597942736572" />
-    <state width="1876" height="247" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597985112278" />
-    <state width="1876" height="247" key="GridCell.Tab.1.bottom" timestamp="1597985112278">
+    <state width="1322" height="176" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1598184430302" />
+    <state width="1876" height="176" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1598245182252" />
+    <state width="1876" height="176" key="GridCell.Tab.1.bottom" timestamp="1598245182321">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1322" height="247" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1597942789089" />
-    <state width="1876" height="247" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597985112278" />
-    <state width="1876" height="247" key="GridCell.Tab.1.center" timestamp="1597985112278">
+    <state width="1322" height="176" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598184435555" />
+    <state width="1876" height="176" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1598245182321" />
+    <state width="1876" height="176" key="GridCell.Tab.1.center" timestamp="1598245182320">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1322" height="247" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1597942789087" />
-    <state width="1876" height="247" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597985112278" />
-    <state width="1876" height="247" key="GridCell.Tab.1.left" timestamp="1597985112278">
+    <state width="1322" height="176" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1598184435555" />
+    <state width="1876" height="176" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1598245182320" />
+    <state width="1876" height="176" key="GridCell.Tab.1.left" timestamp="1598245182320">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1322" height="247" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1597942789087" />
-    <state width="1876" height="247" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597985112278" />
-    <state width="1876" height="247" key="GridCell.Tab.1.right" timestamp="1597985112278">
+    <state width="1322" height="176" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1598184435555" />
+    <state width="1876" height="176" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1598245182320" />
+    <state width="1876" height="176" key="GridCell.Tab.1.right" timestamp="1598245182320">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1322" height="247" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1597942789087" />
-    <state width="1876" height="247" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597985112278" />
+    <state width="1322" height="176" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1598184435555" />
+    <state width="1876" height="176" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1598245182320" />
     <state x="261" y="0" key="SettingsEditor" timestamp="1597893014385">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -207,10 +205,11 @@
     </state>
     <state x="480" y="140" width="759" height="548" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1597554272399" />
     <state x="675" y="200" width="1067" height="783" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1597900080374" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1597726052082">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="443" y="158" width="672" height="475" key="search.everywhere.popup" timestamp="1598178937784">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1597726052082" />
+    <state x="443" y="158" width="672" height="475" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1598178937784" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1597986741379" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -224,6 +223,16 @@
           <url>file://$PROJECT_DIR$/helper/LogHelper/LogrusHelper.go</url>
           <line>36</line>
           <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/server/user-service/handler/user_handler.go</url>
+          <line>144</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/server/user-service/client/client.go</url>
+          <line>23</line>
+          <option name="timeStamp" value="42" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

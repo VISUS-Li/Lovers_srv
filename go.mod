@@ -10,6 +10,7 @@ require (
 	github.com/labstack/gommon v0.3.0
 	github.com/micro/go-micro v1.16.0
 	github.com/micro/go-plugins v1.5.1
+	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.6.0
 	google.golang.org/protobuf v1.25.0
 )
