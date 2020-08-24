@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Lovers_Micro_Test/api/handler"
+	"Lovers_srv/api/handler"
 	"github.com/micro/go-micro/web"
 )
 

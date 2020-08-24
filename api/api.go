@@ -1,7 +1,7 @@
 package main
 
 import (
-	hello "Lovers_Micro_Test/proto/greeter"
+	hello "Lovers_srv/proto/greeter"
 	"context"
 	"encoding/json"
 	"github.com/micro/go-micro"

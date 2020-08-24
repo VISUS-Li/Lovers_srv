@@ -1,11 +1,11 @@
 package main
 
 import (
-	"Lovers_Micro_Test/config"
-	"Lovers_Micro_Test/helper/DB"
-	"Lovers_Micro_Test/helper/LogHelper"
-	"Lovers_Micro_Test/server/user-service/handler"
-	lovers_srv_user "Lovers_Micro_Test/server/user-service/proto"
+	"Lovers_srv/config"
+	"Lovers_srv/helper/DB"
+	"Lovers_srv/helper/LogHelper"
+	"Lovers_srv/server/user-service/handler"
+	lovers_srv_user "Lovers_srv/server/user-service/proto"
 	"github.com/micro/go-micro"
 	"github.com/sirupsen/logrus"
 )

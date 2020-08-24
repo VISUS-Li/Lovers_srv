@@ -1,4 +1,4 @@
-module Lovers_Micro_Test
+module Lovers_srv
 
 go 1.13
 

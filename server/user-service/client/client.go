@@ -1,8 +1,8 @@
 package client
 
 import (
-	"Lovers_Micro_Test/config"
-	proto "Lovers_Micro_Test/server/user-service/proto"
+	"Lovers_srv/config"
+	proto "Lovers_srv/server/user-service/proto"
 	"context"
 	"github.com/micro/go-micro/client"
 )

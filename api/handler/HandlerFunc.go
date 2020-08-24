@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"Lovers_Micro_Test/config"
-	"Lovers_Micro_Test/helper/Utils"
-	userClient "Lovers_Micro_Test/server/user-service/client"
-	//handler "Lovers_Micro_Test/server/user-service/handler"
-	lovers_srv_user "Lovers_Micro_Test/server/user-service/proto"
+	"Lovers_srv/config"
+	"Lovers_srv/helper/Utils"
+	userClient "Lovers_srv/server/user-service/client"
+	//handler "Lovers_srv/server/user-service/handler"
+	lovers_srv_user "Lovers_srv/server/user-service/proto"
 	"github.com/gin-gonic/gin"
 )
 

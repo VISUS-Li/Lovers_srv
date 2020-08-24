@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"Lovers_Micro_Test/config"
-	"Lovers_Micro_Test/helper/DB"
-	"Lovers_Micro_Test/helper/Utils"
-	lovers_srv_user "Lovers_Micro_Test/server/user-service/proto"
+	"Lovers_srv/config"
+	"Lovers_srv/helper/DB"
+	"Lovers_srv/helper/Utils"
+	lovers_srv_user "Lovers_srv/server/user-service/proto"
 	"context"
 	"errors"
 	"github.com/jinzhu/gorm"
