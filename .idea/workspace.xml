@@ -3,11 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="3fbbde41-9a98-43c0-8832-1c027d6cda31" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/api.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/handler/HandlerFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handler/HandlerFunc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/api.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/api/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/user-service/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/user-service/client/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/globalConfig.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/globalConfig.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helper/DB/dbHelper.go" beforeDir="false" afterPath="$PROJECT_DIR$/helper/DB/dbHelper.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/user-service/handler/user_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/user-service/handler/user_handler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/user-service/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/user-service/main.go" afterDir="false" />
     </list>
@@ -38,6 +37,7 @@
     <property name="configurable.Project.GOPATH.is.expanded" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="go.vgo" />
   </component>
   <component name="RunManager" selected="Go Build.LoversServer-user-service">
@@ -86,22 +86,42 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="904" y="144" key="#go_build_Lovers_srv/api/0.0.1920.1040@0.0.1920.1040" timestamp="1598247353781" />
-    <state width="1876" height="277" key="GridCell.Tab.0.bottom" timestamp="1598247563615">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1322" height="217" key="GridCell.Tab.0.bottom" timestamp="1598451761544">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1876" height="277" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1598247563615" />
-    <state width="1876" height="277" key="GridCell.Tab.0.center" timestamp="1598247563615">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1322" height="217" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598451761544" />
+    <state width="1876" height="277" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1598336276672" />
+    <state width="1322" height="217" key="GridCell.Tab.0.center" timestamp="1598451761544">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1876" height="277" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1598247563615" />
-    <state width="1876" height="277" key="GridCell.Tab.0.left" timestamp="1598247563615">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1322" height="217" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1598451761544" />
+    <state width="1876" height="277" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1598336276669" />
+    <state width="1322" height="217" key="GridCell.Tab.0.left" timestamp="1598451761544">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1876" height="277" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1598247563615" />
-    <state width="1876" height="277" key="GridCell.Tab.0.right" timestamp="1598247563615">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1322" height="217" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1598451761544" />
+    <state width="1876" height="277" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1598336276664" />
+    <state width="1322" height="217" key="GridCell.Tab.0.right" timestamp="1598451761544">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1876" height="277" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1598247563615" />
+    <state width="1322" height="217" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1598451761544" />
+    <state width="1876" height="277" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1598336276669" />
+    <state width="1322" height="217" key="GridCell.Tab.1.bottom" timestamp="1598451763712">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="217" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1598451763712" />
+    <state width="1322" height="217" key="GridCell.Tab.1.center" timestamp="1598451763712">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="217" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1598451763712" />
+    <state width="1322" height="217" key="GridCell.Tab.1.left" timestamp="1598451763712">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="217" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1598451763712" />
+    <state width="1322" height="217" key="GridCell.Tab.1.right" timestamp="1598451763712">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="217" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1598451763712" />
     <state x="463" y="150" key="SettingsEditor" timestamp="1598246906957">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -110,5 +130,20 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="580" y="246" width="759" height="548" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1598246833846" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1598334294723">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1598334294723" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/helper/DB/dbHelper.go</url>
+          <line>23</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

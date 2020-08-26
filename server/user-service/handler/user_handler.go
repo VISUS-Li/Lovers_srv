@@ -27,7 +27,10 @@ func (user* UserHandler) Login(ctx context.Context, in *lovers_srv_user.LoginReq
 		return errors.New("用户名或密码为空")
 	}
 	var logins []DB.LoginInfo
-	user.DB.Where("user_name = ?",in.UserName).Find(&logins)
+	err := user.DB.Where("user_name = ?",in.UserName).Find(&logins).Error
+	if err != nil{
+		logrus.Error("Table LoginInfo find user_name error:"+err.Error())
+	}
 	if len(logins) > 1{
 		user.loginFailResp(out, config.DB_LOGIN_NO_UNIQUE_IN_DB)
 		err := errors.New("user: " + in.UserName + "is not unique in database")
@@ -36,7 +39,10 @@ func (user* UserHandler) Login(ctx context.Context, in *lovers_srv_user.LoginReq
 	}
 	if len(logins) <= 0{
 		//尝试查电话号码
-		user.DB.Where("Phone = ?",in.UserName).Find(&logins)
+		err := user.DB.Where("Phone = ?",in.UserName).Find(&logins).Error
+		if err != nil {
+			logrus.Error("Table LoginInfo find Phone error:"+err.Error())
+		}
 		if len(logins) > 1{
 			user.loginFailResp(out, config.DB_LOGIN_NO_UNIQUE_IN_DB)
 			err := errors.New("user: " + in.UserName + "is not unique in database")
@@ -170,12 +176,16 @@ func (user* UserHandler)RegisterUser(ctx context.Context, in *lovers_srv_user.Re
 
 	if err != nil{
 		out.RegisteredInfo.LoginRes = config.DB_REG_REG_ERR
-		return errors.New("insert login info to db failed,err:" + err.Error())
+		err := errors.New("insert login info to db failed,err:" + err.Error())
+		logrus.Error(err.Error())
+		return err
 	}
 	err = user.DB.Create(&regBaseInfo).Error
 	if err != nil{
 		out.RegisteredInfo.LoginRes = config.DB_REG_REG_ERR
-		return errors.New("insert UserBaseInfo to db failed,err:" + err.Error())
+		err := errors.New("insert UserBaseInfo to db failed,err:" + err.Error())
+		logrus.Error(err.Error())
+		return err
 	}
 
 	out.RegisteredInfo.UserInfo = user.DBBaseInfoToRespBaseInfo(regBaseInfo)

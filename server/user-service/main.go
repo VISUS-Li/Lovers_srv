@@ -13,12 +13,22 @@ import (
 func main(){
 	myLog := LogHelper.LoversLog{}
 	myLog.SetOutPut(config.USER_SRV_NAME)
-	db_util := DB.DBUtil{}
-	err := db_util.CreateConnect()
-	defer db_util.CloseConnect()
+	dbUtil := DB.DBUtil{}
+	err := dbUtil.CreateConnect()
 	if err != nil{
+
 	}
-	userHandler := handler.UserHandler{db_util.DB}
+	err = dbUtil.CreateTable(DB.LoginInfo{})
+	if err != nil{
+		logrus.Error("create table LoginInfo error:"+err.Error())
+	}
+	err = dbUtil.CreateTable(DB.UserBaseInfo{})
+	if err != nil{
+		logrus.Error("create table UserBaseInfo error:"+err.Error())
+	}
+	defer dbUtil.CloseConnect()
+
+	userHandler := handler.UserHandler{dbUtil.DB}
 
 	//新建serivce
 	service := micro.NewService(
@@ -29,7 +39,6 @@ func main(){
 
 	err = lovers_srv_user.RegisterUserHandler(service.Server(), &userHandler)
 
-	logrus.Info("run Service ...!")
 	if err = service.Run(); err != nil{
 		logrus.Error("service Run error,msg:"+ err.Error())
 	}
