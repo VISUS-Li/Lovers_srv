@@ -3,7 +3,9 @@ package handler
 import (
 	"Lovers_srv/config"
 	"Lovers_srv/helper/Utils"
+	noteListClient "Lovers_srv/server/note-list/client"
 	userClient "Lovers_srv/server/user-service/client"
+	lovers_srv_notelist "Lovers_srv/server/note-list/proto"
 	//handler "Lovers_srv/server/user-service/handler"
 	lovers_srv_user "Lovers_srv/server/user-service/proto"
 	"github.com/gin-gonic/gin"
@@ -12,6 +14,7 @@ import (
 var (
 	user_clent = userClient.NewUserClient()
 	//user_handler = handler.UserHandler{}
+	notelist_client = noteListClient.NewNoteListClient()
 )
 
 func Login(c *gin.Context){
@@ -62,6 +65,20 @@ func Register(c *gin.Context){
 			CreateErrorWithMsg(c,"register failed,server internal error, error msg:"+ err.Error())
 		}else{
 			CreateSuccess(c,regResp)
+		}
+	}
+}
+
+func NoteList (c *gin.Context) {
+	//info := &lovers_srv_notelist.NoteListReq{}
+	noteListParam := &lovers_srv_notelist.BaseInfo{}
+	noteListParam.UserId = c.PostForm("UserID")
+	if len(noteListParam.UserId) <= 0 {
+		CreateErrorWithMsg(c, "UserId is empty")
+	} else {
+		err := notelist_client.NoteList_Request(c, noteListParam);
+		if err != nil {
+
 		}
 	}
 }

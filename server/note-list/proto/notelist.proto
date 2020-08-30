@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package lovers.srv.noteList;
+
+service NoteList {
+  rpc RequestNoteList(NoteListReq) returns (NoteListReq){}
+  rpc ResponseNoteList(NoteListResp) returns (NoteListResp){}
+
+}
+
+message NoteListReq {
+
+}
+
+message  NoteListResp {
+
+}
+
+message BaseInfo {
+  string UserId = 1;
+  string NoteListOpt = 2;  //获取还是上传事件清单
+  LoverInfo AnotherInfo = 8;
+}
+
+message LoverInfo {
+  string LoverId = 1;
+  string LoverPhone = 2;
+  string LoverNickName = 3;
+  string LoverDuration = 4;
+}
