@@ -6,12 +6,13 @@ import (
 	"errors"
 	"github.com/sirupsen/logrus"
 	"os"
+	"strconv"
 	"sync"
 	"unsafe"
 )
 
 //PATH: NOTELISTPATHBASE + USERID + "Note"
-const NOTELISTPATHBASE = "/opt/"
+const NOTELISTPATHBASE = "/opt/noteList/"
 
 //定义互斥锁
 var noteFileLock sync.Locker
@@ -20,8 +21,8 @@ var noteFileLock sync.Locker
 //NoteListRead() int
 //NoteList索引: 内容编号， 内容长度
 type NoteListIndexT struct {
-	NoteNum int16
-	NoteLen int16
+	NoteNum int
+	NoteLen int
 }
 
 //NoteList: 事件是否完成， 内容实体
@@ -38,8 +39,8 @@ type NoteListHandler struct {
 
 //上传事件清单
 func (notelist* NoteListHandler) NoteListUp(ctx context.Context, in *lovers_srv_notelist.NoteListUpReq, out *lovers_srv_notelist.NoteListUpResp) error {
-	notePath := NOTELISTPATHBASE+in.UserId+"/"+"Note"
-	indexPath := NOTELISTPATHBASE + in.UserId+ "/"+"Index"
+	notelistindex := *(**NoteListIndexT)(unsafe.Pointer(&in.NoteListIndex))
+	notePath := NOTELISTPATHBASE+in.UserId+"/"+ strconv.Itoa(notelistindex.NoteNum)
 	fpNote, err := notelist.NoteListOpen(notePath)
 	if err != nil {
 		res := "打开事件清单失败"
@@ -47,6 +48,7 @@ func (notelist* NoteListHandler) NoteListUp(ctx context.Context, in *lovers_srv_
 		logrus.Error("NoteList open file failed" + err.Error())
 		return err
 	}
+	/*
 	fpIndex, err := notelist.NoteListOpen(indexPath)
 	if err != nil {
 		res := "打开事件清单索引失败"
@@ -54,20 +56,21 @@ func (notelist* NoteListHandler) NoteListUp(ctx context.Context, in *lovers_srv_
 		notelist.noteUpResp(out, res)
 		logrus.Error("Notelist open index failed" + err.Error())
 		return err
-	}
-	notelistindex := *(**NoteListIndexT)(unsafe.Pointer(&in.NoteListIndex))
+	}*/
 
 	//
 	//调用写文件接口
 	//
-
+	notelist.NoteListWrite(fpNote, in.NoteListIndex, len(in.NoteListIndex))
+	notelist.NoteListWrite(fpNote, in.NoeListData, len(in.NoeListData))
 
 
 }
 
 func (notelist* NoteListHandler) NoteListDown(ctx context.Context, in *lovers_srv_notelist.NoteListDownReq, out *lovers_srv_notelist.NoteListDownResp) error {
-	notePath := NOTELISTPATHBASE+in.UserId+"/"+"Note"
-	indexPath := NOTELISTPATHBASE + in.UserId+ "/"+"Index"
+	notelistindex := *(**NoteListIndexT)(unsafe.Pointer(&in.NoteListIndex))
+	notePath := NOTELISTPATHBASE+in.UserId+"/"+ strconv.Itoa(notelistindex.NoteNum)
+	//indexPath := NOTELISTPATHBASE + in.UserId+ "/"+"Index"
 	fpNote, err := notelist.NoteListOpen(notePath)
 	if err != nil {
 		res := "打开事件清单失败"
@@ -75,6 +78,7 @@ func (notelist* NoteListHandler) NoteListDown(ctx context.Context, in *lovers_sr
 		logrus.Error("NoteList open file failed" + err.Error())
 		return err
 	}
+	/*
 	fpIndex, err := notelist.NoteListOpen(indexPath)
 	if err != nil {
 		res := "打开事件清单索引失败"
@@ -83,6 +87,10 @@ func (notelist* NoteListHandler) NoteListDown(ctx context.Context, in *lovers_sr
 		logrus.Error("Notelist open index failed" + err.Error())
 		return err
 	}
+	*/
+	notelist.NoteListRead(fpNote, out.NoteListIndex, len(out.NoteListIndex))
+	notelist.NoteListRead(fpNote, out.NoteListData, notelistindex.NoteLen)
+
 }
 
 
@@ -150,13 +158,13 @@ func (notelist* NoteListHandler) NoteListWrite(fpNote *os.File, data []byte, dat
 
 }
 
-func (notelist* NoteListHandler) NoteListRead(fpNote *os.File, data []byte, NoteNum int16) (int , error) {
+func (notelist* NoteListHandler) NoteListRead(fpNote *os.File, data []byte, NoteNum int) (int , error) {
 	if fpNote == nil {
 		return -1, errors.New("empty fpNote")
 	} else if data == nil {
 		return -1, errors.New("empty data")
 	}
-	var stNoteIndex NoteListIndex
+	var stNoteIndex NoteListIndexT
 	headLen := int(unsafe.Sizeof(stNoteIndex))
 	var offset = NoteNum
 	bufIndex := make([]byte, headLen)

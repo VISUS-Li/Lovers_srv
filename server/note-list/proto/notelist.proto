@@ -29,7 +29,7 @@ message  NoteListDownReq {
 message NoteListDownResp {
   string NoteListDownResult = 1;
   string err = 2;
-  string NoteListIndex = 3;
+  bytes NoteListIndex = 3;
   bytes NoteListData = 4;
 }
 
