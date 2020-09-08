@@ -67,3 +67,8 @@ func GetCurrentExecPath()(string,error){
 
 	return string(path[0:i+1]), nil
 }
+
+func OutPutErrorInfo(str string) {
+	errors.New(str)
+	logrus.Error(str)
+}

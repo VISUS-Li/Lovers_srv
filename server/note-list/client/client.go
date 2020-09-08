@@ -23,7 +23,24 @@ func NewNoteListClient() *NoteListClient{
 	}
 }
 
-func (notelist *NoteListClient)NoteList_Request(ctx context.Context, req *proto.BaseInfo) error {
+//提供给gin路由的API接口
+func (notelist *NoteListClient)NoteList_Up(ctx context.Context, req *proto.NoteListUpReq) (*proto.NoteListUpResp, error) {
+	//调用微服务接口
+	resp, err := notelist.client.NoteListUp(ctx, req)
+	if err != nil{
+		return resp, err
+	}
+
+	return resp, nil
+}
+
+func (notelist *NoteListClient)NoteList_Down(ctx context.Context, req *proto.NoteListDownReq) (*proto.NoteListDownResp, error) {
+	//调用微服务接口
+	resp, err := notelist.client.NoteListDown(ctx, req)
+	if err != nil {
+		return resp,err
+	}
+	return resp, nil
 
 }
 

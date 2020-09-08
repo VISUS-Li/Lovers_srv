@@ -69,14 +69,30 @@ func Register(c *gin.Context){
 	}
 }
 
-func NoteList (c *gin.Context) {
+func NoteListUp (c *gin.Context) {
 	//info := &lovers_srv_notelist.NoteListReq{}
+	noteListParam := &lovers_srv_notelist.NoteListUpReq{}
+	noteListParam.UserId = c.PostForm("UserID")
+	noteListParam.NoteListIndex = c.PostForm("NoteListIndex")
+	//noteListParam.NoeListData =
+	if (len(noteListParam.UserId) <= 0) || (len(noteListParam.NoteListIndex) <= 0){
+		CreateErrorWithMsg(c, "Invalid arguments")
+	} else {
+		var notelistResp = &lovers_srv_notelist.NoteListUpResp{}
+		notelistResp, err := notelist_client.NoteList_Up(c, noteListParam);
+		if err != nil && notelistResp != nil {
+			CreateSuccess(c, notelistResp)
+		}
+	}
+}
+
+func NoteListDown (c *gin.Context) {
 	noteListParam := &lovers_srv_notelist.BaseInfo{}
 	noteListParam.UserId = c.PostForm("UserID")
 	if len(noteListParam.UserId) <= 0 {
 		CreateErrorWithMsg(c, "UserId is empty")
 	} else {
-		err := notelist_client.NoteList_Request(c, noteListParam);
+		err := notelist_client.NoteList_Down(c, noteListParam);
 		if err != nil {
 
 		}

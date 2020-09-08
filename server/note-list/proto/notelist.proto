@@ -3,22 +3,42 @@ syntax = "proto3";
 package lovers.srv.noteList;
 
 service NoteList {
-  rpc RequestNoteList(NoteListReq) returns (NoteListReq){}
-  rpc ResponseNoteList(NoteListResp) returns (NoteListResp){}
+  rpc NoteListUp(NoteListUpReq) returns (NoteListUpResp){}
+  rpc NoteListDown(NoteListDownReq) returns (NoteListDownResp){}
 
 }
 
-message NoteListReq {
+message NoteListUpReq {
+  string UserId = 1;
+  bytes NoteListIndex = 2;
+  bytes  NoeListData = 3;
+}
+
+message NoteListUpResp {
+  string NoteListUpResult = 1;
+  string err = 2;
+  bytes NoteListData = 3;
+}
+
+message  NoteListDownReq {
+  string UserId = 1;
+  string NoteListIndex = 2;
 
 }
 
-message  NoteListResp {
-
+message NoteListDownResp {
+  string NoteListDownResult = 1;
+  string err = 2;
+  string NoteListIndex = 3;
+  bytes NoteListData = 4;
 }
 
 message BaseInfo {
   string UserId = 1;
-  string NoteListOpt = 2;  //获取还是上传事件清单
+  string token  = 2;
+  string NoteListIndex = 3;
+  string NoteListOpt = 7;  //获取还是上传事件清单
+
   LoverInfo AnotherInfo = 8;
 }
 
