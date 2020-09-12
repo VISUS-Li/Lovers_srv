@@ -10,26 +10,26 @@ service NoteList {
 
 message NoteListUpReq {
   string UserId = 1;
-  bytes NoteListIndex = 2;
+  string NoteListIndex = 2;
   bytes  NoeListData = 3;
 }
 
 message NoteListUpResp {
   string NoteListUpResult = 1;
   string err = 2;
-  bytes NoteListData = 3;
 }
 
 message  NoteListDownReq {
   string UserId = 1;
   string NoteListIndex = 2;
+  string endIndex = 3;
 
 }
 
 message NoteListDownResp {
   string NoteListDownResult = 1;
   string err = 2;
-  bytes NoteListIndex = 3;
+  string NoteListIndex = 3;
   bytes NoteListData = 4;
 }
 
