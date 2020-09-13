@@ -70,31 +70,36 @@ func Register(c *gin.Context){
 }
 
 func NoteListUp (c *gin.Context) {
-	//info := &lovers_srv_notelist.NoteListReq{}
 	noteListParam := &lovers_srv_notelist.NoteListUpReq{}
 	noteListParam.UserId = c.PostForm("UserID")
 	noteListParam.NoteListIndex = c.PostForm("NoteListIndex")
-	//noteListParam.NoeListData =
+	noteListParam.NoeListData = []byte(c.PostForm("NoteListData"))
 	if (len(noteListParam.UserId) <= 0) || (len(noteListParam.NoteListIndex) <= 0){
 		CreateErrorWithMsg(c, "Invalid arguments")
 	} else {
-		var notelistResp = &lovers_srv_notelist.NoteListUpResp{}
-		notelistResp, err := notelist_client.NoteList_Up(c, noteListParam);
-		if err != nil && notelistResp != nil {
-			CreateSuccess(c, notelistResp)
+		var notelistUpResp = &lovers_srv_notelist.NoteListUpResp{}
+		notelistUpResp, err := notelist_client.NoteList_Up(c, noteListParam)
+		if err != nil && notelistUpResp != nil {
+			CreateSuccess(c, notelistUpResp)
+		} else {
+			CreateErrorWithMsg(c, "NoteListUp failed error msg:" + err.Error())
 		}
 	}
 }
 
 func NoteListDown (c *gin.Context) {
-	noteListParam := &lovers_srv_notelist.BaseInfo{}
+	noteListParam := &lovers_srv_notelist.NoteListDownReq{}
 	noteListParam.UserId = c.PostForm("UserID")
+	noteListParam.NoteListIndex = c.PostForm("NoteListIndex")
+	noteListParam.EndIndex = c.PostForm("EndIndex")
 	if len(noteListParam.UserId) <= 0 {
 		CreateErrorWithMsg(c, "UserId is empty")
 	} else {
-		err := notelist_client.NoteList_Down(c, noteListParam);
-		if err != nil {
-
+		notelistDownResp, err := notelist_client.NoteList_Down(c, noteListParam)
+		if err != nil && notelistDownResp != nil {
+			CreateSuccess(c, notelistDownResp)
+		} else {
+			CreateErrorWithMsg(c, "NoteListDown failed error msg:" + err.Error())
 		}
 	}
 }
