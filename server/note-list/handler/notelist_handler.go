@@ -38,7 +38,14 @@ type NoteListHandler struct {
 
 //上传事件清单
 func (notelist* NoteListHandler) NoteListUp(ctx context.Context, in *lovers_srv_notelist.NoteListUpReq, out *lovers_srv_notelist.NoteListUpResp) error {
-	notePath := NOTELISTPATHBASE+in.UserId+"/"+ in.NoteListIndex
+	notePath := NOTELISTPATHBASE+in.UserId+"/"
+	if err := notelist.NoteListDir(notePath); err != nil{
+		res := "无法找到该用户事件清单路径"
+		notelist.noteUpResp(out, res)
+		logrus.Error("can not get notelist path " + err.Error())
+		return err
+	}
+	notePath = NOTELISTPATHBASE+in.UserId+"/"+ in.NoteListIndex
 	fpNote, err := notelist.NoteListOpen(notePath)
 	if err != nil {
 		res := "打开事件清单失败"
@@ -116,6 +123,17 @@ func (notelist* NoteListHandler) FileIsExist(path string) bool {
 		return false
 	}
 	return true
+}
+
+func (notelist* NoteListHandler) NoteListDir(path string) error {
+	_,err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			err = os.MkdirAll(path, os.ModePerm)
+			return err
+		}
+	}
+	return err
 }
 
 //打开文件，文件路径/opt/UserId/Note

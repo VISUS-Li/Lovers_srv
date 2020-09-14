@@ -45,7 +45,7 @@ func ClientEngine() *gin.Engine{
 	userGroup.POST("/register",Register)
 	/*/api/client*/
 
-	NoteListGroup := api.Group("/api/notelist")
+	NoteListGroup := api.Group("/notelist")
 	NoteListGroup.POST("/NoteListUp", NoteListUp)
 	NoteListGroup.POST("/NoteListDown", NoteListDown)
 	return router

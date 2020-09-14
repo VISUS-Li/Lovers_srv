@@ -16,7 +16,7 @@ func main(){
 	//新建Web服务
 	webSrv := web.NewService(
 		web.Name(SRV_NAME),
-		web.Address(":20050"),
+		web.Address("60.205.211.241:20050"),
 		)
 
 	//构造Gin的Engine
