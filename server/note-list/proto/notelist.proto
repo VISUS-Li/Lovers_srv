@@ -5,46 +5,49 @@ package lovers.srv.noteList;
 service NoteList {
   rpc NoteListUp(NoteListUpReq) returns (NoteListUpResp){}
   rpc NoteListDown(NoteListDownReq) returns (NoteListDownResp){}
-
+  rpc NoteListDel(NoteListDelReq) returns (NoteListDelResp) {}
 }
 
 message NoteListUpReq {
-  string UserId = 1;
-  string NoteListIndex = 2;
-  bytes  NoeListData = 3;
+  string UserID = 1;
+  string NoteListLevel = 2;
+  string Timestamp = 3;
+  string NoteListIndex = 4;
+  bytes  NoeListData = 5;
 }
 
 message NoteListUpResp {
-  string NoteListUpResult = 1;
-  string err = 2;
+  string UserID = 1;
+  string NoteListIndex = 2;
+  string NoteListUpResult = 3;
+  string err = 4;
 }
 
 message  NoteListDownReq {
-  string UserId = 1;
-  string NoteListIndex = 2;
-  string endIndex = 3;
+  string UserID = 1;
+  string Timestamp = 2;
+  string TimestampEnd = 3;
+  string NoteListIndex = 4;
 
 }
 
 message NoteListDownResp {
-  string NoteListDownResult = 1;
+  string NoteListDownRet = 1;
+  string UserID = 2;
+  string Timestamp = 3;
+  string NoteListLevel = 4;
+  bytes  NoteListData = 5;
+  string err = 6;
+  string NoteListIndex = 7;
+}
+
+message NoteListDelReq {
+  string UserID = 1;
+  string Timestamp = 2;
+  string NoteListIndex = 3;
+}
+
+message NoteListDelResp {
+  string NoteListDelRet = 1;
   string err = 2;
-  string NoteListIndex = 3;
-  bytes NoteListData = 4;
-}
-
-message BaseInfo {
-  string UserId = 1;
-  string token  = 2;
-  string NoteListIndex = 3;
-  string NoteListOpt = 7;  //获取还是上传事件清单
-
-  LoverInfo AnotherInfo = 8;
-}
-
-message LoverInfo {
-  string LoverId = 1;
-  string LoverPhone = 2;
-  string LoverNickName = 3;
-  string LoverDuration = 4;
 }

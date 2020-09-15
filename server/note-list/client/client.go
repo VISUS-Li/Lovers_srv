@@ -44,4 +44,10 @@ func (notelist *NoteListClient)NoteList_Down(ctx context.Context, req *proto.Not
 
 }
 
+func (notelis *NoteListClient)NoteList_Del(ctx context.Context, req *proto.NoteListDelReq) (*proto.NoteListDelResp, error) {
+	//调用微服务接口
+	resp, err := notelis.client.NoteListDel(ctx, req)
+
+	return resp, err
+}
 

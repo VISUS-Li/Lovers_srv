@@ -71,16 +71,17 @@ func Register(c *gin.Context){
 
 func NoteListUp (c *gin.Context) {
 	noteListParam := &lovers_srv_notelist.NoteListUpReq{}
-	noteListParam.UserId = c.PostForm("UserID")
-	noteListParam.NoteListIndex = c.PostForm("NoteListIndex")
+	noteListParam.UserID = c.PostForm("UserID")
+	noteListParam.NoteListLevel = c.PostForm("NoteListLevel")
+	noteListParam.Timestamp = c.PostForm("Timestamp")
 	noteListParam.NoeListData = []byte(c.PostForm("NoteListData"))
-	if (len(noteListParam.UserId) <= 0) || (len(noteListParam.NoteListIndex) <= 0){
+	if (len(noteListParam.UserID) <= 0) || (len(noteListParam.Timestamp) <= 0){
 		CreateErrorWithMsg(c, "Invalid arguments")
 	} else {
-		var notelistUpResp = &lovers_srv_notelist.NoteListUpResp{}
-		notelistUpResp, err := notelist_client.NoteList_Up(c, noteListParam)
-		if err != nil && notelistUpResp != nil {
-			CreateSuccess(c, notelistUpResp)
+		var noteListUpResp = &lovers_srv_notelist.NoteListUpResp{}
+		noteListUpResp, err := notelist_client.NoteList_Up(c, noteListParam)
+		if err != nil {
+			CreateSuccess(c, noteListUpResp)
 		} else {
 			CreateErrorWithMsg(c, "NoteListUp failed error msg:" + err.Error())
 		}
@@ -89,17 +90,35 @@ func NoteListUp (c *gin.Context) {
 
 func NoteListDown (c *gin.Context) {
 	noteListParam := &lovers_srv_notelist.NoteListDownReq{}
-	noteListParam.UserId = c.PostForm("UserID")
-	noteListParam.NoteListIndex = c.PostForm("NoteListIndex")
-	noteListParam.EndIndex = c.PostForm("EndIndex")
-	if len(noteListParam.UserId) <= 0 {
-		CreateErrorWithMsg(c, "UserId is empty")
+	noteListParam.UserID = c.PostForm("UserID")
+	noteListParam.Timestamp = c.PostForm("Timestamp")
+	noteListParam.TimestampEnd = c.PostForm("TimestampEnd")
+	if len(noteListParam.UserID) <= 0 {
+		CreateErrorWithMsg(c, "UserID is empty")
 	} else {
-		notelistDownResp, err := notelist_client.NoteList_Down(c, noteListParam)
-		if err != nil && notelistDownResp != nil {
-			CreateSuccess(c, notelistDownResp)
-		} else {
+		noteListDownResp, err := notelist_client.NoteList_Down(c, noteListParam)
+		if err != nil {
 			CreateErrorWithMsg(c, "NoteListDown failed error msg:" + err.Error())
+		} else {
+			CreateSuccess(c, noteListDownResp)
 		}
 	}
+}
+
+func NoteListDel (c *gin.Context) {
+	noteListParam := &lovers_srv_notelist.NoteListDelReq{}
+	noteListParam.UserID = c.PostForm("UserID")
+	noteListParam.Timestamp = c.PostForm("Timestamp")
+	if (len(noteListParam.UserID) <=0) || (len(noteListParam.Timestamp)<=0) {
+		CreateErrorWithMsg(c, "Invalid arguments")
+		return
+	}
+
+	noteListDelResp, err := notelist_client.NoteList_Del(c,noteListParam)
+	if err != nil  {
+		CreateErrorWithMsg(c, "NoteListDel failed error msg:" + err.Error())
+	} else {
+		CreateSuccess(c, noteListDelResp)
+	}
+
 }
