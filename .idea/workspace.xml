@@ -3,12 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3fbbde41-9a98-43c0-8832-1c027d6cda31" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/handler/Handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handler/Handler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/handler/HandlerFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handler/HandlerFunc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/note-list/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/note-list/client/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/note-list/handler/notelist_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/note-list/handler/notelist_handler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/note-list/proto/notelist.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/note-list/proto/notelist.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/note-list/proto/notelist.pb.micro.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/note-list/proto/notelist.pb.micro.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/note-list/proto/notelist.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/note-list/proto/notelist.proto" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

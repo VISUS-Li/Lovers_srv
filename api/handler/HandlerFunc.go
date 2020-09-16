@@ -6,6 +6,8 @@ import (
 	noteListClient "Lovers_srv/server/note-list/client"
 	userClient "Lovers_srv/server/user-service/client"
 	lovers_srv_notelist "Lovers_srv/server/note-list/proto"
+	"strconv"
+
 	//handler "Lovers_srv/server/user-service/handler"
 	lovers_srv_user "Lovers_srv/server/user-service/proto"
 	"github.com/gin-gonic/gin"
@@ -74,7 +76,7 @@ func NoteListUp (c *gin.Context) {
 	noteListParam.UserID = c.PostForm("UserID")
 	noteListParam.NoteListLevel = c.PostForm("NoteListLevel")
 	noteListParam.Timestamp = c.PostForm("Timestamp")
-	noteListParam.NoeListData = []byte(c.PostForm("NoteListData"))
+	noteListParam.NoeListData = c.PostForm("NoteListData")
 	if (len(noteListParam.UserID) <= 0) || (len(noteListParam.Timestamp) <= 0){
 		CreateErrorWithMsg(c, "Invalid arguments")
 	} else {
@@ -91,8 +93,8 @@ func NoteListUp (c *gin.Context) {
 func NoteListDown (c *gin.Context) {
 	noteListParam := &lovers_srv_notelist.NoteListDownReq{}
 	noteListParam.UserID = c.PostForm("UserID")
-	noteListParam.Timestamp = c.PostForm("Timestamp")
-	noteListParam.TimestampEnd = c.PostForm("TimestampEnd")
+	noteListParam.StartIndex, _ = strconv.ParseInt(c.PostForm("StartIndex"), 10, 64)
+	noteListParam.NoteListCnt,_ = strconv.ParseInt(c.PostForm("NoteListCnt"), 10, 64)
 	if len(noteListParam.UserID) <= 0 {
 		CreateErrorWithMsg(c, "UserID is empty")
 	} else {
