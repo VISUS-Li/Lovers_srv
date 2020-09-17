@@ -14,7 +14,7 @@ func ClientEngine() *gin.Engine{
 
 	//配置JWT中间件
 	//AuthMiddleWare := &helper.GinJWTMiddleware{
-	//	Realm:                 "UserLogin",
+	//	Realm:                 "UserAuth",
 	//	SigningAlgorithm:      "",
 	//	Key:                   []byte("lovers"),
 	//	Timeout:               time.Hour * 2,
@@ -40,6 +40,8 @@ func ClientEngine() *gin.Engine{
 	//	PrivKey:                helper.GetRsaPriKey(),
 	//	PubKey:                helper.GetRsaPublicKey(),
 	//}
+
+
 	api := router.Group("/api/client")
 	//api.Use(AuthMiddleWare.MiddlewareParseUser)
 	userGroup := api.Group("/user")
