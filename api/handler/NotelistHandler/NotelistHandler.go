@@ -9,22 +9,30 @@ import (
 )
 
 var (
-
-	//user_handler = handler.UserHandler{}
 	notelist_client = noteListClient.NewNoteListClient()
 )
 
 func NoteListUp (c *gin.Context) {
 	noteListParam := &lovers_srv_notelist.NoteListUpReq{}
 	noteListParam.UserID = c.PostForm("UserID")
+	noteListParam.NoteListStatus, _ = strconv.ParseBool(c.PostForm("NoteListStatus"))
 	noteListParam.NoteListLevel = c.PostForm("NoteListLevel")
+	noteListParam.NoteListOpt, _ = strconv.ParseBool(c.PostForm("NoteListOpt"))
+	noteListParam.NoteListTitle = c.PostForm("NoteListTitle")
 	noteListParam.Timestamp = c.PostForm("Timestamp")
-	noteListParam.NoeListData = c.PostForm("NoteListData")
-	if (len(noteListParam.UserID) <= 0) || (len(noteListParam.Timestamp) <= 0){
-		Utils.CreateErrorWithMsg(c, "Invalid arguments")
-	} else {
-		var noteListUpResp = &lovers_srv_notelist.NoteListUpResp{}
-		noteListUpResp, err := notelist_client.NoteList_Up(c, noteListParam)
+	noteListParam.ModTime = c.PostForm("ModTime")
+	noteListParam.NoteListShare, _ = strconv.ParseBool(c.PostForm("NoteListShare"))
+	noteListParam.NoteListData = c.PostForm("NoteListData")
+
+	if (len(noteListParam.UserID) <= 0) ||
+		(len(noteListParam.Timestamp) <= 0) ||
+		(len(noteListParam.NoteListTitle) <= 0) ||
+		(len(noteListParam.Timestamp) <= 0) ||
+		(len(noteListParam.NoteListData) < 0){
+			Utils.CreateErrorWithMsg(c, "Invalid arguments")
+		} else {
+			var noteListUpResp = &lovers_srv_notelist.NoteListUpResp{}
+			noteListUpResp, err := notelist_client.NoteList_Up(c, noteListParam)
 		if err != nil {
 			Utils.CreateSuccess(c, noteListUpResp)
 		} else {
@@ -36,6 +44,8 @@ func NoteListUp (c *gin.Context) {
 func NoteListDown (c *gin.Context) {
 	noteListParam := &lovers_srv_notelist.NoteListDownReq{}
 	noteListParam.UserID = c.PostForm("UserID")
+	noteListParam.NoteListStatus, _ = strconv.ParseBool(c.PostForm("NoteListStatus"))
+	noteListParam.NoteListShare, _ = strconv.ParseBool(c.PostForm("NoteListShare"))
 	noteListParam.StartIndex, _ = strconv.ParseInt(c.PostForm("StartIndex"), 10, 64)
 	noteListParam.NoteListCnt,_ = strconv.ParseInt(c.PostForm("NoteListCnt"), 10, 64)
 	if len(noteListParam.UserID) <= 0 {

@@ -16,3 +16,8 @@ const(
 	DB_REG_PHONE_ERR		 = "手机格式不正确"
 	DB_REG_PARAM_nil		 = "传入参数为空"
 )
+
+const(
+	NOTELISTUP_INVALID_PARAM = "事件清单参数错误"
+
+)

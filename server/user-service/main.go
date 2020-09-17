@@ -11,6 +11,9 @@ import (
 )
 
 func main(){
+
+	config.Init()
+
 	myLog := LogHelper.LoversLog{}
 	myLog.SetOutPut(config.USER_SRV_NAME)
 	dbUtil := DB.DBUtil{}

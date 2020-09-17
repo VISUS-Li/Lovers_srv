@@ -17,22 +17,14 @@ message NoteListUpReq {
   string Timestamp      = 6;        //时间戳
   string ModTime        = 7;        //修改事件
   bool   NoteListShare  = 8;        //共享状态
-  string NoeListData    = 9;        //事件内容
+  string NoteListData    = 9;        //事件内容
   string BackImage      = 10;       //背景图片url
 }
 
 message NoteListUpResp {
   string UserID = 1;
-  bool   NoteListStatus = 2;
-  string NoteListLevel  = 3;
-  string NoteListTitle  = 4;
-  string Timestamp      = 5;
-  string ModTime        = 6;
-  bool   NoteListShare  = 7;
-  string NoteListData   = 8;
-  string BackImage      = 9;
-  string NoteListUpResult = 10;
-
+  string NoteListUpResult = 2;
+  string BackImage      = 3;
 }
 
 message  NoteListDownReq {
