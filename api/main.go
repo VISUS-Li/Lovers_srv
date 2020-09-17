@@ -13,15 +13,17 @@ func main(){
 
 	//初始化日志
 	myLog := LogHelper.LoversLog{}
+	var serverName string
 	if (config.GlobalConfig.Srv_name == "") {
-		myLog.SetOutPut(config.API_NAME)
+		serverName = config.API_NAME;
 	}else{
-		myLog.SetOutPut(config.GlobalConfig.Srv_name)
+		serverName = config.GlobalConfig.Srv_name;
 	}
+	myLog.SetOutPut(serverName)
 	//service := micro.NewService()
 	//新建Web服务
 	webSrv := web.NewService(
-		web.Name(SRV_NAME),
+		web.Name(serverName),
 		web.Address(":20050"),
 		)
 

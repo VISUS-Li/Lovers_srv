@@ -12,27 +12,19 @@ message NoteListUpReq {
   string UserID         = 1;        //用户ID
   bool   NoteListStatus = 2;        //事件状态：是否完成
   string NoteListLevel  = 3;        //事件等级（重要程度）
-  string NoteListOpt    = 4;        //对事件的操作：修改、新建 (对内)
+  bool   NoteListOpt    = 4;        //对事件的操作：修改、新建 (对内)
   string NoteListTitle  = 5;        //事件标题
   string Timestamp      = 6;        //时间戳
   string ModTime        = 7;        //修改事件
   bool   NoteListShare  = 8;        //共享状态
-  string NoeListData    = 9;        //事件内容
+  string NoteListData    = 9;        //事件内容
   string BackImage      = 10;       //背景图片url
 }
 
 message NoteListUpResp {
   string UserID = 1;
-  bool   NoteListStatus = 2;
-  string NoteListLevel  = 3;
-  string NoteListTitle  = 4;
-  string Timestamp      = 5;
-  string ModTime        = 6;
-  bool   NoteListShare  = 7;
-  string NoteListData   = 8;
-  string BackImage      = 9;
-  string NoteListUpResult = 10;
-
+  string NoteListUpResult = 2;
+  string BackImage      = 3;
 }
 
 message  NoteListDownReq {
@@ -41,8 +33,8 @@ message  NoteListDownReq {
   bool   NoteListShare  = 3;
   int64  StartIndex     = 4;
   int64  NoteListCnt    = 5;
-
 }
+
 
 message NoteListDownResp {
   string UserID         = 1;        //用户ID

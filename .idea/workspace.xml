@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fbbde41-9a98-43c0-8832-1c027d6cda31" name="Default Changelist" comment="">
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/api/handler/HandlerFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handler/HandlerFunc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/note-list/proto/notelist.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/note-list/proto/notelist.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/note-list/proto/notelist.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/note-list/proto/notelist.proto" afterDir="false" />
+=======
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/globalConfig.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/globalConfig.go" afterDir="false" />
@@ -9,7 +14,15 @@
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/helper/DB/dbHelper.go" beforeDir="false" afterPath="$PROJECT_DIR$/helper/DB/dbHelper.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/helper/Utils/CommonUtils.go" beforeDir="false" afterPath="$PROJECT_DIR$/helper/Utils/CommonUtils.go" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/server/user-service/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/user-service/main.go" afterDir="false" />
+=======
+<<<<<<< HEAD
+>>>>>>> 9d2a7045e524936183f3ba4f7c72c90d4d3b7788
+=======
+      <change beforePath="$PROJECT_DIR$/server/user-service/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/user-service/main.go" afterDir="false" />
+>>>>>>> 修改配置文件和数据库连接
+>>>>>>> 45b03abed21284e496bed6d5d9c9c0bd94a067a2
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

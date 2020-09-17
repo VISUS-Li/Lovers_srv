@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"Lovers_srv/config"
 	lovers_srv_notelist "Lovers_srv/server/note-list/proto"
 	"context"
 	"errors"
+	"github.com/jinzhu/gorm"
 	"github.com/sirupsen/logrus"
 	"os"
 	"sync"
@@ -31,13 +33,20 @@ type NoteListDateT struct {
 }
 
 
-
 type NoteListHandler struct {
-
+	DB *gorm.DB
 }
 
 //上传事件清单
 func (notelist* NoteListHandler) NoteListUp(ctx context.Context, in *lovers_srv_notelist.NoteListUpReq, out *lovers_srv_notelist.NoteListUpResp) error {
+	if (len(in.UserID) <= 0) ||
+		(len(in.Timestamp) <= 0) ||
+		(len(in.NoteListTitle) <= 0) ||
+		(len(in.NoteListData) <= 0) {
+		out.UserID = in.UserID
+		notelist.uPFailResp(out, config.NOTELISTUP_INVALID_PARAM)
+	}
+
 }
 
 //下载事件清单
@@ -48,6 +57,12 @@ func (notelist* NoteListHandler) NoteListDown(ctx context.Context, in *lovers_sr
 func (notelist* NoteListHandler) NoteListDel(ctx context.Context, in *lovers_srv_notelist.NoteListDelReq, out *lovers_srv_notelist.NoteListDelResp) error {
 
 }
+
+func (notelist *NoteListHandler) uPFailResp(out *lovers_srv_notelist.NoteListUpResp, res string) {
+	out.NoteListUpResult = res
+	out.BackImage = ""
+}
+
 
 
 
