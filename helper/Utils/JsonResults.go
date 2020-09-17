@@ -1,5 +1,5 @@
 
-package handler
+package Utils
 
 import (
 	"github.com/gin-gonic/gin"

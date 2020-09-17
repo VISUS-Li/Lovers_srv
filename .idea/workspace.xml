@@ -2,10 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fbbde41-9a98-43c0-8832-1c027d6cda31" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/api/handler/NotelistHandler/NotelistHandler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/handler/UserHandler/Login.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/handler/UserHandler/Register.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/handler/HandlerFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handler/HandlerFunc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/note-list/proto/notelist.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/note-list/proto/notelist.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/note-list/proto/notelist.proto" beforeDir="false" afterPath="$PROJECT_DIR$/server/note-list/proto/notelist.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/handler/Handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handler/Handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/handler/HandlerFunc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/handler/HomeHandler.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/handler/JsonResults.go" beforeDir="false" afterPath="$PROJECT_DIR$/helper/Utils/JsonResults.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +27,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" path="$PROJECT_DIR$/../../../go" />
+  <component name="GOROOT" path="C:\Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -52,7 +57,12 @@
     <property name="go.sdk.automatically.set" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/server/note-list/main.go" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="go.vgo" />
+    <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="J:\liningtao\Lovers\Lovers_srv\helper\Utils" />
+    </key>
   </component>
   <component name="RunManager" selected="Go Build.lovers_HttpAPI">
     <configuration name="LoversServer-user-service" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
@@ -61,6 +71,15 @@
       <kind value="PACKAGE" />
       <filePath value="$PROJECT_DIR$/server/user-service/main.go" />
       <package value="Lovers_srv/server/user-service" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="Lovers_srv" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/" />
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
@@ -91,6 +110,16 @@
       <filePath value="$PROJECT_DIR$/api/main.go" />
       <package value="Lovers_srv/api" />
       <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="Lovers_srv" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
     <list>
@@ -183,9 +212,10 @@
     </state>
     <state width="1322" height="217" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1598451763712" />
     <state width="1493" height="42" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1599927064720" />
-    <state x="370" y="110" key="SettingsEditor" timestamp="1599903890678">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="463" y="139" key="SettingsEditor" timestamp="1600319582075">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="463" y="139" key="SettingsEditor/-1920.1.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1600319582075" />
     <state x="370" y="110" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1599903890678" />
     <state x="463" y="150" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1598246906957" />
     <state x="321" y="149" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1599900207622">
