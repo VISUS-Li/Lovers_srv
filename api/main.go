@@ -7,16 +7,23 @@ import (
 	"github.com/micro/go-micro/web"
 	"github.com/sirupsen/logrus"
 )
-
-const SRV_NAME = "shop.srv.apigateway"
 func main(){
+	//从配置文件获取配置信息
 	config.Init()
+
+	//初始化日志
 	myLog := LogHelper.LoversLog{}
-	myLog.SetOutPut(config.GlobalConfig.Api_name)
+	var serverName string
+	if (config.GlobalConfig.Srv_name == "") {
+		serverName = config.API_NAME;
+	}else{
+		serverName = config.GlobalConfig.Srv_name;
+	}
+	myLog.SetOutPut(serverName)
 	//service := micro.NewService()
 	//新建Web服务
 	webSrv := web.NewService(
-		web.Name(SRV_NAME),
+		web.Name(serverName),
 		web.Address(":20050"),
 		)
 
