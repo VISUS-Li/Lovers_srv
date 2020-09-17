@@ -4,6 +4,7 @@ import (
 	"Lovers_srv/config"
 	"Lovers_srv/helper/DB"
 	"Lovers_srv/helper/LogHelper"
+	"Lovers_srv/helper/Utils"
 	"Lovers_srv/server/user-service/handler"
 	lovers_srv_user "Lovers_srv/server/user-service/proto"
 	"github.com/micro/go-micro"
@@ -11,13 +12,25 @@ import (
 )
 
 func main(){
+	config.Init()
+	//初始化日志
 	myLog := LogHelper.LoversLog{}
-	myLog.SetOutPut(config.USER_SRV_NAME)
-	dbUtil := DB.DBUtil{}
-	err := dbUtil.CreateConnect()
-	if err != nil{
-
+	var dbName string
+	if (config.GlobalConfig.Srv_name == "") {
+		dbName = Utils.GetDBNameFromSrvName(config.USER_SRV_NAME)
+		myLog.SetOutPut(config.USER_SRV_NAME)
+	}else{
+		dbName = Utils.GetDBNameFromSrvName(config.USER_SRV_NAME)
+		myLog.SetOutPut(config.GlobalConfig.Srv_name)
 	}
+	dbUtil := DB.DBUtil{}
+	err := dbUtil.CreateConnect(dbName)
+	if err != nil{
+		logrus.Error("create DB:" + dbName + "error:"+ err.Error())
+		return
+	}
+	defer dbUtil.CloseConnect()
+
 	err = dbUtil.CreateTable(DB.LoginInfo{})
 	if err != nil{
 		logrus.Error("create table LoginInfo error:"+err.Error())
@@ -26,7 +39,6 @@ func main(){
 	if err != nil{
 		logrus.Error("create table UserBaseInfo error:"+err.Error())
 	}
-	defer dbUtil.CloseConnect()
 
 	userHandler := handler.UserHandler{dbUtil.DB}
 
