@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"Lovers_srv/api/handler/NotelistHandler"
+	"Lovers_srv/api/handler/UserHandler"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,7 +14,7 @@ func ClientEngine() *gin.Engine{
 
 	//配置JWT中间件
 	//AuthMiddleWare := &helper.GinJWTMiddleware{
-	//	Realm:                 "UserLogin",
+	//	Realm:                 "UserAuth",
 	//	SigningAlgorithm:      "",
 	//	Key:                   []byte("lovers"),
 	//	Timeout:               time.Hour * 2,
@@ -38,16 +40,18 @@ func ClientEngine() *gin.Engine{
 	//	PrivKey:                helper.GetRsaPriKey(),
 	//	PubKey:                helper.GetRsaPublicKey(),
 	//}
+
+
 	api := router.Group("/api/client")
 	//api.Use(AuthMiddleWare.MiddlewareParseUser)
 	userGroup := api.Group("/user")
-	userGroup.POST("/login",Login)
-	userGroup.POST("/register",Register)
+	userGroup.POST("/login",UserHandler.Login)
+	userGroup.POST("/register",UserHandler.Register)
 	/*/api/client*/
 
 	NoteListGroup := api.Group("/notelist")
-	NoteListGroup.POST("/NoteListUp", NoteListUp)
-	NoteListGroup.POST("/NoteListDown", NoteListDown)
-	NoteListGroup.POST("/NoteListDel", NoteListDel)
+	NoteListGroup.POST("/NoteListUp", NotelistHandler.NoteListUp)
+	NoteListGroup.POST("/NoteListDown", NotelistHandler.NoteListDown)
+	NoteListGroup.POST("/NoteListDel", NotelistHandler.NoteListDel)
 	return router
 }

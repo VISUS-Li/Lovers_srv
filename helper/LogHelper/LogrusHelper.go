@@ -1,12 +1,11 @@
 package LogHelper
 
 import (
+	"Lovers_srv/helper/Utils"
 	"errors"
 	"github.com/sirupsen/logrus"
+	"io"
 	"os"
-	"os/exec"
-	"path/filepath"
-	"runtime"
 	"strings"
 )
 
@@ -16,7 +15,7 @@ type LoversLog struct{
 
 
 func (l *LoversLog)SetOutPut(srvName string) (error){
-	execPath,err := GetCurrentExecPath()
+	execPath,err := Utils.GetCurrentExecPath()
 	if err != nil{
 		return err
 	}
@@ -39,34 +38,24 @@ func (l *LoversLog)SetOutPut(srvName string) (error){
 	logFilePath := logPath +  srvName
 
 	file, err := os.OpenFile(logFilePath, os.O_CREATE | os.O_RDWR | os.O_APPEND, 0666)
-	logrus.SetOutput(file)
+	writers := []io.Writer{
+		file,
+		os.Stdout,
+	}
+	//同时写文件和屏幕
+	fileAndStdoutWriter := io.MultiWriter(writers...)
+	if err == nil {
+		logrus.SetOutput(fileAndStdoutWriter)
+	} else {
+		logrus.SetOutput(file)
+	}
 	logrus.SetLevel(logrus.InfoLevel)
 	logrus.SetReportCaller(true)
 	return err
 }
 
 
-func GetCurrentExecPath()(string,error){
-	file,err := exec.LookPath(os.Args[0])
-	if err != nil{
-		return "", err
-	}
-	path, err := filepath.Abs(file)
-	if err != nil{
-		return "", err
-	}
 
-	if runtime.GOOS =="windows"{
-		path = strings.Replace(path, "\\", "/", -1)
-	}
-
-	i := strings.LastIndex(path, "/")
-	if i < 0{
-		return "", errors.New(`Can't find "/" or  "\".`)
-	}
-
-	return string(path[0:i+1]), nil
-}
 
 func OutPutErrorInfo(str string) {
 	errors.New(str)

@@ -10,13 +10,14 @@ import (
 
 const SRV_NAME = "shop.srv.apigateway"
 func main(){
+	config.Init()
 	myLog := LogHelper.LoversLog{}
-	myLog.SetOutPut(config.API_NAME)
+	myLog.SetOutPut(config.GlobalConfig.Api_name)
 	//service := micro.NewService()
 	//新建Web服务
 	webSrv := web.NewService(
 		web.Name(SRV_NAME),
-		web.Address("60.205.211.241:20050"),
+		web.Address(":20050"),
 		)
 
 	//构造Gin的Engine
