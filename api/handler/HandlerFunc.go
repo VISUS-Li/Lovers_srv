@@ -77,6 +77,11 @@ func NoteListUp (c *gin.Context) {
 	noteListParam.NoteListLevel = c.PostForm("NoteListLevel")
 	noteListParam.Timestamp = c.PostForm("Timestamp")
 	noteListParam.NoeListData = c.PostForm("NoteListData")
+	noteListParam.NoteListOpt, _ = strconv.ParseBool(c.PostForm("NoteListOpt"))
+	noteListParam.ModTime = c.PostForm("ModTime")
+	noteListParam.NoteListShare, _ = strconv.ParseBool(c.PostForm("NoteListShare"))
+	noteListParam.NoteListStatus,_ = strconv.ParseBool(c.PostForm("NoteListStatus"))
+	noteListParam.NoteListTitle = c.PostForm("NoteListTitle")
 	if (len(noteListParam.UserID) <= 0) || (len(noteListParam.Timestamp) <= 0){
 		CreateErrorWithMsg(c, "Invalid arguments")
 	} else {
@@ -95,6 +100,8 @@ func NoteListDown (c *gin.Context) {
 	noteListParam.UserID = c.PostForm("UserID")
 	noteListParam.StartIndex, _ = strconv.ParseInt(c.PostForm("StartIndex"), 10, 64)
 	noteListParam.NoteListCnt,_ = strconv.ParseInt(c.PostForm("NoteListCnt"), 10, 64)
+	noteListParam.NoteListStatus, _= strconv.ParseBool(c.PostForm("NoteListStatus"))
+	noteListParam.NoteListShare,_ = strconv.ParseBool(c.PostForm("NoteListShare"))
 	if len(noteListParam.UserID) <= 0 {
 		CreateErrorWithMsg(c, "UserID is empty")
 	} else {
