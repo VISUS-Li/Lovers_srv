@@ -14,6 +14,8 @@ import (
 func main(){
 	config.Init()
 	//初始化日志
+
+
 	myLog := LogHelper.LoversLog{}
 	var dbName string
 	if (config.GlobalConfig.Srv_name == "") {
