@@ -65,6 +65,8 @@ func (notelist* NoteListHandler) NoteListUp(ctx context.Context, in *lovers_srv_
 
 
 	}
+	}
+
 }
 
 //下载事件清单
