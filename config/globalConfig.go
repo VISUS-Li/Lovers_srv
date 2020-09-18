@@ -24,9 +24,7 @@ const(
 
 type Config struct{
 	//服务名
-	User_srv_name     string;
-	Notelist_srv_name string;
-	Api_name          string;
+	Srv_name     string;
 
 	//数据库
 	DB_host     string;
@@ -43,18 +41,6 @@ func Init(){
 }
 
 func getDefaultConfig(){
-
-	//服务名
-	if(GlobalConfig.User_srv_name == ""){
-		GlobalConfig.User_srv_name = USER_SRV_NAME;
-	}
-	if(GlobalConfig.Notelist_srv_name == ""){
-		GlobalConfig.Notelist_srv_name = NOTELIST_SRV_NAME;
-	}
-	if(GlobalConfig.Api_name == ""){
-		GlobalConfig.Api_name = API_NAME;
-	}
-
 	//数据库
 	if(GlobalConfig.DB_host == ""){
 		GlobalConfig.DB_host = DB_HOST;
@@ -74,11 +60,15 @@ func getDefaultConfig(){
 
 func getJsonConfig()(Config, error){
 	configPath := Utils.GetExeDstFileName("config.json")
-	file, _ := os.Open(configPath)
+	file, err := os.Open(configPath)
+	if err != nil {
+		logrus.Error("open Config File fail:"+err.Error())
+		return Config{}, err
+	}
 	defer file.Close()
 	decoder := json.NewDecoder(file)
 	conf := Config{}
-	err := decoder.Decode(&conf)
+	err = decoder.Decode(&conf)
 	if err != nil {
 		logrus.Error("read Config File fail:"+err.Error())
 		return Config{}, err
