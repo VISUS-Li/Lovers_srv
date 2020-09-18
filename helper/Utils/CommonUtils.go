@@ -54,3 +54,12 @@ func GetExeDstFileName(dstName string)(string){
 	}
 	return path
 }
+
+/******
+通过服务名获取数据库名称
+******/
+func GetDBNameFromSrvName(srvName string)(string){
+	splitRes := strings.Split(srvName,".")
+	splitLen := len(splitRes)
+	return splitRes[splitLen-1]
+}
