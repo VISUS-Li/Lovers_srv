@@ -2,6 +2,7 @@ package handler
 
 import (
 	"Lovers_srv/config"
+	"Lovers_srv/helper/DB"
 	lovers_srv_notelist "Lovers_srv/server/note-list/proto"
 	"context"
 	"errors"
@@ -45,6 +46,25 @@ func (notelist* NoteListHandler) NoteListUp(ctx context.Context, in *lovers_srv_
 		(len(in.NoteListData) <= 0) {
 		out.UserID = in.UserID
 		notelist.uPFailResp(out, config.NOTELISTUP_INVALID_PARAM)
+		return errors.New("invalid param")
+	}
+	//创建数据库结构体
+	var noteListInfo DB.NoteListDB
+	noteListInfo.UserID = in.UserID
+	noteListInfo.Timestamp = in.Timestamp
+	noteListInfo.NoteListStatus = in.NoteListStatus
+	noteListInfo.NoteListShare = in.NoteListShare
+	noteListInfo.NoteListTitle = in.NoteListTitle
+	noteListInfo.NoteListData = in.NoteListData
+
+	if in.NoteListOpt { //新建事件清单
+
+	} else { //修改事件清单
+
+	}
+
+
+	}
 	}
 
 }
@@ -57,6 +77,15 @@ func (notelist* NoteListHandler) NoteListDown(ctx context.Context, in *lovers_sr
 func (notelist* NoteListHandler) NoteListDel(ctx context.Context, in *lovers_srv_notelist.NoteListDelReq, out *lovers_srv_notelist.NoteListDelResp) error {
 
 }
+
+func (notelist* NoteListHandler) NoteListNew(dbinfo* DB.NoteListDB) error {
+
+}
+
+func (notelist* NoteListHandler) NoteListMod(dbinfo* DB.NoteListDB) error {
+
+}
+
 
 func (notelist *NoteListHandler) uPFailResp(out *lovers_srv_notelist.NoteListUpResp, res string) {
 	out.NoteListUpResult = res
