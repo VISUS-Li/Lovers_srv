@@ -4,6 +4,7 @@ import (
 	"Lovers_srv/api/handler/NotelistHandler"
 	"Lovers_srv/api/handler/UserHandler"
 	"github.com/gin-gonic/gin"
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
 //gin的路由逻辑

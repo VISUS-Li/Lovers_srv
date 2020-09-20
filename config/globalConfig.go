@@ -20,6 +20,8 @@ const (
 
 const(
 	JWT_IDKEY = "lovers"
+	JWT_EXPIRETIME  = 3
+	JWT_SECRET 		= "liningtao"
 )
 
 type Config struct{
@@ -32,7 +34,9 @@ type Config struct{
 	DB_password string;
 
 	//jwt
-	JwtIDKey string
+	JwtIDKey string;
+	ExpireTime int; // token过期时间，单位小时
+	JwtSecret string;
 }
 
 func Init(){
@@ -55,6 +59,12 @@ func getDefaultConfig(){
 	//JWT
 	if(GlobalConfig.JwtIDKey == ""){
 		GlobalConfig.JwtIDKey = JWT_IDKEY;
+	}
+	if(GlobalConfig.ExpireTime <= 0){
+		GlobalConfig.ExpireTime = JWT_EXPIRETIME;
+	}
+	if(GlobalConfig.JwtSecret == ""){
+		GlobalConfig.JwtSecret = JWT_SECRET;
 	}
 }
 
