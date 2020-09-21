@@ -6,6 +6,7 @@ import (
 	lovers_srv_notelist "Lovers_srv/server/note-list/proto"
 	"context"
 	"errors"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/sirupsen/logrus"
 	"os"
@@ -48,6 +49,7 @@ func (notelist* NoteListHandler) NoteListUp(ctx context.Context, in *lovers_srv_
 		notelist.uPFailResp(out, config.NOTELISTUP_INVALID_PARAM)
 		return errors.New("invalid param")
 	}
+	out.UserID = in.UserID
 	//创建数据库结构体
 	var noteListInfo DB.NoteListDB
 	noteListInfo.UserID = in.UserID
@@ -56,45 +58,125 @@ func (notelist* NoteListHandler) NoteListUp(ctx context.Context, in *lovers_srv_
 	noteListInfo.NoteListShare = in.NoteListShare
 	noteListInfo.NoteListTitle = in.NoteListTitle
 	noteListInfo.NoteListData = in.NoteListData
+	noteListInfo.ModTime = in.ModTime
+	noteListInfo.BackImage = in.BackImage
 
 	if in.NoteListOpt { //新建事件清单
+		if err := notelist.NoteListNew(&noteListInfo); err != nil {
+			logrus.Error(err.Error())
+			notelist.uPFailResp(out, err.Error())
+			return err
+		}
 
 	} else { //修改事件清单
-
+		if err := notelist.NoteListMod(&noteListInfo); err != nil {
+			logrus.Error(err.Error())
+			notelist.uPFailResp(out, err.Error())
+			return err
+		}
 	}
-
-
-	}
-	}
-
+	return nil
 }
 
 //下载事件清单
 func (notelist* NoteListHandler) NoteListDown(ctx context.Context, in *lovers_srv_notelist.NoteListDownReq, out *lovers_srv_notelist.NoteListDownResp) error {
+	if len(in.UserID) <= 0 {
+		err := errors.New("UserID不能为空")
+		logrus.Error(err.Error())
+		return err
+	}
+
+	return nil
 }
 
 //删除事件清单
 func (notelist* NoteListHandler) NoteListDel(ctx context.Context, in *lovers_srv_notelist.NoteListDelReq, out *lovers_srv_notelist.NoteListDelResp) error {
+	if len(in.UserID) <= 0 {
+		out.NoteListDelRet = "failed"
+		out.Err = "UserId不能为空"
+	}
+	if len(in.Timestamp) <= 0{
+		out.NoteListDelRet = "failed"
+		out.Err = "Timestamp不能为空"
+	}
 
+	err := notelist.DB.Delete("UserId = ? and Timestamp = ?",
+		in.UserID, in.Timestamp).Error
+	if err != nil {
+		out.Err = err.Error()
+	} else {
+		out.Err = ""
+	}
+	out.NoteListDelRet = "success"
+	return nil
 }
 
+//新建事件
 func (notelist* NoteListHandler) NoteListNew(dbinfo* DB.NoteListDB) error {
+	//查询该UserID和时间戳是否存在
+	//接收查询结果
+	var haveNoteList []DB.NoteListDB
+	notelist.DB.Where("UserID = ? and Timestamp = ?",
+		dbinfo.UserID,dbinfo.Timestamp).Find(&haveNoteList)
+	if len(haveNoteList) > 0 {
+		//存在该事件，结果与请求不符，失败
+		err :=errors.New("操作请求参数出错，该事件已经存在，停止新建")
+		return err
+	}
 
+	if err := notelist.DB.Create(dbinfo); err != nil {
+		err := errors.New("insert notelistDB to db failed")
+		return err
+	}
+
+	return nil
 }
 
 func (notelist* NoteListHandler) NoteListMod(dbinfo* DB.NoteListDB) error {
+	var haveNoteList []DB.NoteListDB
+	//查找该事件是否存在
+	notelist.DB.Where("UserId = ? and Timestamp = ?",
+		dbinfo.UserID, dbinfo.Timestamp).Find(&haveNoteList)
 
+	fmt.Println("NoteListMod ---> request quantity of notelist: ",
+		len(haveNoteList))
+
+	//不存在该事件，更新失败
+	if len(haveNoteList) <= 0 {
+		err := errors.New("未查询到该事件，修改失败")
+		return err
+	}
+
+	err := notelist.DB.Where("UserId = ? and Timestamp = ?",
+		dbinfo.UserID, dbinfo.Timestamp).Update(DB.NoteListDB{
+		NoteListStatus: dbinfo.NoteListStatus,
+		NoteListLevel:  dbinfo.NoteListLevel,
+		NoteListTitle:  dbinfo.NoteListTitle,
+		ModTime:        dbinfo.ModTime,
+		NoteListShare:  dbinfo.NoteListShare,
+		NoteListData:   dbinfo.NoteListData,
+	}).Error
+	if err != nil {
+		return nil
+	}
+
+
+	return nil
 }
 
 
+
 func (notelist *NoteListHandler) uPFailResp(out *lovers_srv_notelist.NoteListUpResp, res string) {
-	out.NoteListUpResult = res
+	if res != "success" {
+		out.NoteListUpResult = "failed"
+	}
+
 	out.BackImage = ""
 }
 
 
 
-
+/********************************************************************/
 func (notelist* NoteListHandler) FileIsExist(path string) bool {
 	_, err := os.Stat(path)
 	if err != nil {

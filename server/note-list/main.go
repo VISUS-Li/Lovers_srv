@@ -4,6 +4,7 @@ import (
 	"Lovers_srv/config"
 	"Lovers_srv/helper/DB"
 	"Lovers_srv/helper/LogHelper"
+	"Lovers_srv/helper/Utils"
 	"Lovers_srv/server/note-list/handler"
 	lovers_srv_user "Lovers_srv/server/note-list/proto"
 	"github.com/micro/go-micro"
@@ -13,21 +14,28 @@ import (
 func main() {
 	//create log
 	myLog := LogHelper.LoversLog{}
-	myLog.SetOutPut(config.NOTELIST_SRV_NAME)
+	var dbName string
+	if (config.GlobalConfig.Srv_name == "") {
+		dbName = Utils.GetDBNameFromSrvName(config.NOTELIST_SRV_NAME)
+		myLog.SetOutPut(config.NOTELIST_SRV_NAME)
+	} else {
+		dbName = Utils.GetDBNameFromSrvName(config.NOTELIST_SRV_NAME)
+		myLog.SetOutPut(config.NOTELIST_SRV_NAME)
+	}
 	//create database
 	dbUtil := DB.DBUtil{}
-	err := dbUtil.CreateConnect()
+	err := dbUtil.CreateConnect(dbName)
 	if err != nil {
 		logrus.Error("NoteList database create failed, msg:" +err.Error())
 		return
 	}
+	defer dbUtil.CloseConnect()
 
 	err = dbUtil.CreateTable(DB.NoteListDB{})
 	if err != nil {
 		logrus.Error("create table NoteListDB error:"+err.Error())
 		return
 	}
-	defer dbUtil.CloseConnect()
 
 	noteListHandler := handler.NoteListHandler{dbUtil.DB}
 
