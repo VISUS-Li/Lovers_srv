@@ -54,6 +54,9 @@ func ParseToken(token string) (*Claims, error){
 	return nil,err
 }
 
+/******
+JWT验证的中间件
+******/
 func JWTMidWare() gin.HandlerFunc{
 	return func(c *gin.Context){
 		//从请求中拿到token
@@ -72,9 +75,9 @@ func JWTMidWare() gin.HandlerFunc{
 			if err != nil{
 				switch err.(*jwt.ValidationError).Errors {
 				case jwt.ValidationErrorExpired:
-					code = config.ERROR_AUTH_CHECK_TOKEN_TIMEOUT
+					code = config.CODE_ERR_AUTH_CHECK_TOKEN_TIMEOUT
 				default:
-					code = config.ERROR_AUTH_CHECK_TOKEN_FAIL
+					code = config.CODE_ERR_AUTH_CHECK_TOKEN_FAIL
 				}
 			}
 		}

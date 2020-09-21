@@ -26,7 +26,7 @@ func Register(c *gin.Context){
 		Utils.CreateErrorWithMsg(c, "Phone Format is invalid!")
 	}else{
 		regResp,err := user_clent.Client_Register(c,regParam)
-		if regResp == nil || regResp.RegisteredInfo == nil|| regResp.RegisteredInfo.LoginRes != config.DB_REG_OK{
+		if regResp == nil || regResp.RegisteredInfo == nil|| regResp.RegisteredInfo.LoginRes != config.MSG_DB_REG_OK {
 			if regResp != nil{
 				if regResp.RegisteredInfo != nil{
 					Utils.CreateErrorWithMsg(c,"register failed, error msg:" + regResp.RegisteredInfo.LoginRes)
