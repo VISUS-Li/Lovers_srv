@@ -35,7 +35,8 @@ func GenerateToken(username string, password string)(string, error){
 
 	//通过claims新建token
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256,claims)
-	token,err := tokenClaims.SignedString(config.GlobalConfig.JwtSecret)
+	secret := []byte(config.GlobalConfig.JwtSecret)
+	token,err := tokenClaims.SignedString(secret)
 	return token,err
 }
 
@@ -67,7 +68,7 @@ func JWTMidWare() gin.HandlerFunc{
 
 		var code int
 		var data interface{}
-		code = config.SUCCESS
+		code = config.CODE_ERR_SUCCESS
 		if (token == ""){
 			code = config.INVALID_PARAMS
 		}else{
@@ -81,7 +82,7 @@ func JWTMidWare() gin.HandlerFunc{
 				}
 			}
 		}
-		if code != config.SUCCESS{
+		if code != config.CODE_ERR_SUCCESS{
 			c.JSON(http.StatusUnauthorized,gin.H{
 				"code":code,
 				"msg":data,

@@ -24,7 +24,7 @@ type UserHandler struct {
 func (user* UserHandler) Login(ctx context.Context, in *lovers_srv_user.LoginReq, out *lovers_srv_user.LoginResp) error {
 	loginType, _ := strconv.Atoi(in.Type)
 
-	if loginType == config.ENUM_LOGIN_PHONE {
+	if loginType == config.ENUM_LOGIN_VERCODE {
 		err := user.PhoneAndPwdLogin(in.Phone, in.PassWord, out)
 		if err != nil {
 			return err
@@ -249,7 +249,7 @@ func (user* UserHandler)RegisterUser(ctx context.Context, in *lovers_srv_user.Re
 
 	out.RegisteredInfo.UserInfo = user.DBBaseInfoToRespBaseInfo(regBaseInfo)
 	out.RegisteredInfo.LoginRes = config.MSG_DB_REG_OK
-	out.RegisteredInfo.LoginTime = string(time.Now().Unix())
+	out.RegisteredInfo.LoginTime = strconv.FormatInt(time.Now().Unix(),10)
 	out.RegisteredInfo.Token = ""
 
 	return nil
