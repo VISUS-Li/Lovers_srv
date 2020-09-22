@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package lovers.srv.home;
+
+service User{
+    rpc GetHomeCard(LoginReq) returns (LoginResp){}
+}
+
+enum CARDTYPE{
+    AD          = 0;
+    Info        = 1;
+}
+
+enum ADTYPE{
+    HOTEL       = 0;
+    FOOD        = 1;
+}
+
+enum INFOTYPE{
+
+}
+
+/*获取主页卡片参数*/
+
+message HomeCardIndex{
+    string IndexStart = 1;
+    string IndexEnd   = 2;
+}
+
+
+message HomeCardInfo{
+    CARDTYPE CardType           = 2; //卡片类型，广告、咨询等
+    ADTYPE AdType               = 3; //广告类型
+    INFOTYPE InfoType           = 4; //咨询类型
+}
+
+message
