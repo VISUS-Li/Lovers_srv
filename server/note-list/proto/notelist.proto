@@ -35,8 +35,7 @@ message  NoteListDownReq {
   int64  NoteListCnt    = 5;
 }
 
-
-message NoteListDownResp {
+message allNoteList {
   string UserID         = 1;        //用户ID
   bool   NoteListStatus = 2;        //事件状态：是否完成
   string NoteListLevel  = 3;        //事件等级（重要程度）
@@ -46,6 +45,12 @@ message NoteListDownResp {
   bool   NoteListShare  = 7;        //共享状态
   string NoeListData    = 8;        //事件内容
   string BackImage      = 9;        //背景图片url string UserID = 1;
+
+}
+
+message NoteListDownResp {
+  string UserID           = 1;
+  repeated allNoteList NoteList = 2;
 }
 
 message NoteListDelReq {

@@ -40,7 +40,7 @@ func GetCurrentExecPath()(string,error){
 		return "", errors.New(`Can't find "/" or  "\".`)
 	}
 
-	return string(path[0:i+1]), nil
+	return string(path[0:i]), nil
 }
 
 /******

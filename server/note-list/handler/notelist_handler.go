@@ -79,14 +79,38 @@ func (notelist* NoteListHandler) NoteListUp(ctx context.Context, in *lovers_srv_
 }
 
 //下载事件清单
-func (notelist* NoteListHandler) NoteListDown(ctx context.Context, in *lovers_srv_notelist.NoteListDownReq, out *lovers_srv_notelist.NoteListDownResp) error {
+func (notelist* NoteListHandler) NoteListDown(ctx context.Context, in *lovers_srv_notelist.NoteListDownReq, out *lovers_srv_notelist.NoteListDownResp) (error) {
 	if len(in.UserID) <= 0 {
 		err := errors.New("UserID不能为空")
 		logrus.Error(err.Error())
+		return  err
+	}
+
+	out.UserID = in.UserID;
+
+	var getAllList []DB.NoteListDB
+	notelist.DB.Where("UserID = ?", in.UserID).Find(&getAllList)
+	if len(getAllList) > 0 {
+		//未来查找到事件，获取失败
+		err := errors.New("没有查找到事件,请求失败")
 		return err
 	}
 
-	return nil
+	for _, temp := range getAllList {
+		var list lovers_srv_notelist.AllNoteList
+		list.UserID = temp.UserID
+		list.Timestamp = temp.Timestamp
+		list.NoteListShare = temp.NoteListShare
+		list.ModTime = temp.ModTime
+		list.NoteListTitle = temp.NoteListTitle
+		list.NoteListLevel = temp.NoteListLevel
+		list.NoteListStatus = temp.NoteListStatus
+		list.BackImage = temp.BackImage
+		list.NoeListData = temp.NoteListData
+
+		out.NoteList = append(out.NoteList, &list)
+	}
+	return  nil
 }
 
 //删除事件清单
