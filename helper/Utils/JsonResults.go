@@ -2,6 +2,7 @@
 package Utils
 
 import (
+	"Lovers_srv/config"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -24,8 +25,8 @@ func NewResult() *Result {
 func CreateSuccess(c *gin.Context, data interface{}){
 	json := NewResult()
 	json.Data = data
-	json.Msg = "sccess"
-	json.Code = 1000
+	json.Msg = "请求成功"
+	json.Code = config.CODE_ERR_SUCCESS
 
 	c.JSON(
 		http.StatusOK,
@@ -58,11 +59,11 @@ func CreateError(c *gin.Context){
 }
 
 
-func CreateErrorWithMsg(c *gin.Context, msg string){
+func CreateErrorWithMsg(c *gin.Context, msg string, code int){
 	json := NewResult()
 	json.Data = nil
 	json.Msg = msg
-	json.Code = 400
+	json.Code = code
 
 	c.JSON(
 		http.StatusBadRequest,

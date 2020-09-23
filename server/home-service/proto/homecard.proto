@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package lovers.srv.home;
 
-service User{
-    rpc GetHomeCard(LoginReq) returns (LoginResp){}
+service home{
+    rpc GetMainCard(GetMainCardReq) returns (GetMainCardResp){}
 }
 
 enum CARDTYPE{
@@ -17,7 +17,7 @@ enum ADTYPE{
 }
 
 enum INFOTYPE{
-
+    NEWS        = 0;
 }
 
 /*获取主页卡片参数*/
@@ -27,11 +27,32 @@ message HomeCardIndex{
     string IndexEnd   = 2;
 }
 
-
-message HomeCardInfo{
-    CARDTYPE CardType           = 2; //卡片类型，广告、咨询等
-    ADTYPE AdType               = 3; //广告类型
-    INFOTYPE InfoType           = 4; //咨询类型
+/*获取首页卡片状态*/
+message CardRespStatus{
+    string GetCardRes  = 1; //获取卡片状态，成功或失败原因
+    string GetCardCode = 2; //获取卡片状态码
 }
 
-message
+/*首页卡片的基本信息*/
+message HomeCardInfo{
+    CARDTYPE        CardType          = 1; //卡片类型，广告、咨询等
+    ADTYPE          AdType            = 2; //广告类型
+    INFOTYPE        InfoType          = 3; //咨询类型
+    string          ImgUrl            = 4; //图片路径
+    string          Title             = 5; //卡片标题
+    string          Content           = 6; //卡片内容
+}
+
+/**/
+message MainCardInfo{
+    HomeCardInfo CardBaseInfo   = 1; //卡片基本信息
+    string       CreateTime     = 2; //卡片创建时间
+    string       ShowTime       = 3; //显示在哪一天
+}
+message GetMainCardReq{
+
+}
+message GetMainCardResp{
+    CardRespStatus          RespStatus = 1;
+    repeated MainCardInfo     CardInfo   = 2;
+}

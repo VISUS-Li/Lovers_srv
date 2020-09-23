@@ -7,16 +7,21 @@ import (
 	"github.com/micro/go-micro/client"
 )
 
+const USER_SRV_NAME = "lovers.srv.user"
 type UserClient struct{
 	client proto.UserService
 	serviceName string
 }
 
 func NewUserClient() *UserClient{
-	c := proto.NewUserService(config.USER_SRV_NAME, client.DefaultClient)
+	serverName := config.GlobalConfig.Srv_name
+	if serverName == ""{
+		serverName = USER_SRV_NAME
+	}
+	c := proto.NewUserService(serverName, client.DefaultClient)
 	return &UserClient{
 		client: c,
-		serviceName:config.USER_SRV_NAME,
+		serviceName:serverName,
 	}
 }
 

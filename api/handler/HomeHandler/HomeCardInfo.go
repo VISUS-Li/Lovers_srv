@@ -2,26 +2,33 @@ package HomeHandler
 
 import (
 	"Lovers_srv/helper/Utils"
-	lovers_srv_user "Lovers_srv/server/user-service/proto"
+	"Lovers_srv/server/home-service/client"
 	"github.com/gin-gonic/gin"
 )
 
-func GetCardInfo(c *gin.Context){
-	var login = &lovers_srv_user.LoginReq{}
-	login.UserName = c.PostForm("UserName")
-	login.PassWord = c.PostForm("PassWord")
-	login.Phone = c.Query("Phone")
-	login.VertifyCode = c.Query("VertifyCode")
-	login.Type = c.Query("Type") // 登录类型,0.手机号登录,1.账号密码,2.手机验证码,3.微信,4.QQ
-	var loginResp = &lovers_srv_user.LoginResp{}
-	loginResp,err := user_clent.Client_Login(c,login)
+var home_client = client.NewHomeMicroClient()
+
+func GetMainCard(c *gin.Context){
+
+	loginResp,err := home_client.Client_GetMainCard(c,nil)
 	if err == nil && loginResp != nil{
 		Utils.CreateSuccess(c, loginResp)
 	}else{
-		if loginResp == nil{
-			Utils.CreateErrorWithMsg(c, "login failed error msg:"+err.Error() + "loginResp is nil")
-		}else {
-			Utils.CreateErrorWithMsg(c, "login failed error msg:"+err.Error())
-		}
+		//if loginResp == nil{
+		//	Utils.CreateErrorWithMsg(c, "login failed error msg:"+err.Error() + "loginResp is nil")
+		//}else {
+		//	Utils.CreateErrorWithMsg(c, "login failed error msg:"+err.Error())
+		//}s
 	}
+}
+
+func GetCardInfoByCount(c *gin.Context){
+
+}
+func GetCardInfoByIndx(c *gin.Context){
+
+}
+
+func GetCardInfoByType(c *gin.Context){
+
 }
