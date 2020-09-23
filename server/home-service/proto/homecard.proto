@@ -41,18 +41,15 @@ message HomeCardInfo{
     string          ImgUrl            = 4; //图片路径
     string          Title             = 5; //卡片标题
     string          Content           = 6; //卡片内容
+    string          TypeDesc          = 7; //卡片类型说明
+    string          CreateTime        = 8; //卡片创建时间
 }
 
-/**/
-message MainCardInfo{
-    HomeCardInfo CardBaseInfo   = 1; //卡片基本信息
-    string       CreateTime     = 2; //卡片创建时间
-    string       ShowTime       = 3; //显示在哪一天
-}
+
 message GetMainCardReq{
 
 }
 message GetMainCardResp{
     CardRespStatus          RespStatus = 1;
-    repeated MainCardInfo     CardInfo   = 2;
+    repeated HomeCardInfo   MainCardInfo   = 2;
 }

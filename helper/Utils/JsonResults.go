@@ -90,8 +90,8 @@ func CreateSuccessByList(c *gin.Context, total interface{}, content interface{})
 		"total": total,
 		"content": content,
 	}
-	json.Msg = "success"
-	json.Code = 1000
+	json.Msg = "请求成功"
+	json.Code = config.CODE_ERR_SUCCESS
 
 	c.JSON(
 		http.StatusOK,

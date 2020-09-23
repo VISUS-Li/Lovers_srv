@@ -63,3 +63,5 @@ func GetDBNameFromSrvName(srvName string)(string){
 	splitLen := len(splitRes)
 	return splitRes[splitLen-1]
 }
+
+
