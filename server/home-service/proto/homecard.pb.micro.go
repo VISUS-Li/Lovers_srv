@@ -35,6 +35,7 @@ var _ server.Option
 
 type HomeService interface {
 	GetMainCard(ctx context.Context, in *GetMainCardReq, opts ...client.CallOption) (*GetMainCardResp, error)
+	PostCardInfo(ctx context.Context, in *PostCardInfoReq, opts ...client.CallOption) (*PostCardInfoResp, error)
 }
 
 type homeService struct {
@@ -65,15 +66,27 @@ func (c *homeService) GetMainCard(ctx context.Context, in *GetMainCardReq, opts 
 	return out, nil
 }
 
+func (c *homeService) PostCardInfo(ctx context.Context, in *PostCardInfoReq, opts ...client.CallOption) (*PostCardInfoResp, error) {
+	req := c.c.NewRequest(c.name, "Home.PostCardInfo", in)
+	out := new(PostCardInfoResp)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for Home service
 
 type HomeHandler interface {
 	GetMainCard(context.Context, *GetMainCardReq, *GetMainCardResp) error
+	PostCardInfo(context.Context, *PostCardInfoReq, *PostCardInfoResp) error
 }
 
 func RegisterHomeHandler(s server.Server, hdlr HomeHandler, opts ...server.HandlerOption) error {
 	type home interface {
 		GetMainCard(ctx context.Context, in *GetMainCardReq, out *GetMainCardResp) error
+		PostCardInfo(ctx context.Context, in *PostCardInfoReq, out *PostCardInfoResp) error
 	}
 	type Home struct {
 		home
@@ -88,4 +101,8 @@ type homeHandler struct {
 
 func (h *homeHandler) GetMainCard(ctx context.Context, in *GetMainCardReq, out *GetMainCardResp) error {
 	return h.HomeHandler.GetMainCard(ctx, in, out)
+}
+
+func (h *homeHandler) PostCardInfo(ctx context.Context, in *PostCardInfoReq, out *PostCardInfoResp) error {
+	return h.HomeHandler.PostCardInfo(ctx, in, out)
 }

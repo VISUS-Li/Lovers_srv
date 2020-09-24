@@ -26,7 +26,7 @@ func ClientEngine() *gin.Engine{
 	homeGroup.GET("/GetCardInfoByCount",HomeHandler.GetCardInfoByCount) //获取指定数量的随机首页卡片
 	homeGroup.GET("/GetCardInfoByIndex",HomeHandler.GetCardInfoByIndx)  //通过下标范围获取首页卡片
 	homeGroup.GET("/GetCardInfoByType",HomeHandler.GetCardInfoByType)   //通过卡片类型和数量获取首页卡片
-
+	homeGroup.POST("/PostCardInfo",HomeHandler.PostCardInfo)
 	//需要验证的接口
 	AuthGroup := api.Group("/Auth")
 	AuthGroup.Use(JWTHandler.JWTMidWare())

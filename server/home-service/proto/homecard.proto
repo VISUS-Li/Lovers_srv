@@ -4,6 +4,7 @@ package lovers.srv.home;
 
 service home{
     rpc GetMainCard(GetMainCardReq) returns (GetMainCardResp){}
+    rpc PostCardInfo(PostCardInfoReq)returns (PostCardInfoResp){}
 }
 
 enum CARDTYPE{
@@ -53,4 +54,18 @@ message GetMainCardReq{
 message GetMainCardResp{
     CardRespStatus          RespStatus = 1;
     repeated HomeCardInfo   MainCardInfo   = 2;
+}
+
+message PostCardInfoReq{
+    CARDTYPE        CardType          = 1; //卡片类型，广告、咨询等
+    ADTYPE          AdType            = 2; //广告类型
+    INFOTYPE        InfoType          = 3; //咨询类型
+    string          ImgUrl            = 4; //图片路径
+    string          Title             = 5; //卡片标题
+    string          Content           = 6; //卡片内容
+    string          TypeDesc          = 7; //卡片类型说明
+}
+
+message PostCardInfoResp{
+    CardRespStatus  RespStatus = 1;
 }

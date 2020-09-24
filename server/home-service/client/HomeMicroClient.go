@@ -29,3 +29,8 @@ func (home *HomeMicroClient)Client_GetMainCard(ctx context.Context, req *proto.G
 	resp, err := home.client.GetMainCard(ctx,req)
 	return resp,err
 }
+
+func (home *HomeMicroClient)Client_PostCardInfo(ctx context.Context, req *proto.PostCardInfoReq)(* proto.PostCardInfoResp,error){
+	resp, err := home.client.PostCardInfo(ctx,req)
+	return resp, err
+}

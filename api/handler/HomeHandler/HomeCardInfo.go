@@ -4,8 +4,10 @@ import (
 	"Lovers_srv/config"
 	"Lovers_srv/helper/Utils"
 	"Lovers_srv/server/home-service/client"
+	proto "Lovers_srv/server/home-service/proto"
 	"github.com/gin-gonic/gin"
 	"strconv"
+	"time"
 )
 
 var home_client = client.NewHomeMicroClient()
@@ -35,4 +37,24 @@ func GetCardInfoByIndx(c *gin.Context){
 
 func GetCardInfoByType(c *gin.Context){
 
+}
+
+
+func PostCardInfo(c* gin.Context){
+	var cardInfo = &proto.PostCardInfoReq{}
+	cardType, _ := strconv.Atoi(c.PostForm("CardType"))
+	cardInfo.CardType = proto.CARDTYPE(cardType)
+
+	adType, _ := strconv.Atoi(c.PostForm("AdType"))
+	cardInfo.AdType = proto.ADTYPE(adType)
+
+	infoType, _ := strconv.Atoi(c.PostForm("InfoType"))
+	cardInfo.InfoType = proto.INFOTYPE(infoType)
+
+	cardInfo.ImgUrl = c.PostForm("ImgUrl")
+	cardInfo.Title = c.PostForm("Title")
+	cardInfo.Content = c.PostForm("Content")
+	cardInfo.TypeDesc = c.PostForm("TypeDesc")
+
+	home_client.Client_PostCardInfo(c, cardInfo)
 }
