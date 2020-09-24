@@ -8,5 +8,6 @@ type HomeCardInfo struct {
 	Title    string //卡片标题
 	Content	 string //卡片内容
 	TypeDesc string //卡片类型说明
-	CreateTime string //卡片创建时间
+	CreateTime uint64 //卡片创建时间
+	ShowIndex	int	//卡片显示排名，热度
 }

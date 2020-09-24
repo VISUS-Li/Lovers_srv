@@ -43,6 +43,7 @@ message HomeCardInfo{
     string          Content           = 6; //卡片内容
     string          TypeDesc          = 7; //卡片类型说明
     string          CreateTime        = 8; //卡片创建时间
+    string          ShowIndex         = 9; //卡片显示排名
 }
 
 

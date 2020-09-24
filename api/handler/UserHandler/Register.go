@@ -5,6 +5,7 @@ import (
 	"Lovers_srv/helper/Utils"
 	lovers_srv_user "Lovers_srv/server/user-service/proto"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 func Register(c *gin.Context){
@@ -21,19 +22,20 @@ func Register(c *gin.Context){
 	regParam.BindId = c.PostForm("BindId")
 	regParam.RecommendID = c.PostForm("RecommendID")
 	if len(regParam.UserName) <= 0 || len(regParam.PassWord) <= 0 {
-		Utils.CreateErrorWithMsg(c, "UserName or PassWord is empty!")
+		Utils.CreateErrorWithMsg(c, "UserName or PassWord is empty!",config.CODE_ERR_PARAM_EMPTY)
 	} else if !Utils.VerifyPhoneFormat(regParam.UserInfo.Phone){
-		Utils.CreateErrorWithMsg(c, "Phone Format is invalid!")
+		Utils.CreateErrorWithMsg(c, "Phone Format is invalid!",config.CODE_ERR_REG_PHONE_ERR)
 	}else{
 		regResp,err := user_clent.Client_Register(c,regParam)
 		if regResp == nil || regResp.RegisteredInfo == nil|| regResp.RegisteredInfo.LoginRes != config.MSG_DB_REG_OK {
 			if regResp != nil{
 				if regResp.RegisteredInfo != nil{
-					Utils.CreateErrorWithMsg(c,"register failed, error msg:" + regResp.RegisteredInfo.LoginRes)
+					code,_ := strconv.Atoi(regResp.RegisteredInfo.LoginCode)
+					Utils.CreateErrorWithMsg(c,"register failed, error msg:" + regResp.RegisteredInfo.LoginRes,code)
 					return
 				}
 			}
-			Utils.CreateErrorWithMsg(c,"register failed,server internal error, error msg:"+ err.Error())
+			Utils.CreateErrorWithMsg(c,"register failed,server internal error, error msg:"+ err.Error(),config.CODE_ERR_UNKNOW)
 		}else{
 			Utils.CreateSuccess(c,regResp)
 		}

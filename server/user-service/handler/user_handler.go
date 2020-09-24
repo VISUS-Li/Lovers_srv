@@ -60,7 +60,7 @@ Type:1
 ******/
 func (user* UserHandler)NameAndPwdLogin(userName string, password string, out *lovers_srv_user.LoginResp)(error){
 	if(len(userName) <= 0 || len(password) <= 0){
-		return user.loginFailResp(out, config.MSG_DB_LOGIN_IN_EMPTY,config.CODE_ERR_LOGIN_IN_EMPTY)
+		return user.loginFailResp(out, config.MSG_DB_LOGIN_IN_EMPTY,config.CODE_ERR_PARAM_EMPTY)
 	}
 
 	var logins []DB.LoginInfo
@@ -90,7 +90,7 @@ Type:1
 ******/
 func (user* UserHandler)PhoneAndPwdLogin(phone string, password string, out *lovers_srv_user.LoginResp)(error){
 	if(len(phone) <= 0 || len(password) <= 0){
-		return user.loginFailResp(out, config.MSG_DB_LOGIN_IN_EMPTY,config.CODE_ERR_LOGIN_IN_EMPTY)
+		return user.loginFailResp(out, config.MSG_DB_LOGIN_IN_EMPTY,config.CODE_ERR_PARAM_EMPTY)
 	}
 
 	var logins []DB.LoginInfo

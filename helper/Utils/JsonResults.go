@@ -25,7 +25,7 @@ func NewResult() *Result {
 func CreateSuccess(c *gin.Context, data interface{}){
 	json := NewResult()
 	json.Data = data
-	json.Msg = "请求成功"
+	json.Msg = config.MSG_REQUEST_SUCCESS
 	json.Code = config.CODE_ERR_SUCCESS
 
 	c.JSON(
@@ -90,7 +90,7 @@ func CreateSuccessByList(c *gin.Context, total interface{}, content interface{})
 		"total": total,
 		"content": content,
 	}
-	json.Msg = "请求成功"
+	json.Msg = config.MSG_REQUEST_SUCCESS
 	json.Code = config.CODE_ERR_SUCCESS
 
 	c.JSON(

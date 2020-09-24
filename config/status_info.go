@@ -7,7 +7,7 @@ package config
 const(
 	CODE_ERR_SUCCESS        = 1000
 	CODE_ERR_UNKNOW         = 50000
-	INVALID_PARAMS = 400
+	INVALID_PARAMS 			= 400
 )
 
 ////用户相关状态定义
@@ -20,19 +20,33 @@ const(
 	CODE_ERR_AUTH                     = 1004
 )
 
+const(
+	CODE_ERR_PARAM_EMPTY			 = 1005
+	CODE_ERR_SERVER_INTERNAL		 = 1011 //服务器内部错误
+)
 //用户登录相关
 const(
-	CODE_ERR_LOGIN_IN_EMPTY 		  = 1005
-	CODE_ERR_LOGIN_QUERY			  = 1006
-	CODE_ERR_LOGIN_NO_USER			  = 1007
-	CODE_ERR_LOGIN_PWD_ERROR   		  = 1008
-	CODE_ERR_LOGIN_TOKEN_ERROR	 	  = 1009
-	CODE_ERR_REG_PHONE_ERR			  = 1010
+	CODE_ERR_LOGIN_QUERY       = 1006
+	CODE_ERR_LOGIN_NO_USER     = 1007
+	CODE_ERR_LOGIN_PWD_ERROR   = 1008
+	CODE_ERR_LOGIN_TOKEN_ERROR = 1009
+	CODE_ERR_REG_PHONE_ERR     = 1010
+)
+
+//主页相关
+const(
+	CODE_ERR_HOME_NOT_ENOUGH_CARD = 1011
 )
 
 /******
 状态信息定义（信息文字内容）
 ******/
+
+//通用
+const(
+	MSG_REQUEST_SUCCESS = "请求成功"
+	MSG_SERVER_INTERNAL = "服务器内部错误"
+)
 
 //用户相关
 const(
@@ -53,7 +67,9 @@ const(
 	MSG_DB_REG_PARAM_nil = "传入参数为空"
 )
 
-
+const(
+	MSG_HOME_NOT_ENOUGH_CARD = "没有足够的主页卡片"
+)
 
 const(
 	NOTELISTUP_INVALID_PARAM = "事件清单参数错误"

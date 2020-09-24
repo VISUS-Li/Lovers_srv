@@ -1,14 +1,14 @@
 package config
 
 import (
-	//"Lovers_srv/helper/Utils"
-	//"encoding/json"
-	//"github.com/sirupsen/logrus"
-	//"os"
-	"Lovers_srv/helper/Utils"
 	"encoding/json"
+	"errors"
 	"github.com/sirupsen/logrus"
 	"os"
+	"os/exec"
+	"path/filepath"
+	"runtime"
+	"strings"
 )
 
 var GlobalConfig Config
@@ -73,7 +73,7 @@ func getDefaultConfig(){
 }
 
 func getJsonConfig()(Config, error){
-	configPath := Utils.GetExeDstFileName("config.json")
+	configPath := GetExeDstFileName("config.json")
 	file, err := os.Open(configPath)
 	if err != nil {
 		logrus.Error("open Config File fail:"+err.Error())
@@ -88,6 +88,39 @@ func getJsonConfig()(Config, error){
 		return Config{}, err
 	}
 	return conf, nil;
+}
+
+func GetCurrentExecPath()(string,error){
+	file,err := exec.LookPath(os.Args[0])
+	if err != nil{
+		return "", err
+	}
+	path, err := filepath.Abs(file)
+	if err != nil{
+		return "", err
+	}
+	if runtime.GOOS !="windows"{
+		path = strings.Replace(path, "\\", "/", -1)
+	}
+
+	i := strings.LastIndex(path, "/")
+	if i < 0{
+		return "", errors.New(`Can't find "/" or  "\".`)
+	}
+
+	return string(path[0:i+1]), nil
+}
+
+/******
+传入文件名，得到exe目录下该文件名的全路径
+******/
+func GetExeDstFileName(dstName string)(string){
+	exePath,_ := GetCurrentExecPath()
+	path := exePath + "\\" + dstName
+	if runtime.GOOS !="windows"{
+		path = strings.Replace(path, "\\", "/", -1)
+	}
+	return path
 }
 
 
