@@ -6,8 +6,8 @@ import (
 	"Lovers_srv/server/home-service/client"
 	proto "Lovers_srv/server/home-service/proto"
 	"github.com/gin-gonic/gin"
+	uuid "github.com/satori/go.uuid"
 	"strconv"
-	"time"
 )
 
 var home_client = client.NewHomeMicroClient()
@@ -43,18 +43,31 @@ func GetCardInfoByType(c *gin.Context){
 func PostCardInfo(c* gin.Context){
 	var cardInfo = &proto.PostCardInfoReq{}
 	cardType, _ := strconv.Atoi(c.PostForm("CardType"))
-	cardInfo.CardType = proto.CARDTYPE(cardType)
+	cardInfo.PostCardInfo.CardType = proto.CARDTYPE(cardType)
 
 	adType, _ := strconv.Atoi(c.PostForm("AdType"))
-	cardInfo.AdType = proto.ADTYPE(adType)
+	cardInfo.PostCardInfo.AdType = proto.ADTYPE(adType)
 
 	infoType, _ := strconv.Atoi(c.PostForm("InfoType"))
-	cardInfo.InfoType = proto.INFOTYPE(infoType)
+	cardInfo.PostCardInfo.InfoType = proto.INFOTYPE(infoType)
 
-	cardInfo.ImgUrl = c.PostForm("ImgUrl")
-	cardInfo.Title = c.PostForm("Title")
-	cardInfo.Content = c.PostForm("Content")
-	cardInfo.TypeDesc = c.PostForm("TypeDesc")
+	cardInfo.PostCardInfo.Title = c.PostForm("Title")
+	cardInfo.PostCardInfo.Content = c.PostForm("Content")
+	cardInfo.PostCardInfo.TypeDesc = c.PostForm("TypeDesc")
+
+	showIndex, _ := strconv.Atoi(c.PostForm("ShowIndex"))
+	cardInfo.PostCardInfo.ShowIndex = int32(showIndex)
+	isMainCard,_ := strconv.Atoi(c.PostForm("IsMainCard"))
+	if isMainCard != 0{
+		cardInfo.PostCardInfo.IsMainCard = true
+	}else{
+		cardInfo.PostCardInfo.IsMainCard = false
+	}
+
+	cardInfo.PostCardInfo.UpLoadUserId = c.PostForm("UpLoadUserId")
+
+	cardInfo.PostCardInfo.CardId = uuid.NewV1().String()
+
 
 	home_client.Client_PostCardInfo(c, cardInfo)
 }
