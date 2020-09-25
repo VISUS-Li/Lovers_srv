@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.25.0
 // 	protoc        v3.12.4
-// source: noteList.proto
+// source: notelist.proto
 
 package lovers_srv_noteList
 
@@ -45,7 +45,7 @@ type NoteListUpReq struct {
 func (x *NoteListUpReq) Reset() {
 	*x = NoteListUpReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_noteList_proto_msgTypes[0]
+		mi := &file_notelist_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -58,7 +58,7 @@ func (x *NoteListUpReq) String() string {
 func (*NoteListUpReq) ProtoMessage() {}
 
 func (x *NoteListUpReq) ProtoReflect() protoreflect.Message {
-	mi := &file_noteList_proto_msgTypes[0]
+	mi := &file_notelist_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -71,7 +71,7 @@ func (x *NoteListUpReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NoteListUpReq.ProtoReflect.Descriptor instead.
 func (*NoteListUpReq) Descriptor() ([]byte, []int) {
-	return file_noteList_proto_rawDescGZIP(), []int{0}
+	return file_notelist_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *NoteListUpReq) GetUserID() string {
@@ -157,7 +157,7 @@ type NoteListUpResp struct {
 func (x *NoteListUpResp) Reset() {
 	*x = NoteListUpResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_noteList_proto_msgTypes[1]
+		mi := &file_notelist_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -170,7 +170,7 @@ func (x *NoteListUpResp) String() string {
 func (*NoteListUpResp) ProtoMessage() {}
 
 func (x *NoteListUpResp) ProtoReflect() protoreflect.Message {
-	mi := &file_noteList_proto_msgTypes[1]
+	mi := &file_notelist_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -183,7 +183,7 @@ func (x *NoteListUpResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NoteListUpResp.ProtoReflect.Descriptor instead.
 func (*NoteListUpResp) Descriptor() ([]byte, []int) {
-	return file_noteList_proto_rawDescGZIP(), []int{1}
+	return file_notelist_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *NoteListUpResp) GetUserID() string {
@@ -222,7 +222,7 @@ type NoteListDownReq struct {
 func (x *NoteListDownReq) Reset() {
 	*x = NoteListDownReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_noteList_proto_msgTypes[2]
+		mi := &file_notelist_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -235,7 +235,7 @@ func (x *NoteListDownReq) String() string {
 func (*NoteListDownReq) ProtoMessage() {}
 
 func (x *NoteListDownReq) ProtoReflect() protoreflect.Message {
-	mi := &file_noteList_proto_msgTypes[2]
+	mi := &file_notelist_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -248,7 +248,7 @@ func (x *NoteListDownReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NoteListDownReq.ProtoReflect.Descriptor instead.
 func (*NoteListDownReq) Descriptor() ([]byte, []int) {
-	return file_noteList_proto_rawDescGZIP(), []int{2}
+	return file_notelist_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *NoteListDownReq) GetUserID() string {
@@ -305,7 +305,7 @@ type AllNoteList struct {
 func (x *AllNoteList) Reset() {
 	*x = AllNoteList{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_noteList_proto_msgTypes[3]
+		mi := &file_notelist_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -318,7 +318,7 @@ func (x *AllNoteList) String() string {
 func (*AllNoteList) ProtoMessage() {}
 
 func (x *AllNoteList) ProtoReflect() protoreflect.Message {
-	mi := &file_noteList_proto_msgTypes[3]
+	mi := &file_notelist_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -331,7 +331,7 @@ func (x *AllNoteList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AllNoteList.ProtoReflect.Descriptor instead.
 func (*AllNoteList) Descriptor() ([]byte, []int) {
-	return file_noteList_proto_rawDescGZIP(), []int{3}
+	return file_notelist_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *AllNoteList) GetUserID() string {
@@ -409,7 +409,7 @@ type NoteListDownResp struct {
 func (x *NoteListDownResp) Reset() {
 	*x = NoteListDownResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_noteList_proto_msgTypes[4]
+		mi := &file_notelist_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -422,7 +422,7 @@ func (x *NoteListDownResp) String() string {
 func (*NoteListDownResp) ProtoMessage() {}
 
 func (x *NoteListDownResp) ProtoReflect() protoreflect.Message {
-	mi := &file_noteList_proto_msgTypes[4]
+	mi := &file_notelist_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -435,7 +435,7 @@ func (x *NoteListDownResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NoteListDownResp.ProtoReflect.Descriptor instead.
 func (*NoteListDownResp) Descriptor() ([]byte, []int) {
-	return file_noteList_proto_rawDescGZIP(), []int{4}
+	return file_notelist_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *NoteListDownResp) GetUserID() string {
@@ -464,7 +464,7 @@ type NoteListDelReq struct {
 func (x *NoteListDelReq) Reset() {
 	*x = NoteListDelReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_noteList_proto_msgTypes[5]
+		mi := &file_notelist_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -477,7 +477,7 @@ func (x *NoteListDelReq) String() string {
 func (*NoteListDelReq) ProtoMessage() {}
 
 func (x *NoteListDelReq) ProtoReflect() protoreflect.Message {
-	mi := &file_noteList_proto_msgTypes[5]
+	mi := &file_notelist_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -490,7 +490,7 @@ func (x *NoteListDelReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NoteListDelReq.ProtoReflect.Descriptor instead.
 func (*NoteListDelReq) Descriptor() ([]byte, []int) {
-	return file_noteList_proto_rawDescGZIP(), []int{5}
+	return file_notelist_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *NoteListDelReq) GetUserID() string {
@@ -519,7 +519,7 @@ type NoteListDelResp struct {
 func (x *NoteListDelResp) Reset() {
 	*x = NoteListDelResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_noteList_proto_msgTypes[6]
+		mi := &file_notelist_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -532,7 +532,7 @@ func (x *NoteListDelResp) String() string {
 func (*NoteListDelResp) ProtoMessage() {}
 
 func (x *NoteListDelResp) ProtoReflect() protoreflect.Message {
-	mi := &file_noteList_proto_msgTypes[6]
+	mi := &file_notelist_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -545,7 +545,7 @@ func (x *NoteListDelResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NoteListDelResp.ProtoReflect.Descriptor instead.
 func (*NoteListDelResp) Descriptor() ([]byte, []int) {
-	return file_noteList_proto_rawDescGZIP(), []int{6}
+	return file_notelist_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *NoteListDelResp) GetNoteListDelRet() string {
@@ -562,10 +562,10 @@ func (x *NoteListDelResp) GetErr() string {
 	return ""
 }
 
-var File_noteList_proto protoreflect.FileDescriptor
+var File_notelist_proto protoreflect.FileDescriptor
 
-var file_noteList_proto_rawDesc = []byte{
-	0x0a, 0x0e, 0x6e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+var file_notelist_proto_rawDesc = []byte{
+	0x0a, 0x0e, 0x6e, 0x6f, 0x74, 0x65, 0x6c, 0x69, 0x73, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x12, 0x13, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x73, 0x2e, 0x73, 0x72, 0x76, 0x2e, 0x6e, 0x6f, 0x74,
 	0x65, 0x4c, 0x69, 0x73, 0x74, 0x22, 0xdd, 0x02, 0x0a, 0x0d, 0x4e, 0x6f, 0x74, 0x65, 0x4c, 0x69,
 	0x73, 0x74, 0x55, 0x70, 0x52, 0x65, 0x71, 0x12, 0x16, 0x0a, 0x06, 0x55, 0x73, 0x65, 0x72, 0x49,
@@ -653,38 +653,32 @@ var file_noteList_proto_rawDesc = []byte{
 	0x73, 0x70, 0x22, 0x00, 0x12, 0x5d, 0x0a, 0x0c, 0x4e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74,
 	0x44, 0x6f, 0x77, 0x6e, 0x12, 0x24, 0x2e, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x73, 0x2e, 0x73, 0x72,
 	0x76, 0x2e, 0x6e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x2e, 0x4e, 0x6f, 0x74, 0x65, 0x4c,
-	0x69, 0x73, 0x74, 0x55, 0x70, 0x52, 0x65, 0x71, 0x1a, 0x23, 0x2e, 0x6c, 0x6f, 0x76, 0x65, 0x72,
-	0x73, 0x2e, 0x73, 0x72, 0x76, 0x2e, 0x6e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x2e, 0x4e,
-	0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x55, 0x70, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x12,
-	0x5d, 0x0a, 0x0c, 0x4e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x44, 0x6f, 0x77, 0x6e, 0x12,
-	0x24, 0x2e, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x73, 0x2e, 0x73, 0x72, 0x76, 0x2e, 0x6e, 0x6f, 0x74,
-	0x65, 0x4c, 0x69, 0x73, 0x74, 0x2e, 0x4e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x44, 0x6f,
-	0x77, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x25, 0x2e, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x73, 0x2e, 0x73,
-	0x72, 0x76, 0x2e, 0x6e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x2e, 0x4e, 0x6f, 0x74, 0x65,
-	0x4c, 0x69, 0x73, 0x74, 0x44, 0x6f, 0x77, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x12, 0x5a,
-	0x0a, 0x0b, 0x4e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x44, 0x65, 0x6c, 0x12, 0x23, 0x2e,
-	0x6c, 0x6f, 0x76, 0x65, 0x72, 0x73, 0x2e, 0x73, 0x72, 0x76, 0x2e, 0x6e, 0x6f, 0x74, 0x65, 0x4c,
-	0x69, 0x73, 0x74, 0x2e, 0x4e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x44, 0x65, 0x6c, 0x52,
-	0x65, 0x71, 0x1a, 0x24, 0x2e, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x73, 0x2e, 0x73, 0x72, 0x76, 0x2e,
+	0x69, 0x73, 0x74, 0x44, 0x6f, 0x77, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x25, 0x2e, 0x6c, 0x6f, 0x76,
+	0x65, 0x72, 0x73, 0x2e, 0x73, 0x72, 0x76, 0x2e, 0x6e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74,
+	0x2e, 0x4e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x44, 0x6f, 0x77, 0x6e, 0x52, 0x65, 0x73,
+	0x70, 0x22, 0x00, 0x12, 0x5a, 0x0a, 0x0b, 0x4e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x44,
+	0x65, 0x6c, 0x12, 0x23, 0x2e, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x73, 0x2e, 0x73, 0x72, 0x76, 0x2e,
 	0x6e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x2e, 0x4e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73,
-	0x74, 0x44, 0x65, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+	0x74, 0x44, 0x65, 0x6c, 0x52, 0x65, 0x71, 0x1a, 0x24, 0x2e, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x73,
+	0x2e, 0x73, 0x72, 0x76, 0x2e, 0x6e, 0x6f, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x2e, 0x4e, 0x6f,
+	0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x44, 0x65, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_noteList_proto_rawDescOnce sync.Once
-	file_noteList_proto_rawDescData = file_noteList_proto_rawDesc
+	file_notelist_proto_rawDescOnce sync.Once
+	file_notelist_proto_rawDescData = file_notelist_proto_rawDesc
 )
 
-func file_noteList_proto_rawDescGZIP() []byte {
-	file_noteList_proto_rawDescOnce.Do(func() {
-		file_noteList_proto_rawDescData = protoimpl.X.CompressGZIP(file_noteList_proto_rawDescData)
+func file_notelist_proto_rawDescGZIP() []byte {
+	file_notelist_proto_rawDescOnce.Do(func() {
+		file_notelist_proto_rawDescData = protoimpl.X.CompressGZIP(file_notelist_proto_rawDescData)
 	})
-	return file_noteList_proto_rawDescData
+	return file_notelist_proto_rawDescData
 }
 
-var file_noteList_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
-var file_noteList_proto_goTypes = []interface{}{
+var file_notelist_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_notelist_proto_goTypes = []interface{}{
 	(*NoteListUpReq)(nil),    // 0: lovers.srv.noteList.NoteListUpReq
 	(*NoteListUpResp)(nil),   // 1: lovers.srv.noteList.NoteListUpResp
 	(*NoteListDownReq)(nil),  // 2: lovers.srv.noteList.NoteListDownReq
@@ -693,7 +687,7 @@ var file_noteList_proto_goTypes = []interface{}{
 	(*NoteListDelReq)(nil),   // 5: lovers.srv.noteList.NoteListDelReq
 	(*NoteListDelResp)(nil),  // 6: lovers.srv.noteList.NoteListDelResp
 }
-var file_noteList_proto_depIdxs = []int32{
+var file_notelist_proto_depIdxs = []int32{
 	3, // 0: lovers.srv.noteList.NoteListDownResp.NoteList:type_name -> lovers.srv.noteList.allNoteList
 	0, // 1: lovers.srv.noteList.NoteList.NoteListUp:input_type -> lovers.srv.noteList.NoteListUpReq
 	2, // 2: lovers.srv.noteList.NoteList.NoteListDown:input_type -> lovers.srv.noteList.NoteListDownReq
@@ -708,13 +702,13 @@ var file_noteList_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_noteList_proto_init() }
-func file_noteList_proto_init() {
-	if File_noteList_proto != nil {
+func init() { file_notelist_proto_init() }
+func file_notelist_proto_init() {
+	if File_notelist_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_noteList_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_notelist_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*NoteListUpReq); i {
 			case 0:
 				return &v.state
@@ -726,7 +720,7 @@ func file_noteList_proto_init() {
 				return nil
 			}
 		}
-		file_noteList_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_notelist_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*NoteListUpResp); i {
 			case 0:
 				return &v.state
@@ -738,7 +732,7 @@ func file_noteList_proto_init() {
 				return nil
 			}
 		}
-		file_noteList_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_notelist_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*NoteListDownReq); i {
 			case 0:
 				return &v.state
@@ -750,7 +744,7 @@ func file_noteList_proto_init() {
 				return nil
 			}
 		}
-		file_noteList_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_notelist_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AllNoteList); i {
 			case 0:
 				return &v.state
@@ -762,7 +756,7 @@ func file_noteList_proto_init() {
 				return nil
 			}
 		}
-		file_noteList_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_notelist_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*NoteListDownResp); i {
 			case 0:
 				return &v.state
@@ -774,7 +768,7 @@ func file_noteList_proto_init() {
 				return nil
 			}
 		}
-		file_noteList_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_notelist_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*NoteListDelReq); i {
 			case 0:
 				return &v.state
@@ -786,7 +780,7 @@ func file_noteList_proto_init() {
 				return nil
 			}
 		}
-		file_noteList_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_notelist_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*NoteListDelResp); i {
 			case 0:
 				return &v.state
@@ -803,18 +797,18 @@ func file_noteList_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_noteList_proto_rawDesc,
+			RawDescriptor: file_notelist_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_noteList_proto_goTypes,
-		DependencyIndexes: file_noteList_proto_depIdxs,
-		MessageInfos:      file_noteList_proto_msgTypes,
+		GoTypes:           file_notelist_proto_goTypes,
+		DependencyIndexes: file_notelist_proto_depIdxs,
+		MessageInfos:      file_notelist_proto_msgTypes,
 	}.Build()
-	File_noteList_proto = out.File
-	file_noteList_proto_rawDesc = nil
-	file_noteList_proto_goTypes = nil
-	file_noteList_proto_depIdxs = nil
+	File_notelist_proto = out.File
+	file_notelist_proto_rawDesc = nil
+	file_notelist_proto_goTypes = nil
+	file_notelist_proto_depIdxs = nil
 }
