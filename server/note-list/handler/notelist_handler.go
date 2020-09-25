@@ -76,6 +76,7 @@ func (notelist* NoteListHandler) NoteListUp(ctx context.Context, in *lovers_srv_
 		}
 	}
 	return nil
+
 }
 
 //下载事件清单
@@ -197,6 +198,7 @@ func (notelist *NoteListHandler) uPFailResp(out *lovers_srv_notelist.NoteListUpR
 
 	out.BackImage = ""
 }
+
 
 
 

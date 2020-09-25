@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"Lovers_srv/api/handler/JWTHandler"
 	"Lovers_srv/config"
 	"Lovers_srv/helper/DB"
 	"Lovers_srv/helper/Utils"
@@ -20,68 +21,126 @@ type UserHandler struct {
 }
 
 
-func (user* UserHandler) Login(ctx context.Context, in *lovers_srv_user.LoginReq, out *lovers_srv_user.LoginResp) error{
+func (user* UserHandler) Login(ctx context.Context, in *lovers_srv_user.LoginReq, out *lovers_srv_user.LoginResp) error {
+	loginType, _ := strconv.Atoi(in.Type)
 
-	if(len(in.UserName) <= 0 || len(in.PassWord) <= 0){
-		user.loginFailResp(out, config.DB_LOGIN_IN_EMPTY)
-		return errors.New("用户名或密码为空")
-	}
-	var logins []DB.LoginInfo
-	err := user.DB.Where("user_name = ?",in.UserName).Find(&logins).Error
-	if err != nil{
-		logrus.Error("Table LoginInfo find user_name error:"+err.Error())
-	}
-	if len(logins) > 1{
-		user.loginFailResp(out, config.DB_LOGIN_NO_UNIQUE_IN_DB)
-		err := errors.New("user: " + in.UserName + "is not unique in database")
-		logrus.Error(err.Error())
-		return err
-	}
-	if len(logins) <= 0{
-		//尝试查电话号码
-		err := user.DB.Where("Phone = ?",in.UserName).Find(&logins).Error
+	if loginType == config.ENUM_LOGIN_VERCODE {
+		err := user.PhoneAndPwdLogin(in.Phone, in.PassWord, out)
 		if err != nil {
-			logrus.Error("Table LoginInfo find Phone error:"+err.Error())
-		}
-		if len(logins) > 1{
-			user.loginFailResp(out, config.DB_LOGIN_NO_UNIQUE_IN_DB)
-			err := errors.New("user: " + in.UserName + "is not unique in database")
-			logrus.Error(err.Error())
 			return err
 		}
-		if len(logins) <= 0 {
-			user.loginFailResp(out, config.DB_LOGIN_NO_USER)
-			return errors.New("该用户未注册")
+	}else{
+		//默认采用用户名密码登录
+		err := user.NameAndPwdLogin(in.UserName, in.PassWord, out)
+		if err != nil {
+			if Utils.VerifyPhoneFormat(in.UserName){
+				//如果用户名为电话号码，通过电话号码登录
+				err = user.PhoneAndPwdLogin(in.UserName, in.PassWord, out)
+				return err
+			}else{
+				if Utils.VerifyPhoneFormat(in.Phone){
+					err = user.PhoneAndPwdLogin(in.Phone, in.PassWord, out)
+					if err != nil {
+						return err
+					}
+				}else{
+					return user.loginFailResp(out, config.MSG_DB_REG_PHONE_ERR,config.CODE_ERR_REG_PHONE_ERR)
+				}
+			}
 		}
 	}
 
-	if logins[0].PassWord != in.PassWord{
-		user.loginFailResp(out, config.DB_LOGIN_PWD_ERROR)
-		return errors.New("密码错误")
-	}
-	return user.loginSuccessResp(out,logins[0].UserId)
+return nil
+
 }
 
-func (user* UserHandler)loginDBQueryRes_Handle(res interface{}) (){}
+/******
+Type:1
+通过用户名密码登录
+******/
+func (user* UserHandler)NameAndPwdLogin(userName string, password string, out *lovers_srv_user.LoginResp)(error){
+	if(len(userName) <= 0 || len(password) <= 0){
+		return user.loginFailResp(out, config.MSG_DB_LOGIN_IN_EMPTY,config.CODE_ERR_PARAM_EMPTY)
+	}
 
-func (user* UserHandler)loginFailResp(out *lovers_srv_user.LoginResp, res string){
+	var logins []DB.LoginInfo
+	err := user.DB.Where("user_name = ?",userName).Find(&logins).Error
+	if err != nil{
+		logrus.Error("query table user_name failed: " + err.Error())
+		return user.loginFailResp(out,config.MSG_DB_LOGIN_QUERY_ERR,config.CODE_ERR_LOGIN_QUERY)
+	}
+	if len(logins) > 1{
+		//该用户名不唯一，逻辑有问题
+	}
+
+	if len(logins) <= 0{
+		return user.loginFailResp(out,config.MSG_DB_LOGIN_NO_USER,config.CODE_ERR_LOGIN_NO_USER)
+	}
+
+	if logins[0].PassWord != password{
+		return user.loginFailResp(out,config.MSG_DB_LOGIN_PWD_ERROR,config.CODE_ERR_LOGIN_PWD_ERROR)
+	}
+
+	return user.loginSuccessResp(out,logins[0].UserId,userName,password)
+}
+
+/******
+Type:1
+通过电话号码密码登录
+******/
+func (user* UserHandler)PhoneAndPwdLogin(phone string, password string, out *lovers_srv_user.LoginResp)(error){
+	if(len(phone) <= 0 || len(password) <= 0){
+		return user.loginFailResp(out, config.MSG_DB_LOGIN_IN_EMPTY,config.CODE_ERR_PARAM_EMPTY)
+	}
+
+	var logins []DB.LoginInfo
+	err := user.DB.Where("Phone = ?", phone).Find(&logins).Error
+	if err != nil{
+		logrus.Error("query table Phone failed: " + err.Error())
+		return user.loginFailResp(out,config.MSG_DB_LOGIN_QUERY_ERR,config.CODE_ERR_LOGIN_QUERY)
+	}
+	if len(logins) > 1{
+		//该用户名不唯一，逻辑有问题
+	}
+
+	if len(logins) <= 0{
+		return user.loginFailResp(out,config.MSG_DB_LOGIN_NO_USER,config.CODE_ERR_LOGIN_NO_USER)
+	}
+
+	if logins[0].PassWord != password{
+		return user.loginFailResp(out,config.MSG_DB_LOGIN_PWD_ERROR,config.CODE_ERR_LOGIN_PWD_ERROR)
+	}
+
+	return user.loginSuccessResp(out,logins[0].UserId,phone,password)
+}
+
+
+func (user* UserHandler)loginFailResp(out *lovers_srv_user.LoginResp, res string, code int)(error){
 	out.Token = ""
-	out.LoginTime = string(time.Now().Unix())
+	out.LoginTime = strconv.FormatInt(time.Now().Unix(),10)
 	out.UserInfo = nil
 	out.LoginRes = res
+	out.LoginCode = strconv.Itoa(code)
+	return errors.New(res)
 }
 
 //创建登录成功信息，在其中查询用户信息
-func (user* UserHandler)loginSuccessResp(out *lovers_srv_user.LoginResp,userId string)(error){
+func (user* UserHandler)loginSuccessResp(out *lovers_srv_user.LoginResp,userId string, username string, password string)(error){
+	//通过用户ID，查询用户信息
 	baseInfo := []DB.UserBaseInfo{}
 	user.DB.Where("user_id = ?",userId).Find(&baseInfo)
 	if len(baseInfo) <= 0{
-		user.loginFailResp(out, config.DB_LOGIN_NO_USER)
-		return errors.New("该用户未注册")
+		return user.loginFailResp(out, config.MSG_DB_LOGIN_NO_USER,config.CODE_ERR_LOGIN_NO_USER)
 	}
-	out.LoginRes = config.DB_LOGIN_OK
-	out.LoginTime = string(time.Now().Unix())
-	out.Token = ""
+
+	token,err := JWTHandler.GenerateToken(username, password)
+	if err != nil{
+		return user.loginFailResp(out, config.MSG_DB_LOGIN_TOKEN_ERROR, config.CODE_ERR_LOGIN_TOKEN_ERROR)
+	}
+	out.Token = token
+	out.LoginRes = config.MSG_DB_LOGIN_OK
+	out.LoginCode = strconv.Itoa(config.CODE_ERR_SUCCESS)
+	out.LoginTime = strconv.FormatInt(time.Now().Unix(),10)
 	out.UserInfo = user.DBBaseInfoToRespBaseInfo(baseInfo[0])
 	return nil
 }
@@ -108,27 +167,27 @@ func (user* UserHandler)Logout(ctx context.Context, in *lovers_srv_user.LogoutRe
 func (user* UserHandler)RegisterUser(ctx context.Context, in *lovers_srv_user.RegisterReq, out *lovers_srv_user.RegisterResp) error{
 	out.RegisteredInfo = &lovers_srv_user.LoginResp{}
 	if in == nil{
-		out.RegisteredInfo.LoginRes = config.DB_REG_PARAM_nil
+		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_PARAM_nil
 		return  errors.New("in param is nil")
 	}
 	if in.UserInfo == nil{
-		out.RegisteredInfo.LoginRes = config.DB_REG_PARAM_nil
+		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_PARAM_nil
 		return  errors.New("registeredInfo param is nil")
 	}
 	if len(in.UserName) <= 0 || len(in.PassWord) <= 0{
-		out.RegisteredInfo.LoginRes = config.DB_REG_IN_EMPTY
+		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_IN_EMPTY
 		return  errors.New("UserName or PassWord is empty")
 	}
 	isphone := Utils.VerifyPhoneFormat(in.UserInfo.Phone)
 	if !isphone{
-		out.RegisteredInfo.LoginRes = config.DB_REG_PHONE_ERR
+		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_PHONE_ERR
 		return errors.New("invalid phone number")
 	}
 
 	var dupliPhone []DB.UserBaseInfo
 	user.DB.Where("Phone = ?",in.UserInfo.Phone).Find(&dupliPhone)
 	if len(dupliPhone) > 0{
-		out.RegisteredInfo.LoginRes = config.DB_REG_EXIST
+		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_EXIST
 		return errors.New("phone number is exists")
 	}
 	//创建UUID
@@ -175,22 +234,22 @@ func (user* UserHandler)RegisterUser(ctx context.Context, in *lovers_srv_user.Re
 	err := user.DB.Create(&regLoginInf).Error
 
 	if err != nil{
-		out.RegisteredInfo.LoginRes = config.DB_REG_REG_ERR
+		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_REG_ERR
 		err := errors.New("insert login info to db failed,err:" + err.Error())
 		logrus.Error(err.Error())
 		return err
 	}
 	err = user.DB.Create(&regBaseInfo).Error
 	if err != nil{
-		out.RegisteredInfo.LoginRes = config.DB_REG_REG_ERR
+		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_REG_ERR
 		err := errors.New("insert UserBaseInfo to db failed,err:" + err.Error())
 		logrus.Error(err.Error())
 		return err
 	}
 
 	out.RegisteredInfo.UserInfo = user.DBBaseInfoToRespBaseInfo(regBaseInfo)
-	out.RegisteredInfo.LoginRes = config.DB_REG_OK
-	out.RegisteredInfo.LoginTime = string(time.Now().Unix())
+	out.RegisteredInfo.LoginRes = config.MSG_DB_REG_OK
+	out.RegisteredInfo.LoginTime = strconv.FormatInt(time.Now().Unix(),10)
 	out.RegisteredInfo.Token = ""
 
 	return nil

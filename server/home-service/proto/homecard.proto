@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package lovers.srv.home;
+
+service home{
+    rpc GetMainCard(GetMainCardReq) returns (GetMainCardResp){}
+    rpc PostCardInfo(PostCardInfoReq)returns (PostCardInfoResp){}
+}
+
+enum CARDTYPE{
+    AD          = 0;
+    Info        = 1;
+}
+
+enum ADTYPE{
+    HOTEL       = 0;
+    FOOD        = 1;
+}
+
+enum INFOTYPE{
+    NEWS        = 0;
+}
+
+/*获取主页卡片参数*/
+
+/*获取首页卡片状态*/
+message CardRespStatus{
+    string GetCardRes  = 1; //获取卡片状态，成功或失败原因
+    string GetCardCode = 2; //获取卡片状态码
+}
+
+/*首页卡片的基本信息*/
+message HomeCardInfo{
+    CARDTYPE        CardType          = 1; //卡片类型，广告、咨询等
+    ADTYPE          AdType            = 2; //广告类型
+    INFOTYPE        InfoType          = 3; //资讯类型
+    string          Title             = 4; //卡片标题
+    string          Content           = 5; //卡片内容
+    string          TypeDesc          = 6; //卡片类型说明
+    int64           CreateTime        = 7; //卡片创建时间
+    int32           ShowIndex         = 8; //卡片显示排名
+    bool            IsMainCard        = 9; //卡片是否为主卡片
+    string          UpLoadUserId      = 10; //上传用户ID
+    string          CardId            = 11; //该卡片的ID
+}
+
+
+message GetMainCardReq{
+}
+message GetMainCardResp{
+    CardRespStatus          RespStatus = 1;
+    repeated HomeCardInfo   MainCardInfo   = 2;
+}
+
+message GetCardByCountReq{
+     int64   StartTime       = 1;
+     int64   EndTime         = 2;
+     int32   CardCount       = 3;
+}
+
+message GetCardByCountResp{
+    repeated HomeCardInfo   CardList = 1;
+}
+
+message PostCardInfoReq{
+   HomeCardInfo PostCardInfo = 1;
+}
+
+message PostCardInfoResp{
+    CardRespStatus  RespStatus = 1;
+}

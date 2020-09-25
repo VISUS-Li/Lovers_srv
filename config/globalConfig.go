@@ -1,10 +1,14 @@
 package config
 
 import (
-	"Lovers_srv/helper/Utils"
 	"encoding/json"
+	"errors"
 	"github.com/sirupsen/logrus"
 	"os"
+	"os/exec"
+	"path/filepath"
+	"runtime"
+	"strings"
 )
 
 var GlobalConfig Config
@@ -20,6 +24,8 @@ const (
 
 const(
 	JWT_IDKEY = "lovers"
+	JWT_EXPIRETIME  = 3
+	JWT_SECRET 		= "liningtao"
 )
 
 type Config struct{
@@ -32,7 +38,9 @@ type Config struct{
 	DB_password string;
 
 	//jwt
-	JwtIDKey string
+	JwtIDKey string;
+	ExpireTime int; // token过期时间，单位小时
+	JwtSecret string;
 }
 
 func Init(){
@@ -56,10 +64,16 @@ func getDefaultConfig(){
 	if(GlobalConfig.JwtIDKey == ""){
 		GlobalConfig.JwtIDKey = JWT_IDKEY;
 	}
+	if(GlobalConfig.ExpireTime <= 0){
+		GlobalConfig.ExpireTime = JWT_EXPIRETIME;
+	}
+	if(GlobalConfig.JwtSecret == ""){
+		GlobalConfig.JwtSecret = JWT_SECRET;
+	}
 }
 
 func getJsonConfig()(Config, error){
-	configPath := Utils.GetExeDstFileName("config.json")
+	configPath := GetExeDstFileName("config.json")
 	file, err := os.Open(configPath)
 	if err != nil {
 		logrus.Error("open Config File fail:"+err.Error())
@@ -75,4 +89,39 @@ func getJsonConfig()(Config, error){
 	}
 	return conf, nil;
 }
+
+func GetCurrentExecPath()(string,error){
+	file,err := exec.LookPath(os.Args[0])
+	if err != nil{
+		return "", err
+	}
+	path, err := filepath.Abs(file)
+	if err != nil{
+		return "", err
+	}
+	if runtime.GOOS !="windows"{
+		path = strings.Replace(path, "\\", "/", -1)
+	}
+
+	i := strings.LastIndex(path, "/")
+	if i < 0{
+		return "", errors.New(`Can't find "/" or  "\".`)
+	}
+
+	return string(path[0:i+1]), nil
+}
+
+/******
+传入文件名，得到exe目录下该文件名的全路径
+******/
+func GetExeDstFileName(dstName string)(string){
+	exePath,_ := GetCurrentExecPath()
+	path := exePath + "\\" + dstName
+	if runtime.GOOS !="windows"{
+		path = strings.Replace(path, "\\", "/", -1)
+	}
+	return path
+}
+
+
 

@@ -25,6 +25,7 @@ func main() {
 	//create database
 	dbUtil := DB.DBUtil{}
 	err := dbUtil.CreateConnect(dbName)
+
 	if err != nil {
 		logrus.Error("NoteList database create failed, msg:" +err.Error())
 		return

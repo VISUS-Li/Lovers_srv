@@ -1,6 +1,7 @@
 package NotelistHandler
 
 import (
+	"Lovers_srv/config"
 	"Lovers_srv/helper/Utils"
 	noteListClient "Lovers_srv/server/note-list/client"
 	lovers_srv_notelist "Lovers_srv/server/note-list/proto"
@@ -29,14 +30,14 @@ func NoteListUp (c *gin.Context) {
 		(len(noteListParam.NoteListTitle) <= 0) ||
 		(len(noteListParam.Timestamp) <= 0) ||
 		(len(noteListParam.NoteListData) < 0){
-			Utils.CreateErrorWithMsg(c, "Invalid arguments")
+			Utils.CreateErrorWithMsg(c, "Invalid arguments",config.INVALID_PARAMS)
 		} else {
 			var noteListUpResp = &lovers_srv_notelist.NoteListUpResp{}
 			noteListUpResp, err := notelist_client.NoteList_Up(c, noteListParam)
 		if err != nil {
 			Utils.CreateSuccess(c, noteListUpResp)
 		} else {
-			Utils.CreateErrorWithMsg(c, "NoteListUp failed error msg:" + err.Error())
+			Utils.CreateErrorWithMsg(c, "NoteListUp failed error msg:" + err.Error(),config.CODE_ERR_UNKNOW)
 		}
 	}
 }
@@ -49,11 +50,11 @@ func NoteListDown (c *gin.Context) {
 	noteListParam.StartIndex, _ = strconv.ParseInt(c.PostForm("StartIndex"), 10, 64)
 	noteListParam.NoteListCnt,_ = strconv.ParseInt(c.PostForm("NoteListCnt"), 10, 64)
 	if len(noteListParam.UserID) <= 0 {
-		Utils.CreateErrorWithMsg(c, "UserID is empty")
+		Utils.CreateErrorWithMsg(c, "UserID is empty",config.CODE_ERR_PARAM_EMPTY)
 	} else {
 		noteListDownResp, err := notelist_client.NoteList_Down(c, noteListParam)
 		if err != nil {
-			Utils.CreateErrorWithMsg(c, "NoteListDown failed error msg:" + err.Error())
+			Utils.CreateErrorWithMsg(c, "NoteListDown failed error msg:" + err.Error(),config.CODE_ERR_UNKNOW)
 		} else {
 			Utils.CreateSuccess(c, noteListDownResp)
 		}
@@ -65,13 +66,13 @@ func NoteListDel (c *gin.Context) {
 	noteListParam.UserID = c.PostForm("UserID")
 	noteListParam.Timestamp = c.PostForm("Timestamp")
 	if (len(noteListParam.UserID) <=0) || (len(noteListParam.Timestamp)<=0) {
-		Utils.CreateErrorWithMsg(c, "Invalid arguments")
+		Utils.CreateErrorWithMsg(c, "Invalid arguments",config.INVALID_PARAMS)
 		return
 	}
 
 	noteListDelResp, err := notelist_client.NoteList_Del(c,noteListParam)
 	if err != nil  {
-		Utils.CreateErrorWithMsg(c, "NoteListDel failed error msg:" + err.Error())
+		Utils.CreateErrorWithMsg(c, "NoteListDel failed error msg:" + err.Error(),config.CODE_ERR_UNKNOW)
 	} else {
 		Utils.CreateSuccess(c, noteListDelResp)
 	}
