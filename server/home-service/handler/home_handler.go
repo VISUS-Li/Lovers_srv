@@ -67,7 +67,7 @@ func GetHomeCardFailResp(out *proto.GetMainCardResp, msg string, code int) error
 
 //上传Card
 func (home* HomeHandler)PostCardInfo(ctx context.Context, in *proto.PostCardInfoReq, out *proto.PostCardInfoResp) error {
-
+	return nil
 }
 
 func DBHomeCardToRespHomeCard(dbCardList []DB.HomeCardInfo) []*proto.HomeCardInfo{
