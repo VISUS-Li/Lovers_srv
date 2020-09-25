@@ -5,18 +5,17 @@ import (
 	"Lovers_srv/helper/DB"
 	"Lovers_srv/helper/LogHelper"
 	"Lovers_srv/helper/Utils"
-	"Lovers_srv/server/user-service/handler"
-	lovers_srv_user "Lovers_srv/server/user-service/proto"
+	homeHandler "Lovers_srv/server/home-service/handler"
+
+	lovers_srv_home "Lovers_srv/server/home-service/proto"
 	"github.com/micro/go-micro"
 	"github.com/sirupsen/logrus"
 )
-var HOME_SRV_NAME = "lovers.srv.user"
+var HOME_SRV_NAME = "lovers.srv.home"
 
 func main(){
 	config.Init()
 	//初始化日志
-
-
 	myLog := LogHelper.LoversLog{}
 	var dbName string
 	var serverName string
@@ -37,25 +36,21 @@ func main(){
 	}
 	defer dbUtil.CloseConnect()
 
-	err = dbUtil.CreateTable(DB.LoginInfo{})
+	err = dbUtil.CreateTable(DB.HomeCardInfo{})
 	if err != nil{
-		logrus.Error("create table LoginInfo error:"+err.Error())
-	}
-	err = dbUtil.CreateTable(DB.UserBaseInfo{})
-	if err != nil{
-		logrus.Error("create table UserBaseInfo error:"+err.Error())
+		logrus.Error("create table HomeCardInfo error:"+err.Error())
 	}
 
-	userHandler := handler.UserHandler{dbUtil.DB}
+	homeHandler := homeHandler.HomeHandler{dbUtil.DB}
 
 	//新建serivce
 	service := micro.NewService(
-			micro.Name(serverName),
-		)
+		micro.Name(serverName),
+	)
 
 	service.Init()
 
-	err = lovers_srv_user.RegisterUserHandler(service.Server(), &userHandler)
+	err = lovers_srv_home.RegisterHomeHandler(service.Server(), &homeHandler)
 
 	if err = service.Run(); err != nil{
 		logrus.Error("service Run error,msg:"+ err.Error())
