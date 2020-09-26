@@ -41,3 +41,8 @@ func (user *UserClient)Client_Register(ctx context.Context, req *proto.RegisterR
 	}
 	return resp,nil
 }
+
+func (user *UserClient)Client_QueryUserExistById(ctx context.Context, req *proto.QueryUserIsExistByIdReq)(*proto.QueryUserIsExistByIdResp,error){
+	resp, err := user.client.QueryUserIsExistById(ctx,req)
+	return resp, err
+}

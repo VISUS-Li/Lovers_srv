@@ -40,8 +40,14 @@ func main() {
 
 	noteListHandler := handler.NoteListHandler{dbUtil.DB}
 
+	//注册中心为consul
+	//reg := consul.NewRegistry(func(op *registry.Options) {
+	//	op.Addrs = config.GlobalConfig.RegisterHosts
+	//})
+
 	service := micro.NewService(
 		micro.Name(config.NOTELIST_SRV_NAME),
+		//micro.Registry(reg),
 	)
 
 	service.Init()

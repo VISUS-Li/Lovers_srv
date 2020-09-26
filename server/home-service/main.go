@@ -6,7 +6,6 @@ import (
 	"Lovers_srv/helper/LogHelper"
 	"Lovers_srv/helper/Utils"
 	homeHandler "Lovers_srv/server/home-service/handler"
-
 	lovers_srv_home "Lovers_srv/server/home-service/proto"
 	"github.com/micro/go-micro"
 	"github.com/sirupsen/logrus"
@@ -43,9 +42,15 @@ func main(){
 
 	homeHandler := homeHandler.HomeHandler{dbUtil.DB}
 
+	//注册中心为consul
+	//reg := consul.NewRegistry(func(op *registry.Options) {
+	//	op.Addrs = config.GlobalConfig.RegisterHosts
+	//})
+
 	//新建serivce
 	service := micro.NewService(
 		micro.Name(serverName),
+		//micro.Registry(reg),
 	)
 
 	service.Init()

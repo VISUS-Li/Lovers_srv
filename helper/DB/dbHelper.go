@@ -8,6 +8,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/sirupsen/logrus"
 	"os"
+	"reflect"
 )
 
 type DBUtil struct{
@@ -15,6 +16,7 @@ type DBUtil struct{
 }
 
 func (unit *DBUtil)CreateTable(tableModel interface{})(error){
+	logrus.Info("create talbe:" + reflect.TypeOf(tableModel).Name())
 	unit.DB = unit.DB.AutoMigrate(tableModel)
 	return unit.DB.Error
 }
@@ -60,7 +62,5 @@ func (unit *DBUtil)GetDBByHost(user string, password string, host string, dbName
 
 	unit.DB.DB().SetMaxIdleConns(10)
 	unit.DB.DB().SetMaxOpenConns(100)
-	unit.DB.AutoMigrate(&UserBaseInfo{})
-	unit.DB.AutoMigrate(&LoginInfo{})
 	return nil
 }

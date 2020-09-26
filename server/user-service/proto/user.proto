@@ -14,6 +14,9 @@ service User{
     rpc UnBindLover(UnBindLoverReq) returns (UnBindLoverResp){}
 
     rpc GetLoverInfo(GetLoverInfoReq) returns (GetLoverInfoResp){}
+
+    //用户账户相关操作
+    rpc QueryUserIsExistById(QueryUserIsExistByIdReq) returns (QueryUserIsExistByIdResp){}
 }
 
 /*登录信息*/
@@ -115,4 +118,12 @@ message GetLoverInfoResp{
      LoverInfo GotLoverInfo = 1;
 }
 
-
+//用户账户相关操作
+message QueryUserIsExistByIdReq{
+    string UserId = 1;
+}
+message QueryUserIsExistByIdResp{
+    bool    IsExist     = 1;
+    int32   QueryCode   = 2;
+    string  QueryRes    = 3;
+}

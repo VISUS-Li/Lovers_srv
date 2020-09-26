@@ -13,17 +13,16 @@ import (
 var home_client = client.NewHomeMicroClient()
 
 func GetMainCard(c *gin.Context){
-
-	mainCardList,err := home_client.Client_GetMainCard(c,nil)
+	getMainCardReq := &proto.GetMainCardReq{}
+	mainCardList,err := home_client.Client_GetMainCard(c,getMainCardReq)
 	if err == nil && mainCardList != nil{
 		total := len(mainCardList.MainCardInfo)
 		Utils.CreateSuccessByList(c, total, mainCardList)
 	}else{
 		if mainCardList == nil{
-			Utils.CreateErrorWithMsg(c, "GetMainCard failed error msg:"+err.Error() + "loginResp is nil",config.CODE_ERR_SERVER_INTERNAL)
+			Utils.CreateErrorWithMsg(c, err.Error(),config.CODE_ERR_SERVER_INTERNAL)
 		}else {
-			code, err := strconv.Atoi(mainCardList.RespStatus.GetCardCode)
-			Utils.CreateErrorWithMsg(c, "GetMainCard failed error msg:"+err.Error(), code)
+			Utils.CreateErrorWithMsg(c, err.Error(), int(mainCardList.RespStatus.OpCardCode))
 		}
 	}
 }
@@ -41,15 +40,34 @@ func GetCardInfoByType(c *gin.Context){
 
 
 func PostCardInfo(c* gin.Context){
-	var cardInfo = &proto.PostCardInfoReq{}
-	cardType, _ := strconv.Atoi(c.PostForm("CardType"))
-	cardInfo.PostCardInfo.CardType = proto.CARDTYPE(cardType)
+	var NewCardInfo = &proto.HomeCardInfo{}
+	var cardInfo = &proto.PostCardInfoReq{PostCardInfo:NewCardInfo}
 
-	adType, _ := strconv.Atoi(c.PostForm("AdType"))
-	cardInfo.PostCardInfo.AdType = proto.ADTYPE(adType)
+	stCardType, exist := c.GetPostForm("CardType")
+	if exist{
+		cardType, _ := strconv.Atoi(stCardType)
+		cardInfo.PostCardInfo.CardType = proto.CARDTYPE(cardType)
+	}else{
+		cardInfo.PostCardInfo.CardType = proto.CARDTYPE_CARDTYPE_UNKNOWN
+	}
 
-	infoType, _ := strconv.Atoi(c.PostForm("InfoType"))
-	cardInfo.PostCardInfo.InfoType = proto.INFOTYPE(infoType)
+	stAdType,exist := c.GetPostForm("AdType")
+	if exist{
+		adType, _ := strconv.Atoi(stAdType)
+		cardInfo.PostCardInfo.AdType = proto.ADTYPE(adType)
+	}else{
+		cardInfo.PostCardInfo.AdType = proto.ADTYPE_ADTYPE_UNKNOWN
+	}
+
+
+	stInfoType,exist := c.GetPostForm("InfoType")
+	if exist{
+		infoType, _ := strconv.Atoi(stInfoType)
+		cardInfo.PostCardInfo.InfoType = proto.INFOTYPE(infoType)
+	}else{
+		cardInfo.PostCardInfo.InfoType = proto.INFOTYPE_INFOTYPE_UNKNOWN
+	}
+
 
 	cardInfo.PostCardInfo.Title = c.PostForm("Title")
 	cardInfo.PostCardInfo.Content = c.PostForm("Content")
@@ -65,9 +83,20 @@ func PostCardInfo(c* gin.Context){
 	}
 
 	cardInfo.PostCardInfo.UpLoadUserId = c.PostForm("UpLoadUserId")
-
+	if len(cardInfo.PostCardInfo.UpLoadUserId) <= 0{
+		Utils.CreateErrorWithMsg(c, "PostUpLoadUserId is null", config.INVALID_PARAMS)
+		return
+	}
 	cardInfo.PostCardInfo.CardId = uuid.NewV1().String()
 
-
-	home_client.Client_PostCardInfo(c, cardInfo)
+	PostCardResp,err := home_client.Client_PostCardInfo(c, cardInfo)
+	if err != nil{
+		if PostCardResp == nil{
+			Utils.CreateErrorWithMsg(c,err.Error(),config.CODE_ERR_SERVER_INTERNAL)
+		}else{
+			Utils.CreateErrorWithMsg(c, PostCardResp.RespStatus.OpCardRes, int(PostCardResp.RespStatus.OpCardCode))
+		}
+	}else{
+		Utils.CreateSuccess(c,nil)
+	}
 }

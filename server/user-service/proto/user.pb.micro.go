@@ -40,6 +40,8 @@ type UserService interface {
 	BindLover(ctx context.Context, in *BindLoverReq, opts ...client.CallOption) (*BindLoverResp, error)
 	UnBindLover(ctx context.Context, in *UnBindLoverReq, opts ...client.CallOption) (*UnBindLoverResp, error)
 	GetLoverInfo(ctx context.Context, in *GetLoverInfoReq, opts ...client.CallOption) (*GetLoverInfoResp, error)
+	//用户账户相关操作
+	QueryUserIsExistById(ctx context.Context, in *QueryUserIsExistByIdReq, opts ...client.CallOption) (*QueryUserIsExistByIdResp, error)
 }
 
 type userService struct {
@@ -120,6 +122,16 @@ func (c *userService) GetLoverInfo(ctx context.Context, in *GetLoverInfoReq, opt
 	return out, nil
 }
 
+func (c *userService) QueryUserIsExistById(ctx context.Context, in *QueryUserIsExistByIdReq, opts ...client.CallOption) (*QueryUserIsExistByIdResp, error) {
+	req := c.c.NewRequest(c.name, "User.QueryUserIsExistById", in)
+	out := new(QueryUserIsExistByIdResp)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for User service
 
 type UserHandler interface {
@@ -129,6 +141,8 @@ type UserHandler interface {
 	BindLover(context.Context, *BindLoverReq, *BindLoverResp) error
 	UnBindLover(context.Context, *UnBindLoverReq, *UnBindLoverResp) error
 	GetLoverInfo(context.Context, *GetLoverInfoReq, *GetLoverInfoResp) error
+	//用户账户相关操作
+	QueryUserIsExistById(context.Context, *QueryUserIsExistByIdReq, *QueryUserIsExistByIdResp) error
 }
 
 func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.HandlerOption) error {
@@ -139,6 +153,7 @@ func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.Handl
 		BindLover(ctx context.Context, in *BindLoverReq, out *BindLoverResp) error
 		UnBindLover(ctx context.Context, in *UnBindLoverReq, out *UnBindLoverResp) error
 		GetLoverInfo(ctx context.Context, in *GetLoverInfoReq, out *GetLoverInfoResp) error
+		QueryUserIsExistById(ctx context.Context, in *QueryUserIsExistByIdReq, out *QueryUserIsExistByIdResp) error
 	}
 	type User struct {
 		user
@@ -173,4 +188,8 @@ func (h *userHandler) UnBindLover(ctx context.Context, in *UnBindLoverReq, out *
 
 func (h *userHandler) GetLoverInfo(ctx context.Context, in *GetLoverInfoReq, out *GetLoverInfoResp) error {
 	return h.UserHandler.GetLoverInfo(ctx, in, out)
+}
+
+func (h *userHandler) QueryUserIsExistById(ctx context.Context, in *QueryUserIsExistByIdReq, out *QueryUserIsExistByIdResp) error {
+	return h.UserHandler.QueryUserIsExistById(ctx, in, out)
 }

@@ -23,6 +23,9 @@ const(
 const(
 	CODE_ERR_PARAM_EMPTY			 = 1005
 	CODE_ERR_SERVER_INTERNAL		 = 1011 //服务器内部错误
+	CODE_ERR_INSERT_DB_FAIL		  	 = 1013	//插入数据库失败
+	CODE_ERR_SELECT_DB_FAIL		  	 = 1014	//查询数据库失败
+
 )
 //用户登录相关
 const(
@@ -33,9 +36,14 @@ const(
 	CODE_ERR_REG_PHONE_ERR     = 1010
 )
 
+//用户操作相关
+const(
+	CODE_ERR_USER_NOT_EXIST = 1015
+)
+
 //主页相关
 const(
-	CODE_ERR_HOME_NOT_ENOUGH_CARD = 1011
+	CODE_ERR_HOME_NOT_ENOUGH_CARD = 1012
 )
 
 /******
@@ -45,8 +53,11 @@ const(
 //通用
 const(
 
-	MSG_REQUEST_SUCCESS = "请求成功"
-	MSG_SERVER_INTERNAL = "服务器内部错误"
+	MSG_REQUEST_SUCCESS	 	= "请求成功"
+	MSG_SERVER_INTERNAL 	= "服务器内部错误"
+	MSG_ERR_INSERT_DB_FAIL 	= "插入数据库失败"
+	MSG_ERR_SELECT_DB_FAIL 	= "查询数据库失败"
+	MSG_ERR_PARAM_WRONG		= "传入参数错误"
 )
 
 //用户相关
@@ -59,6 +70,7 @@ const(
 	MSG_DB_LOGIN_TOKEN_ERROR     = "获取token失败"
 )
 
+//注册相关
 const(
 	MSG_DB_REG_OK        = "注册成功"
 	MSG_DB_REG_IN_EMPTY  = "传入用户名密码为空"
@@ -68,6 +80,12 @@ const(
 	MSG_DB_REG_PARAM_nil = "传入参数为空"
 )
 
+//用户操作相关
+const(
+	MSG_USER_NOT_EXIST = "用户不存在"
+)
+
+//主页相关
 const(
 	MSG_HOME_NOT_ENOUGH_CARD = "没有足够的主页卡片"
 )

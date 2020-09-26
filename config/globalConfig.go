@@ -15,6 +15,7 @@ var GlobalConfig Config
 const USER_SRV_NAME = "lovers.srv.user"
 const NOTELIST_SRV_NAME = "lovers.srv.notelist"
 const API_NAME = "lovers.api"
+const REGISTER_HOST = "127.0.0.1"
 
 const (
 	DB_HOST = "127.0.0.1"
@@ -31,6 +32,9 @@ const(
 type Config struct{
 	//服务名
 	Srv_name     string;
+
+	//服务发现注册地址
+	RegisterHosts []string
 
 	//数据库
 	DB_host     string;
@@ -49,6 +53,11 @@ func Init(){
 }
 
 func getDefaultConfig(){
+	//服务发现注册
+	if(len(GlobalConfig.RegisterHosts) <= 0){
+		GlobalConfig.RegisterHosts = append(GlobalConfig.RegisterHosts, REGISTER_HOST)
+	}
+
 	//数据库
 	if(GlobalConfig.DB_host == ""){
 		GlobalConfig.DB_host = DB_HOST;
