@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"runtime"
 	"strings"
@@ -65,3 +66,54 @@ func GetDBNameFromSrvName(srvName string)(string){
 }
 
 
+
+/******
+获取结构体中字段的名称
+******/
+func GetFieldName(stu *interface{}) (map [int]string, error) {
+
+	t := reflect.TypeOf(stu)
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+	if t.Kind() != reflect.Struct {
+		return nil,errors.New("Check type error not Struct")
+	}
+	fieldNum := t.NumField()
+	fieldList := make(map[int]string)
+	for i := 0; i < fieldNum; i++ {
+		fieldList[i] = t.Field(i).Name
+	}
+	return fieldList,nil
+}
+
+/******
+从请求的Form中获取参数
+******/
+//func GetParamFromForm(c *gin.Context, stu interface{})(interface{},error){
+//	fields, err := GetFieldName(&stu)
+//	if err != nil{
+//		return nil, err
+//	}
+//	if len(fields) <= 0{
+//		return nil, errors.New("parse struct field fail, fields are empty")
+//	}
+//
+//	for i, v := range fields{
+//		value := reflect.ValueOf(stu)
+//		postValue := c.PostForm(v)
+//		convPostV, err := strconv.Atoi(postValue)
+//		if err != nil{
+//			reflect.ValueOf(postValue).Type()
+//		}
+//
+//
+//		fieldType := value.Type().String()
+//		if fieldType == "int"{
+//
+//		}
+//
+//		value.FieldByName(v).Set(postValue)
+//	}
+//
+//}

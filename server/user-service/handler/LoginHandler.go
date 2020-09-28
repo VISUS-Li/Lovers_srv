@@ -32,7 +32,7 @@ func (user* UserHandler) Login(ctx context.Context, in *lovers_srv_user.LoginReq
 		//默认采用用户名密码登录
 		err := user.NameAndPwdLogin(in.UserName, in.PassWord, out)
 		if err != nil {
-			if Utils.VerifyPhoneFormat(in.UserName){
+			if Utils.VerifyPhoneFormat(in.UserName) || Utils.VerifyPhoneFormat(in.Phone){
 				//如果用户名为电话号码，通过电话号码登录
 				err = user.PhoneAndPwdLogin(in.UserName, in.PassWord, out)
 				return err

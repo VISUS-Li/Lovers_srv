@@ -18,6 +18,7 @@ const(
 	CODE_ERR_AUTH_CHECK_TOKEN_TIMEOUT = 1002
 	CODE_ERR_AUTH_TOKEN               = 1003
 	CODE_ERR_AUTH                     = 1004
+	CODE_ERR_AUTH_TOKEN_EMPTY		  = 1017
 )
 
 const(
@@ -69,7 +70,9 @@ const(
 	MSG_DB_LOGIN_NO_USER         = "用户未注册"
 	MSG_DB_LOGIN_PWD_ERROR       = "密码错误"
 	MSG_DB_LOGIN_TOKEN_ERROR     = "获取token失败"
-	MSG_LOGIN_EXPIRE			 = "token过期"
+	MSG_AUTH_TOKEN_EXPIRE		 = "Token过期"
+	MSG_AUTH_TOKEN_EMPTY		 = "Token为空"
+	MSG_AUTH_TOKEN_ERROR		 = "Token解析错误"
 )
 
 //注册相关

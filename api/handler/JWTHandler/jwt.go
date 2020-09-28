@@ -2,6 +2,7 @@ package JWTHandler
 
 import (
 	"Lovers_srv/config"
+	"Lovers_srv/helper/Utils"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -61,31 +62,39 @@ JWT验证的中间件
 func JWTMidWare() gin.HandlerFunc{
 	return func(c *gin.Context){
 		//从请求中拿到token
-		token := c.Query("token")
-		if(token == ""){
-			token = c.PostForm("token")
+		token ,err := Utils.GetTokenFromHeader(c)
+		if err != nil {
+			token = c.Query("token")
+			if (token == "") {
+				token = c.PostForm("token")
+			}
 		}
 
 		var code int
 		var data interface{}
+		var msg  string
 		code = config.CODE_ERR_SUCCESS
 		if (token == ""){
-			code = config.INVALID_PARAMS
+			code = config.CODE_ERR_AUTH_TOKEN_EMPTY
+			msg = config.MSG_AUTH_TOKEN_EMPTY
 		}else{
 			_,err := ParseToken(token)
 			if err != nil{
 				switch err.(*jwt.ValidationError).Errors {
 				case jwt.ValidationErrorExpired:
 					code = config.CODE_ERR_AUTH_CHECK_TOKEN_TIMEOUT
+					msg = config.MSG_AUTH_TOKEN_EXPIRE
 				default:
 					code = config.CODE_ERR_AUTH_CHECK_TOKEN_FAIL
+					msg = config.MSG_AUTH_TOKEN_ERROR
 				}
 			}
 		}
 		if code != config.CODE_ERR_SUCCESS{
 			c.JSON(http.StatusUnauthorized,gin.H{
 				"code":code,
-				"msg":data,
+				"data":data,
+				"msg":msg,
 			})
 			c.Abort()
 			return

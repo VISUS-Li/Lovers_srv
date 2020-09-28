@@ -34,18 +34,31 @@ message CardRespStatus{
 
 /*首页卡片的基本信息*/
 message HomeCardInfo{
+    // @inject_tag: form:"CardType"
     CARDTYPE        CardType          = 1; //卡片类型，广告、咨询等
+    // @inject_tag: form:"AdType"
     ADTYPE          AdType            = 2; //广告类型
+    // @inject_tag: form:"InfoType"
     INFOTYPE        InfoType          = 3; //资讯类型
+    // @inject_tag: form:"Title"
     string          Title             = 4; //卡片标题
+    // @inject_tag: form:"Content"
     string          Content           = 5; //卡片内容
+    // @inject_tag: form:"HomeHtmlUrl"
     string          HomeHtmlUrl       = 6; //卡片内容的HTML文件Url
+    // @inject_tag: form:"TypeDesc"
     string          TypeDesc          = 7; //卡片类型说明
+    // @inject_tag: form:"CreateTime"
     int64           CreateTime        = 8; //卡片创建时间
+    // @inject_tag: form:"ShowIndex"
     int32           ShowIndex         = 9; //卡片显示排名
+    // @inject_tag: form:"IsMainCard"
     bool            IsMainCard        = 10; //卡片是否为主卡片
+    // @inject_tag: form:"UpLoadUserId" binding:"required"
     string          UpLoadUserId      = 11; //上传用户ID
+    // @inject_tag: form:"CardId"
     string          CardId            = 12; //该卡片的ID
+    // @inject_tag: form:"HomeImgUrl"
     string          HomeImgUrl        = 13; //卡片在主页显示的图片
 }
 
