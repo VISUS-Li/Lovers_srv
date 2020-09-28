@@ -11,16 +11,21 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var NOTELIST_SRV_NAME = "lovers.srv.notelist"
+
 func main() {
 	//create log
 	myLog := LogHelper.LoversLog{}
 	var dbName string
+	var serverName string
 	if (config.GlobalConfig.Srv_name == "") {
-		dbName = Utils.GetDBNameFromSrvName(config.NOTELIST_SRV_NAME)
-		myLog.SetOutPut(config.NOTELIST_SRV_NAME)
+		serverName = NOTELIST_SRV_NAME
+		dbName = Utils.GetDBNameFromSrvName(serverName)
+		myLog.SetOutPut(serverName)
 	} else {
-		dbName = Utils.GetDBNameFromSrvName(config.NOTELIST_SRV_NAME)
-		myLog.SetOutPut(config.NOTELIST_SRV_NAME)
+		serverName = config.GlobalConfig.Srv_name
+		dbName = Utils.GetDBNameFromSrvName(serverName)
+		myLog.SetOutPut(serverName)
 	}
 	//create database
 	dbUtil := DB.DBUtil{}
@@ -41,7 +46,7 @@ func main() {
 	noteListHandler := handler.NoteListHandler{dbUtil.DB}
 
 	service := micro.NewService(
-		micro.Name(config.NOTELIST_SRV_NAME),
+		micro.Name(serverName),
 	)
 
 	service.Init()

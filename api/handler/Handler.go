@@ -4,6 +4,7 @@ import (
 	"Lovers_srv/api/handler/HomeHandler"
 	"Lovers_srv/api/handler/JWTHandler"
 	"Lovers_srv/api/handler/NotelistHandler"
+	"Lovers_srv/api/handler/fileService"
 	"Lovers_srv/api/handler/UserHandler"
 	"github.com/gin-gonic/gin"
 )
@@ -31,10 +32,16 @@ func ClientEngine() *gin.Engine{
 	AuthGroup := api.Group("/Auth")
 	AuthGroup.Use(JWTHandler.JWTMidWare())
 
+	//事件清单
 	NoteListGroup := AuthGroup.Group("/notelist")
 	NoteListGroup.POST("/NoteListUp", NotelistHandler.NoteListUp)
 	NoteListGroup.POST("/NoteListDown", NotelistHandler.NoteListDown)
 	NoteListGroup.POST("/NoteListDel", NotelistHandler.NoteListDel)
+
+	FileServerGroup := AuthGroup.Group("/fileserver")
+	FileServerGroup.POST("/FileServerDown", FilerServerHandler.DownLoadFile)
+	FileServerGroup.POST("/FileServerUp", FilerServerHandler.UpLoadFile)
+	FileServerGroup.POST("/FileServerDel", FilerServerHandler.DelFile)
 
 	return router
 }

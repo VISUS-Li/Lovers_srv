@@ -2,6 +2,46 @@ syntax = "proto3";
 
 package lovers.srv.file;
 
-service fileserver {
-  rpc
+service FileServer {
+  rpc DownLoadFile(DownLoadFileReq) returns (DownLoadFileResp) {}
+  rpc UpLoadFile(UpLoadFileReq) returns (UpLoadFileResp) {}
+  rpc DelFile(DelFileReq) returns (DelFileResp) {}
+}
+
+message DownLoadFileReq {
+
+  string UserID          = 1;
+  string DownLoadFileUrl = 2;
+
+}
+
+message  DownLoadFileResp {
+  string UserID          = 1;
+  bytes FileBinData      = 2;
+  string DownLoadFileRet = 3;
+}
+
+message  UpLoadFileReq {
+  string  UserID       = 1;
+  string  FileInModule = 2; //属于哪个模块的文件
+  string  FileType     = 3; //image, txt...
+  string  FileName     = 4;
+  bytes   FileBinData  = 5;
+}
+
+message UpLoadFileResp {
+  string UpLoadFileUrl  = 1;
+  string UpLoadFileRet  = 2;
+  string FileUrl        = 3;
+  string UserID         = 4;
+}
+
+message  DelFileReq {
+  string UserID     = 1;
+  string FileUrl    = 2;
+}
+
+message DelFileResp {
+  string UserID     = 1;
+  string DelFileRet = 2;
 }
