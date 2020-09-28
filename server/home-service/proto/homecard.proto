@@ -39,12 +39,14 @@ message HomeCardInfo{
     INFOTYPE        InfoType          = 3; //资讯类型
     string          Title             = 4; //卡片标题
     string          Content           = 5; //卡片内容
-    string          TypeDesc          = 6; //卡片类型说明
-    int64           CreateTime        = 7; //卡片创建时间
-    int32           ShowIndex         = 8; //卡片显示排名
-    bool            IsMainCard        = 9; //卡片是否为主卡片
-    string          UpLoadUserId      = 10; //上传用户ID
-    string          CardId            = 11; //该卡片的ID
+    string          HomeHtmlUrl       = 6; //卡片内容的HTML文件Url
+    string          TypeDesc          = 7; //卡片类型说明
+    int64           CreateTime        = 8; //卡片创建时间
+    int32           ShowIndex         = 9; //卡片显示排名
+    bool            IsMainCard        = 10; //卡片是否为主卡片
+    string          UpLoadUserId      = 11; //上传用户ID
+    string          CardId            = 12; //该卡片的ID
+    string          HomeImgUrl        = 13; //卡片在主页显示的图片
 }
 
 

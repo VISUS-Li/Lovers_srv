@@ -34,6 +34,7 @@ const(
 	CODE_ERR_LOGIN_PWD_ERROR   = 1008
 	CODE_ERR_LOGIN_TOKEN_ERROR = 1009
 	CODE_ERR_REG_PHONE_ERR     = 1010
+	CODE_ERR_LOGIN_EXPIRE	   = 1016 	//用戶token过期，需重新登录
 )
 
 //用户操作相关
@@ -68,6 +69,7 @@ const(
 	MSG_DB_LOGIN_NO_USER         = "用户未注册"
 	MSG_DB_LOGIN_PWD_ERROR       = "密码错误"
 	MSG_DB_LOGIN_TOKEN_ERROR     = "获取token失败"
+	MSG_LOGIN_EXPIRE			 = "token过期"
 )
 
 //注册相关

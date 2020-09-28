@@ -87,6 +87,19 @@ func PostCardInfo(c* gin.Context){
 		Utils.CreateErrorWithMsg(c, "PostUpLoadUserId is null", config.INVALID_PARAMS)
 		return
 	}
+
+	//cardInfo.PostCardInfo.HomeImgUrl = c.PostForm("HomeImgUrl")
+	//if len(cardInfo.PostCardInfo.HomeImgUrl) <= 0{
+	//	Utils.CreateErrorWithMsg(c, "HomeImgUrl is null", config.INVALID_PARAMS)
+	//	return
+	//}
+	//
+	//cardInfo.PostCardInfo.HomeHtmlUrl = c.PostForm("HomeHtmlUrl")
+	//if len(cardInfo.PostCardInfo.HomeImgUrl) <= 0{
+	//	Utils.CreateErrorWithMsg(c, "HomeHtmlUrl is null", config.INVALID_PARAMS)
+	//	return
+	//}
+
 	cardInfo.PostCardInfo.CardId = uuid.NewV1().String()
 
 	PostCardResp,err := home_client.Client_PostCardInfo(c, cardInfo)

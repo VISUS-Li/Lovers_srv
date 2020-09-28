@@ -131,6 +131,8 @@ func DBHomeCardToRespHomeCard(dbCardList []DB.HomeCardInfo) []*proto.HomeCardInf
 		tmpRespCard.IsMainCard = v.IsMainCard
 		tmpRespCard.UpLoadUserId = v.UpLoadUserId
 		tmpRespCard.CardId = v.CardId
+		tmpRespCard.HomeHtmlUrl = v.HomeHtmlUrl
+		tmpRespCard.HomeImgUrl = v.HomeImgUrl
 		respCardList = append(respCardList, tmpRespCard)
 	}
 	return respCardList
@@ -148,6 +150,8 @@ func ReqCardToDBCard(reqCardList proto.HomeCardInfo) *DB.HomeCardInfo{
 	tmpDBCardList.UpLoadUserId = reqCardList.UpLoadUserId
 	tmpDBCardList.CardId = reqCardList.CardId
 	tmpDBCardList.CreateTime = reqCardList.CreateTime
+	tmpDBCardList.HomeImgUrl = reqCardList.HomeImgUrl
+	tmpDBCardList.HomeHtmlUrl = reqCardList.HomeHtmlUrl
 	if reqCardList.CreateTime <= 0{
 		tmpDBCardList.CreateTime = time.Now().Unix()
 	}
@@ -168,6 +172,8 @@ func ReqCardListToDBCardList(reqCardList []proto.HomeCardInfo) []*DB.HomeCardInf
 		tmpDBCardList.IsMainCard = v.IsMainCard
 		tmpDBCardList.UpLoadUserId = v.UpLoadUserId
 		tmpDBCardList.CardId = v.CardId
+		tmpDBCardList.HomeHtmlUrl = v.HomeHtmlUrl
+		tmpDBCardList.HomeImgUrl = v.HomeImgUrl
 		dbCardList = append(dbCardList, tmpDBCardList)
 	}
 	return dbCardList
