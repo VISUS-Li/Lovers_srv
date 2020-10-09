@@ -35,9 +35,9 @@ func NoteListUp (c *gin.Context) {
 			var noteListUpResp = &lovers_srv_notelist.NoteListUpResp{}
 			noteListUpResp, err := notelist_client.NoteList_Up(c, noteListParam)
 		if err != nil {
-			Utils.CreateSuccess(c, noteListUpResp)
-		} else {
 			Utils.CreateErrorWithMsg(c, "NoteListUp failed error msg:" + err.Error(),config.CODE_ERR_UNKNOW)
+		} else {
+			Utils.CreateSuccess(c, noteListUpResp)
 		}
 	}
 }

@@ -38,6 +38,15 @@ const(
 	CODE_ERR_HOME_NOT_ENOUGH_CARD = 1011
 )
 
+//文件服务器相关
+const (
+	CODE_ERR_GET_PARAM_				= 1100
+	CODE_ERR_BAD_DOWN_RESPONSE		= 1101
+	CODE_ERR_BAD_UP_RESPONSE		= 1102
+	CODE_ERR_BAD_DEL_RESPONSE		= 1103
+	CODE_ERR_FAILED_UPFILE 			= 1104
+)
+
 /******
 状态信息定义（信息文字内容）
 ******/

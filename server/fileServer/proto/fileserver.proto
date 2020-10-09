@@ -16,6 +16,7 @@ message DownLoadFileReq {
 }
 
 message  DownLoadFileResp {
+  // @inject_tag: form:"UserID"
   string UserID          = 1;
   bytes FileBinData      = 2;
   string DownLoadFileRet = 3;
@@ -26,7 +27,8 @@ message  UpLoadFileReq {
   string  FileInModule = 2; //属于哪个模块的文件
   string  FileType     = 3; //image, txt...
   string  FileName     = 4;
-  bytes   FileBinData  = 5;
+  int64   FileSize     = 5;
+  bytes   FileBinData  = 6;
 }
 
 message UpLoadFileResp {

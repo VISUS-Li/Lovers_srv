@@ -16,6 +16,7 @@ func (file *FileHandler) DownLoadFile(ctx context.Context, in *proto.DownLoadFil
 }
 
 func (file *FileHandler) UpLoadFile(ctx context.Context, in *proto.UpLoadFileReq, out *proto.UpLoadFileResp) error {
+
 	return nil
 }
 
