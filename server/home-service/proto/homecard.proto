@@ -23,6 +23,11 @@ enum INFOTYPE{
     INFOTYPE_UNKNOWN     = 0;
     NEWS        = 1;
 }
+enum MEDIATYPE{
+    MEDIATYPE_UNKNOWN   = 0;
+    IMAGE       = 1;
+    AUDIO       = 2;
+}
 
 /*获取主页卡片参数*/
 
@@ -60,6 +65,12 @@ message HomeCardInfo{
     string          CardId            = 12; //该卡片的ID
     // @inject_tag: form:"HomeImgUrl"
     string          HomeImgUrl        = 13; //卡片在主页显示的图片
+    // @inject_tag: form:"CardMediaType"
+    MEDIATYPE       CardMediaType     = 14; //卡片媒体类型
+    // @inject_tag: form:"AudioFileUrl"
+    string          AudioFileUrl      = 15; //音频文件地址
+    // @inject_tag: form:"AudioLength"
+    string          AudioLength       = 16; //音频长度
 }
 
 

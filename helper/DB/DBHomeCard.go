@@ -18,4 +18,7 @@ type HomeCardInfo struct {
 	ShowIndex	int	//卡片显示排名，热度
 	IsMainCard	bool //是否为主卡片
 	HomeImgUrl	string //卡片在主页显示的图片
+	CardMediaType int //卡片媒体类型
+	AudioFileUrl string //音频文件地址
+	AudioLength string //音频长度
 }

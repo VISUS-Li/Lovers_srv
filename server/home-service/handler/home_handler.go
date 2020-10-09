@@ -51,10 +51,11 @@ func (home* HomeHandler) GetMainCard(ctx context.Context, in *proto.GetMainCardR
 	if err != nil{
 		logrus.Error("query table CardInfo failed: " + err.Error())
 		return GetHomeCardFailResp(out, config.MSG_SERVER_INTERNAL,config.CODE_ERR_SERVER_INTERNAL)
-	}else if len(thisWeekMainCard) < 7 {
-		logrus.Error("not enough CardInfo")
-		return GetHomeCardFailResp(out, config.MSG_HOME_NOT_ENOUGH_CARD,config.CODE_ERR_HOME_NOT_ENOUGH_CARD)
 	}
+	//else if len(thisWeekMainCard) < 7 {
+	//	logrus.Error("not enough CardInfo")
+	//	return GetHomeCardFailResp(out, config.MSG_HOME_NOT_ENOUGH_CARD,config.CODE_ERR_HOME_NOT_ENOUGH_CARD)
+	//}
 
 	//查询到足够的卡片后，只取前7个card返回
 	thisWeekMainCard = thisWeekMainCard[:7]
@@ -133,6 +134,9 @@ func DBHomeCardToRespHomeCard(dbCardList []DB.HomeCardInfo) []*proto.HomeCardInf
 		tmpRespCard.CardId = v.CardId
 		tmpRespCard.HomeHtmlUrl = v.HomeHtmlUrl
 		tmpRespCard.HomeImgUrl = v.HomeImgUrl
+		tmpRespCard.CardMediaType = proto.MEDIATYPE(v.CardMediaType)
+		tmpRespCard.AudioFileUrl = v.AudioFileUrl
+		tmpRespCard.AudioLength = v.AudioLength
 		respCardList = append(respCardList, tmpRespCard)
 	}
 	return respCardList
@@ -152,6 +156,9 @@ func ReqCardToDBCard(reqCardList proto.HomeCardInfo) *DB.HomeCardInfo{
 	tmpDBCardList.CreateTime = reqCardList.CreateTime
 	tmpDBCardList.HomeImgUrl = reqCardList.HomeImgUrl
 	tmpDBCardList.HomeHtmlUrl = reqCardList.HomeHtmlUrl
+	tmpDBCardList.CardMediaType = int(reqCardList.CardMediaType)
+	tmpDBCardList.AudioFileUrl = reqCardList.AudioFileUrl
+	tmpDBCardList.AudioLength = reqCardList.AudioLength
 	if reqCardList.CreateTime <= 0{
 		tmpDBCardList.CreateTime = time.Now().Unix()
 	}
@@ -174,6 +181,9 @@ func ReqCardListToDBCardList(reqCardList []proto.HomeCardInfo) []*DB.HomeCardInf
 		tmpDBCardList.CardId = v.CardId
 		tmpDBCardList.HomeHtmlUrl = v.HomeHtmlUrl
 		tmpDBCardList.HomeImgUrl = v.HomeImgUrl
+		tmpDBCardList.CardMediaType = int(v.CardMediaType)
+		tmpDBCardList.AudioFileUrl = v.AudioFileUrl
+		tmpDBCardList.AudioLength = v.AudioLength
 		dbCardList = append(dbCardList, tmpDBCardList)
 	}
 	return dbCardList
