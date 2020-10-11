@@ -45,6 +45,8 @@ const (
 	CODE_ERR_BAD_UP_RESPONSE		= 1102
 	CODE_ERR_BAD_DEL_RESPONSE		= 1103
 	CODE_ERR_FAILED_UPFILE 			= 1104
+	CODE_ERR_FAILED_DELFILE			= 1105
+	CODE_DB_DELETE_FAILED			= 1106
 )
 
 /******
@@ -75,6 +77,17 @@ const(
 	MSG_DB_REG_REG_ERR   = "注册失败，可能插入数据库失败"
 	MSG_DB_REG_PHONE_ERR = "手机格式不正确"
 	MSG_DB_REG_PARAM_nil = "传入参数为空"
+)
+
+//文件服务器
+const (
+	MSG_FILE_UP_OK			= "文件上传成功"
+	MSG_FILE_UP_FAILED		= "文件上传失败，内部错误"
+	MSG_FILE_DOWN_OK		= "文件下载成功"
+	MSG_FILE_DEL_OK			= "文件删除成功"
+	MSG_ERR_PARAM			= "参数错误"
+	MSG_ERR_OPENFILE		= "文件打开失败"
+	MSG_ERR_DELETE_DB		= "数据库删除失败"
 )
 
 const(

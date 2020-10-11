@@ -118,14 +118,14 @@ func (notelist* NoteListHandler) NoteListDown(ctx context.Context, in *lovers_sr
 func (notelist* NoteListHandler) NoteListDel(ctx context.Context, in *lovers_srv_notelist.NoteListDelReq, out *lovers_srv_notelist.NoteListDelResp) error {
 	if len(in.UserID) <= 0 {
 		out.NoteListDelRet = "failed"
-		out.Err = "UserId不能为空"
+		out.Err = "UserID不能为空"
 	}
 	if len(in.Timestamp) <= 0{
 		out.NoteListDelRet = "failed"
 		out.Err = "Timestamp不能为空"
 	}
 
-	err := notelist.DB.Delete("UserId = ? and Timestamp = ?",
+	err := notelist.DB.Delete("UserID = ? and Timestamp = ?",
 		in.UserID, in.Timestamp).Error
 	if err != nil {
 		out.Err = err.Error()

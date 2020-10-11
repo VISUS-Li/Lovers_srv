@@ -8,8 +8,12 @@ service FileServer {
   rpc DelFile(DelFileReq) returns (DelFileResp) {}
 }
 
-message DownLoadFileReq {
+message FileRespStatus {
+  string FileRespMsg  = 1; //返回信息
+  string FileRespCode = 2; //返回状态码
+}
 
+message DownLoadFileReq {
   string UserID          = 1;
   string DownLoadFileUrl = 2;
 
@@ -17,9 +21,11 @@ message DownLoadFileReq {
 
 message  DownLoadFileResp {
   // @inject_tag: form:"UserID"
-  string UserID          = 1;
-  bytes FileBinData      = 2;
-  string DownLoadFileRet = 3;
+  string UserID             = 1;
+  bytes FileBinData         = 2;
+  string DownLoadFileRet    = 3;
+  string FileSha            = 4;
+  FileRespStatus RespStatus = 5;
 }
 
 message  UpLoadFileReq {
@@ -27,15 +33,17 @@ message  UpLoadFileReq {
   string  FileInModule = 2; //属于哪个模块的文件
   string  FileType     = 3; //image, txt...
   string  FileName     = 4;
-  int64   FileSize     = 5;
-  bytes   FileBinData  = 6;
+  string  FileSha1     = 5;
+  int64   FileSize     = 6;
+  bytes   FileBinData  = 7;
 }
 
 message UpLoadFileResp {
-  string UpLoadFileUrl  = 1;
-  string UpLoadFileRet  = 2;
-  string FileUrl        = 3;
-  string UserID         = 4;
+  string UpLoadFileUrl      = 1;
+  string UpLoadFileRet      = 2;
+  string FileSha1           = 3;
+  string UserID             = 4;
+  FileRespStatus RespStatus = 5;
 }
 
 message  DelFileReq {
@@ -44,6 +52,8 @@ message  DelFileReq {
 }
 
 message DelFileResp {
-  string UserID     = 1;
-  string DelFileRet = 2;
+  string UserID             = 1;
+  string DelFileRet         = 2;
+  FileRespStatus RespStatus = 3;
+
 }

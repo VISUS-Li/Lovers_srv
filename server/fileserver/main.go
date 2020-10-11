@@ -5,10 +5,10 @@ import (
 	"Lovers_srv/helper/DB"
 	"Lovers_srv/helper/LogHelper"
 	"Lovers_srv/helper/Utils"
-	"Lovers_srv/server/fileServer/handler"
+	"Lovers_srv/server/fileserver/handler"
 	"github.com/micro/go-micro"
 
-	lovers_srv_file "Lovers_srv/server/fileServer/proto"
+	lovers_srv_file "Lovers_srv/server/fileserver/proto"
 	"github.com/sirupsen/logrus"
 
 )

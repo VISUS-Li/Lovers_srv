@@ -3,8 +3,8 @@ package FilerServerHandler
 import (
 	"Lovers_srv/config"
 	"Lovers_srv/helper/Utils"
-	fileServerClient "Lovers_srv/server/fileServer/client"
-	lovers_srv_file "Lovers_srv/server/fileServer/proto"
+	fileServerClient "Lovers_srv/server/fileserver/client"
+	lovers_srv_file "Lovers_srv/server/fileserver/proto"
 	"bytes"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -32,7 +32,7 @@ type fileDelGinPatam_t struct {
 	FileUrl 		string `form:"FileUrl"`
 }
 
-func DownLoadFile(c *gin.Context) error {
+func DownLoadFile(c *gin.Context) {
 	//use to proto
 	fileServerParam := &lovers_srv_file.DownLoadFileReq{}
 	//use to post
@@ -44,7 +44,6 @@ func DownLoadFile(c *gin.Context) error {
 	err := c.ShouldBind(&fileDownGinParam)
 	if err != nil {
 		logrus.Error("gin should bind failed:"+ err.Error())
-		return err
 	}
 
 	if len(fileDownGinParam.UserID) <=0 ||
@@ -69,10 +68,9 @@ func DownLoadFile(c *gin.Context) error {
 		}
 	}
 
-	return nil
 }
 
-func UpLoadFile(c *gin.Context) error {
+func UpLoadFile(c *gin.Context) {
 	//use to micro
 	fileProtoParam := &lovers_srv_file.UpLoadFileReq{}
 	//use to proto
@@ -82,21 +80,19 @@ func UpLoadFile(c *gin.Context) error {
 	if err != nil {
 		logrus.Error("gin should bind failed:" + err.Error())
 		Utils.CreateErrorWithMsg(c, err.Error(), config.CODE_ERR_GET_PARAM_)
-		return err
 	}
 	file, header, err := c.Request.FormFile("file")
 	if err == nil {
 		logrus.Error("failed to get file data, error:" + err.Error())
 		Utils.CreateErrorWithMsg(c, err.Error(), config.CODE_ERR_GET_PARAM_)
-		return err
 	}
 	defer file.Close()
 	buf := bytes.NewBuffer(nil)
 	if _, err := io.Copy(buf, file); err != nil {
 		logrus.Error("failed to get file data, err:" + err.Error())
 		Utils.CreateErrorWithMsg(c, err.Error(), config.CODE_ERR_FAILED_UPFILE)
-		return err
 	}
+
 
 	fileProtoParam.UserID 		= fileUpGinPatam.UserID
 	fileProtoParam.FileInModule = fileUpGinPatam.FileInModule
@@ -104,6 +100,7 @@ func UpLoadFile(c *gin.Context) error {
 	fileProtoParam.FileName 	= header.Filename
 	fileProtoParam.FileSize 	= header.Size
 	fileProtoParam.FileBinData  = buf.Bytes()
+	fileProtoParam.FileSha1		= Utils.Sha1(buf.Bytes())
 
 	if (len(fileProtoParam.UserID) <= 0) ||
 		(len(fileProtoParam.FileInModule) <= 0) ||
@@ -119,10 +116,9 @@ func UpLoadFile(c *gin.Context) error {
 			Utils.CreateErrorWithMsg(c, "File upload failed, error msg: " + err.Error(),config.CODE_ERR_UNKNOW)
 		}
 	}
-	return nil
 }
 
-func DelFile(c *gin.Context) error {
+func DelFile(c *gin.Context)  {
 	var fileProtoParam = &lovers_srv_file.DelFileReq{}
 	var fileDelGinPatam = fileDelGinPatam_t{}
 
@@ -130,7 +126,6 @@ func DelFile(c *gin.Context) error {
 	if err != nil {
 		logrus.Error("gin should bind failed: " + err.Error())
 		Utils.CreateErrorWithMsg(c,err.Error(), config.CODE_ERR_GET_PARAM_)
-		return err
 	}
 
 	if (len(fileDelGinPatam.UserID) <= 0) ||
@@ -146,10 +141,8 @@ func DelFile(c *gin.Context) error {
 			Utils.CreateSuccess(c, FileDelResp)
 		} else {
 			Utils.CreateErrorWithMsg(c, "failed to delete file", config.CODE_ERR_UNKNOW)
-			return err
 		}
 	}
-	return nil
 }
 
 

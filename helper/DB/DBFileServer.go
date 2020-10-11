@@ -6,4 +6,5 @@ type FileServerInfo struct {
 	FileInModule 	string
 	FileType 		string
 	FileName		string
+	FileSha1		string
 }
