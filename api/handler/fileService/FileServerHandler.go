@@ -27,7 +27,7 @@ type fileUpGinParam_t struct {
 	FileName		string `form:"FileName"`
 }
 
-type fileDelGinPatam_t struct {
+type fileDelGinParam_t struct {
 	UserID 			string `form:"UserID"`
 	FileUrl 		string `form:"FileUrl"`
 }
@@ -82,10 +82,16 @@ func UpLoadFile(c *gin.Context) {
 		Utils.CreateErrorWithMsg(c, err.Error(), config.CODE_ERR_GET_PARAM_)
 	}
 	file, header, err := c.Request.FormFile("file")
-	if err == nil {
+	if err != nil {
 		logrus.Error("failed to get file data, error:" + err.Error())
 		Utils.CreateErrorWithMsg(c, err.Error(), config.CODE_ERR_GET_PARAM_)
 	}
+
+	if file == nil {
+		logrus.Error("empty file pointer")
+		Utils.CreateErrorWithMsg(c, err.Error(), config.CODE_ERR_GET_PARAM_)
+	}
+
 	defer file.Close()
 	buf := bytes.NewBuffer(nil)
 	if _, err := io.Copy(buf, file); err != nil {
@@ -120,21 +126,21 @@ func UpLoadFile(c *gin.Context) {
 
 func DelFile(c *gin.Context)  {
 	var fileProtoParam = &lovers_srv_file.DelFileReq{}
-	var fileDelGinPatam = fileDelGinPatam_t{}
+	var fileDelGinParam = fileDelGinParam_t{}
 
-	err := c.ShouldBind(fileDelGinPatam)
+	err := c.ShouldBind(&fileDelGinParam)
 	if err != nil {
 		logrus.Error("gin should bind failed: " + err.Error())
 		Utils.CreateErrorWithMsg(c,err.Error(), config.CODE_ERR_GET_PARAM_)
 	}
 
-	if (len(fileDelGinPatam.UserID) <= 0) ||
-		(len(fileDelGinPatam.FileUrl) <= 0) {
+	if (len(fileDelGinParam.UserID) <= 0) ||
+		(len(fileDelGinParam.FileUrl) <= 0) {
 		logrus.Error("Invalid argument", config.INVALID_PARAMS)
 		Utils.CreateErrorWithMsg(c, "Invalid argument", config.INVALID_PARAMS)
 	} else {
-		fileProtoParam.FileUrl = fileDelGinPatam.FileUrl
-		fileProtoParam.UserID = fileDelGinPatam.UserID
+		fileProtoParam.FileUrl = fileDelGinParam.FileUrl
+		fileProtoParam.UserID = fileDelGinParam.UserID
 		var FileDelResp = &lovers_srv_file.DelFileResp{}
 		FileDelResp, err = fileserver_client.Clien_DelFile(c, fileProtoParam)
 		if err == nil {

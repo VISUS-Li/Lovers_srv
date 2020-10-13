@@ -125,7 +125,7 @@ func (notelist* NoteListHandler) NoteListDel(ctx context.Context, in *lovers_srv
 		out.Err = "Timestamp不能为空"
 	}
 
-	err := notelist.DB.Delete("UserID = ? and Timestamp = ?",
+	err := notelist.DB.Delete(&DB.NoteListDB{}, "user_id=? AND timestamp=?",
 		in.UserID, in.Timestamp).Error
 	if err != nil {
 		out.Err = err.Error()

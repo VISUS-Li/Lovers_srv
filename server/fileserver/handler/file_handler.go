@@ -4,15 +4,16 @@ import (
 	"Lovers_srv/config"
 	"Lovers_srv/helper/DB"
 	"Lovers_srv/helper/Utils"
+	lovers_srv_file "Lovers_srv/server/fileserver/proto"
+	proto "Lovers_srv/server/fileserver/proto"
 	"context"
 	"errors"
 	"github.com/jinzhu/gorm"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
+	"runtime"
 	"strconv"
-
-	proto "Lovers_srv/server/fileserver/proto"
 )
 
 const fileBasePath = "/user/LoversFile"
@@ -23,6 +24,7 @@ type FileHandler struct {
 
 
 func (file *FileHandler) DownLoadFile(ctx context.Context, in *proto.DownLoadFileReq, out *proto.DownLoadFileResp) error {
+	out.RespStatus = &lovers_srv_file.FileRespStatus{}
 	if (len(in.UserID) <= 0) ||
 		(len(in.DownLoadFileUrl) <= 0)  {
 		out.UserID 					= in.UserID
@@ -72,6 +74,7 @@ func (file *FileHandler) DownLoadFile(ctx context.Context, in *proto.DownLoadFil
 }
 
 func (file *FileHandler) UpLoadFile(ctx context.Context, in *proto.UpLoadFileReq, out *proto.UpLoadFileResp) error {
+	out.RespStatus = &lovers_srv_file.FileRespStatus{}
 	if (len(in.UserID) <= 0) ||
 		(len(in.FileInModule) <= 0) ||
 		(len(in.FileType) <= 0) ||
@@ -87,11 +90,16 @@ func (file *FileHandler) UpLoadFile(ctx context.Context, in *proto.UpLoadFileReq
 	}
 
 	var fileDir = fileBasePath + "/" + in.FileInModule + "/" + in.UserID + "/" + in.FileType + "/"
+	if runtime.GOOS == "windows" {
+		//fileDir = strings.Replace(fileDir, "/", "\\", -1)
+		fileDir = "..\\" + in.FileInModule + "\\" + in.UserID + "\\" + in.FileType + "\\"
+	}
+
 	var filePath = fileDir + in.FileName
 	exist, _ := Utils.PathExists(filePath)
 
 	if !exist {
-		err := os.Mkdir(fileDir, os.ModePerm)
+		err := os.MkdirAll(fileDir, os.ModePerm)
 		if err != nil {
 			logrus.Error("fileDir create failed!")
 			out.UserID 				= in.UserID
@@ -115,6 +123,7 @@ func (file *FileHandler) UpLoadFile(ctx context.Context, in *proto.UpLoadFileReq
 
 		return err
 	}
+	defer newFile.Close()
 
 	nByte, err := newFile.Write(in.FileBinData)
 	if 	int64(nByte) != in.FileSize || err != nil {
@@ -136,8 +145,7 @@ func (file *FileHandler) UpLoadFile(ctx context.Context, in *proto.UpLoadFileReq
 	out.UpLoadFileUrl			= filePath
 	out.UpLoadFileRet			= "success"
 	out.RespStatus.FileRespMsg  = config.MSG_FILE_UP_OK
-	out.RespStatus.FileRespCode = ""
-
+	out.RespStatus.FileRespCode = strconv.Itoa(config.CODE_ERR_SUCCESS)
 
 	//save the file information to database
 	fileUpDB := DB.FileServerInfo{
@@ -154,6 +162,7 @@ func (file *FileHandler) UpLoadFile(ctx context.Context, in *proto.UpLoadFileReq
 }
 
 func (file *FileHandler) DelFile(ctx context.Context, in *proto.DelFileReq, out *proto.DelFileResp) error {
+	out.RespStatus = &lovers_srv_file.FileRespStatus{}
 	if (len(in.UserID) <= 0) ||
 		(len(in.FileUrl) <= 0) {
 		out.UserID 						= in.UserID
@@ -177,8 +186,9 @@ func (file *FileHandler) DelFile(ctx context.Context, in *proto.DelFileReq, out 
 		return err
 	}
 
-	err = file.DB.Delete("UserID = ? and FileUrl = ?",
+	err = file.DB.Delete(&DB.FileServerInfo{}, "user_id=? AND file_url=?",
 		in.UserID,	in.FileUrl).Error
+	//err = file.DB.Where("UserID=? AND FileUrl=?", in.UserID, in.FileUrl).Delete(&DB.FileServerInfo{}).Error
 	if err != nil {
 		out.UserID						= in.UserID
 		out.DelFileRet					= "failed"

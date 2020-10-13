@@ -7,7 +7,7 @@ import (
 	"github.com/micro/go-micro/client"
 	)
 
-const FILE_SRV_NAME = "lovers.srv.files"
+const FILE_SRV_NAME = "lovers.srv.file"
 
 type FileServerClient struct {
 	client proto.FileServerService

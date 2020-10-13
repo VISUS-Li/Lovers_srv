@@ -9,6 +9,8 @@ import (
 
 )
 
+const NOTELIST_SRV_NAME = "lovers.srv.notelist"
+
 type NoteListClient struct {
 	client proto.NoteListService
 	serviceName  string
@@ -16,10 +18,15 @@ type NoteListClient struct {
 
 func NewNoteListClient() *NoteListClient{
 	//新建一个服务
-	c := proto.NewNoteListService(config.NOTELIST_SRV_NAME, client.DefaultClient)
+	serverName := config.GlobalConfig.Srv_name
+	if serverName == "" {
+		serverName = NOTELIST_SRV_NAME
+	}
+
+	c := proto.NewNoteListService(serverName, client.DefaultClient)
 	return &NoteListClient{
 		client:      c,
-		serviceName: config.NOTELIST_SRV_NAME,
+		serviceName: serverName,
 	}
 }
 

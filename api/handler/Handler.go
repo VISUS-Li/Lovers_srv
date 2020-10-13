@@ -38,7 +38,7 @@ func ClientEngine() *gin.Engine{
 	NoteListGroup.POST("/NoteListDown", NotelistHandler.NoteListDown)
 	NoteListGroup.POST("/NoteListDel", NotelistHandler.NoteListDel)
 
-	FileServerGroup := AuthGroup.Group("/fileserver")
+	FileServerGroup := api.Group("/fileserver")
 	FileServerGroup.POST("/FileServerDown", FilerServerHandler.DownLoadFile)
 	FileServerGroup.POST("/FileServerUp", FilerServerHandler.UpLoadFile)
 	FileServerGroup.POST("/FileServerDel", FilerServerHandler.DelFile)

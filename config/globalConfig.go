@@ -14,6 +14,7 @@ import (
 var GlobalConfig Config
 const USER_SRV_NAME = "lovers.srv.user"
 const NOTELIST_SRV_NAME = "lovers.srv.notelist"
+const FILE_SRV_NAME		= "lovers.srv.file"
 const API_NAME = "lovers.api"
 
 const (
