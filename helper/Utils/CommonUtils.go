@@ -1,13 +1,16 @@
 package Utils
 
 import (
+	"Lovers_srv/config"
 	"errors"
+	"github.com/sirupsen/logrus"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"reflect"
 	"regexp"
 	"runtime"
+	"strconv"
 	"strings"
 )
 
@@ -88,32 +91,19 @@ func GetFieldName(stu *interface{}) (map [int]string, error) {
 }
 
 /******
-从请求的Form中获取参数
+	从微服务返回的错误中分割出错误码和错误信息
 ******/
-//func GetParamFromForm(c *gin.Context, stu interface{})(interface{},error){
-//	fields, err := GetFieldName(&stu)
-//	if err != nil{
-//		return nil, err
-//	}
-//	if len(fields) <= 0{
-//		return nil, errors.New("parse struct field fail, fields are empty")
-//	}
-//
-//	for i, v := range fields{
-//		value := reflect.ValueOf(stu)
-//		postValue := c.PostForm(v)
-//		convPostV, err := strconv.Atoi(postValue)
-//		if err != nil{
-//			reflect.ValueOf(postValue).Type()
-//		}
-//
-//
-//		fieldType := value.Type().String()
-//		if fieldType == "int"{
-//
-//		}
-//
-//		value.FieldByName(v).Set(postValue)
-//	}
-//
-//}
+func SplitMicroErr(err error) (string, int){
+	if err == nil{
+		return "",0
+	}
+	errInfo := err.Error()
+	errVec := strings.Split(errInfo,"_")
+	msg := errVec[0]
+	code, covErr := strconv.Atoi(errVec[1])
+	if covErr != nil{
+		logrus.Errorf("分割错误码失败，err:%s",covErr)
+		return config.MSG_SERVER_INTERNAL,config.CODE_ERR_SERVER_INTERNAL
+	}
+	return msg, code
+}

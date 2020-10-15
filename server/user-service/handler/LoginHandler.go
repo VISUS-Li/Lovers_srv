@@ -21,9 +21,8 @@ type UserHandler struct {
 
 
 func (user* UserHandler) Login(ctx context.Context, in *lovers_srv_user.LoginReq, out *lovers_srv_user.LoginResp) error {
-	loginType, _ := strconv.Atoi(in.Type)
 
-	if loginType == config.ENUM_LOGIN_VERCODE {
+	if in.Type == config.ENUM_LOGIN_VERCODE {
 		err := user.PhoneAndPwdLogin(in.Phone, in.PassWord, out)
 		if err != nil {
 			return err
@@ -32,19 +31,17 @@ func (user* UserHandler) Login(ctx context.Context, in *lovers_srv_user.LoginReq
 		//默认采用用户名密码登录
 		err := user.NameAndPwdLogin(in.UserName, in.PassWord, out)
 		if err != nil {
-			if Utils.VerifyPhoneFormat(in.UserName) || Utils.VerifyPhoneFormat(in.Phone){
+			if Utils.VerifyPhoneFormat(in.UserName){
 				//如果用户名为电话号码，通过电话号码登录
 				err = user.PhoneAndPwdLogin(in.UserName, in.PassWord, out)
 				return err
-			}else{
-				if Utils.VerifyPhoneFormat(in.Phone){
+			}else if Utils.VerifyPhoneFormat(in.Phone){
 					err = user.PhoneAndPwdLogin(in.Phone, in.PassWord, out)
 					if err != nil {
 						return err
 					}
-				}else{
-					return user.loginFailResp(out, config.MSG_DB_REG_PHONE_ERR,config.CODE_ERR_REG_PHONE_ERR)
-				}
+			}else{
+				return user.loginFailResp(out, config.MSG_DB_REG_PHONE_ERR,config.CODE_ERR_REG_PHONE_ERR)
 			}
 		}
 	}

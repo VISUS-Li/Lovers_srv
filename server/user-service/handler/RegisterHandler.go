@@ -16,93 +16,76 @@ import (
 )
 
 func (user* UserHandler)RegisterUser(ctx context.Context, in *lovers_srv_user.RegisterReq, out *lovers_srv_user.RegisterResp) error{
-	out.RegisteredInfo = &lovers_srv_user.LoginResp{}
+	//out.RegisteredInfo = &lovers_srv_user.LoginResp{}
 	if in == nil{
-		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_PARAM_nil
-		return  errors.New("in param is nil")
+		return user.RegisterFailResp(out,config.MSG_DB_REG_PARAM_nil,config.CODE_ERR_PARAM_EMPTY)
 	}
-	if in.UserInfo == nil{
-		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_PARAM_nil
-		return  errors.New("registeredInfo param is nil")
+	if len(in.Phone) <= 0 || len(in.PassWord) <= 0{
+		return user.RegisterFailResp(out,config.MSG_DB_REG_IN_EMPTY,config.CODE_ERR_PARAM_EMPTY)
 	}
-	if len(in.UserName) <= 0 || len(in.PassWord) <= 0{
-		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_IN_EMPTY
-		return  errors.New("UserName or PassWord is empty")
-	}
-	isphone := Utils.VerifyPhoneFormat(in.UserInfo.Phone)
+	isphone := Utils.VerifyPhoneFormat(in.Phone)
 	if !isphone{
-		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_PHONE_ERR
-		return errors.New("invalid phone number")
+		return user.RegisterFailResp(out,config.MSG_DB_REG_PHONE_ERR,config.CODE_ERR_REG_PHONE_ERR)
 	}
 
 	var dupliPhone []DB.UserBaseInfo
-	user.DB.Where("Phone = ?",in.UserInfo.Phone).Find(&dupliPhone)
+	user.DB.Where("Phone = ?",in.Phone).Find(&dupliPhone)
 	if len(dupliPhone) > 0{
-		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_EXIST
-		return errors.New("phone number is exists")
+		return user.RegisterFailResp(out,config.MSG_DB_REG_EXIST,config.CODE_ERR_REG_PHONE_EXIST)
 	}
 	//创建UUID
 	userUUID := uuid.NewV1()
-	sex, _ := strconv.Atoi(in.UserInfo.Sex)
+
 
 	var regBaseInfo DB.UserBaseInfo
 
-	if in.UserInfo.AnotherInfo == nil {
-		regBaseInfo = DB.UserBaseInfo{
-			Model:         gorm.Model{},
-			UserId:        userUUID.String(),
-			RealName:      in.UserInfo.RealName,
-			Phone:         in.UserInfo.Phone,
-			Sex:           sex,
-			Birth:         in.UserInfo.Birth,
-			Sculpture:     in.UserInfo.Sculpture,
-			HomeTown:      in.UserInfo.HomeTown,
-		}
-	}else{
-		regBaseInfo = DB.UserBaseInfo{
-			Model:         gorm.Model{},
-			UserId:        userUUID.String(),
-			RealName:      in.UserInfo.RealName,
-			Phone:         in.UserInfo.Phone,
-			Sex:           sex,
-			Birth:         in.UserInfo.Birth,
-			Sculpture:     in.UserInfo.Sculpture,
-			HomeTown:      in.UserInfo.HomeTown,
-			LoverId:       in.UserInfo.AnotherInfo.LoverId,
-			LoverPhone:    in.UserInfo.AnotherInfo.LoverPhone,
-			LoverNickName: in.UserInfo.AnotherInfo.LoverNickName,
-			LoveDuration:  0,
-		}
+	regBaseInfo = DB.UserBaseInfo{
+		Model:         gorm.Model{},
+		UserId:        userUUID.String(),
+		Phone:         in.Phone,
+		Sex:           int(in.Gender),
 	}
 	regLoginInf := DB.LoginInfo{
 		Model:    gorm.Model{},
 		UserId:   userUUID.String(),
-		UserName: in.UserName,
 		PassWord: in.PassWord,
-		Phone:  in.UserInfo.Phone,
+		Phone:  in.Phone,
 	}
 
 	err := user.DB.Create(&regLoginInf).Error
 
 	if err != nil{
-		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_REG_ERR
-		err := errors.New("insert login info to db failed,err:" + err.Error())
-		logrus.Error(err.Error())
-		return err
+		logrus.Errorf("插入Login数据库失败,err:%s",err.Error())
+		return user.RegisterFailResp(out,config.MSG_DB_REG_REG_ERR,config.CODE_ERR_SERVER_INTERNAL)
+
 	}
 	err = user.DB.Create(&regBaseInfo).Error
 	if err != nil{
-		out.RegisteredInfo.LoginRes = config.MSG_DB_REG_REG_ERR
-		err := errors.New("insert UserBaseInfo to db failed,err:" + err.Error())
-		logrus.Error(err.Error())
-		return err
+		logrus.Errorf("插入Register数据库失败,err:%s",err.Error())
+		return user.RegisterFailResp(out,config.MSG_DB_REG_REG_ERR,config.CODE_ERR_SERVER_INTERNAL)
 	}
 
+	return user.RegisterSuccessResp(out,regBaseInfo)
+}
+
+
+func (user* UserHandler)RegisterFailResp(out *lovers_srv_user.RegisterResp, msg string, code int) error{
+	out.RegisteredInfo = new(lovers_srv_user.LoginResp)
+	out.RegisteredInfo.LoginRes = msg
+	out.RegisteredInfo.LoginCode = strconv.Itoa(code)
+	return errors.New(msg+"_"+strconv.Itoa(code))
+}
+
+func (user* UserHandler)RegisterSuccessResp(out *lovers_srv_user.RegisterResp, regBaseInfo DB.UserBaseInfo) error{
+	token,err := JWTHandler.GenerateToken(regBaseInfo.UserId,"") // 需要密码
+	if err != nil{
+		logrus.Debugf("生成token失败,UserId:%s,Password:%s",regBaseInfo.UserId,"")
+		return user.RegisterFailResp(out, config.MSG_SERVER_INTERNAL, config.CODE_ERR_SERVER_INTERNAL)
+	}
+	out.RegisteredInfo = new(lovers_srv_user.LoginResp)
 	out.RegisteredInfo.UserInfo = user.DBBaseInfoToRespBaseInfo(regBaseInfo)
 	out.RegisteredInfo.LoginRes = config.MSG_DB_REG_OK
 	out.RegisteredInfo.LoginTime = strconv.FormatInt(time.Now().Unix(),10)
-	token,err := JWTHandler.GenerateToken(regBaseInfo.UserId,"") // 需要密码
 	out.RegisteredInfo.Token = token
-
 	return nil
 }
