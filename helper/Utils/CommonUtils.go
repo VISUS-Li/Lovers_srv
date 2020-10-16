@@ -1,12 +1,16 @@
 package Utils
 
 import (
+	"Lovers_srv/config"
 	"errors"
+	"github.com/sirupsen/logrus"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"runtime"
+	"strconv"
 	"strings"
 )
 
@@ -65,3 +69,55 @@ func GetDBNameFromSrvName(srvName string)(string){
 }
 
 
+
+/******
+获取结构体中字段的名称
+******/
+func GetFieldName(stu *interface{}) (map [int]string, error) {
+
+	t := reflect.TypeOf(stu)
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+	if t.Kind() != reflect.Struct {
+		return nil,errors.New("Check type error not Struct")
+	}
+	fieldNum := t.NumField()
+	fieldList := make(map[int]string)
+	for i := 0; i < fieldNum; i++ {
+		fieldList[i] = t.Field(i).Name
+	}
+	return fieldList,nil
+}
+
+/******
+	从微服务返回的错误中分割出错误码和错误信息
+******/
+func SplitMicroErr(err error) (string, int){
+	if err == nil{
+		return "",0
+	}
+	errInfo := err.Error()
+	errVec := strings.Split(errInfo,"_")
+	var msg string
+	var code int
+	if len(errVec) > 0 {
+		msg = errVec[0]
+	}else{
+		msg = config.MSG_SERVER_INTERNAL
+		code = config.CODE_ERR_SERVER_INTERNAL
+	}
+	if len(errVec) > 1{
+		codeErr, covErr := strconv.Atoi(errVec[1])
+		if covErr != nil{
+			logrus.Errorf("分割错误码失败，err:%s",covErr)
+			return config.MSG_SERVER_INTERNAL,config.CODE_ERR_SERVER_INTERNAL
+		}
+		code = codeErr
+	}else{
+		code = config.CODE_ERR_SERVER_INTERNAL
+	}
+
+
+	return msg, code
+}

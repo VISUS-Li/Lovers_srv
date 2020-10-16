@@ -14,6 +14,9 @@ service User{
     rpc UnBindLover(UnBindLoverReq) returns (UnBindLoverResp){}
 
     rpc GetLoverInfo(GetLoverInfoReq) returns (GetLoverInfoResp){}
+
+    //用户账户相关操作
+    rpc QueryUserIsExistById(QueryUserIsExistByIdReq) returns (QueryUserIsExistByIdResp){}
 }
 
 /*登录信息*/
@@ -46,23 +49,31 @@ message LoverInfo{
 }
 
 message LoginReq{
+     // @inject_tag: form:"UserName"
      string UserName = 1;
+     // @inject_tag: form:"PassWord"
      string PassWord = 2;
-     string Type = 3; /*phone = 1, qq = 2, wechat = 3*/
+     // @inject_tag: form:"Type"
+     int32  Type = 3; /*phone = 1, qq = 2, wechat = 3*/
+     // @inject_tag: form:"Phone"
      string Phone = 4;
+     // @inject_tag: form:"VertifyCode"
      string VertifyCode = 5; /*登录验证码*/
 }
 
 message LoginResp{
      string Token = 1;
-     BaseInfo UserInfo = 2;
-     string LoginTime = 3;
-     string LoginRes = 4; //登录状态,登录成功或者失败的原因
-     string LoginCode = 5; //登录状态码,0.成功,其余参考status_info定义
+     string  TokenExpireTime = 2;
+     BaseInfo UserInfo = 3;
+     string LoginTime = 4;
+     string LoginRes = 5; //登录状态,登录成功或者失败的原因
+     string LoginCode = 6; //登录状态码,0.成功,其余参考status_info定义
 }
 
 message LogoutReq{
+     // @inject_tag: form:"Phone"
      string Phone = 1;
+     // @inject_tag: form:"UserId"
      string UserId = 2;
 }
 
@@ -72,12 +83,16 @@ message LogoutResp{
 }
 
 message RegisterReq{
-     string UserName = 1;
-     string PassWord = 2;
-     BaseInfo UserInfo = 3;
-     string BindId = 4; /*和另一半配对的ID*/
-     string RecommendID = 5; /*邀请码*/
-     string VertifyCode = 6; /*验证码*/
+    // @inject_tag: form:"Phone"
+     string  Phone      = 1;
+     // @inject_tag: form:"PassWord"
+     string PassWord    = 2;
+     // @inject_tag: form:"Gender"
+     int32  Gender      = 3;
+     // @inject_tag: form:"RecommendID"
+     string RecommendID = 4; /*邀请码*/
+     // @inject_tag: form:"VertifyCode"
+     string VertifyCode = 5; /*验证码*/
 }
 
 message RegisterResp{
@@ -115,4 +130,12 @@ message GetLoverInfoResp{
      LoverInfo GotLoverInfo = 1;
 }
 
-
+//用户账户相关操作
+message QueryUserIsExistByIdReq{
+    string UserId = 1;
+}
+message QueryUserIsExistByIdResp{
+    bool    IsExist     = 1;
+    int32   QueryCode   = 2;
+    string  QueryRes    = 3;
+}

@@ -49,9 +49,15 @@ func main(){
 
 	userHandler := handler.UserHandler{dbUtil.DB}
 
+	//注册中心为consul
+	//reg := consul.NewRegistry(func(op *registry.Options) {
+	//	op.Addrs = config.GlobalConfig.RegisterHosts
+	//})
+
 	//新建serivce
 	service := micro.NewService(
 			micro.Name(serverName),
+			//micro.Registry(reg),
 		)
 
 	service.Init()

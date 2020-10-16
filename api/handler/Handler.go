@@ -33,6 +33,9 @@ func ClientEngine() *gin.Engine{
 	AuthGroup.Use(JWTHandler.JWTMidWare())
 
 	//事件清单
+	//HomeAuthGroup := AuthGroup.Group("/HomeGroup")
+	//HomeAuthGroup.POST("/PostCardInfo",HomeHandler.PostCardInfo)
+
 	NoteListGroup := AuthGroup.Group("/notelist")
 	NoteListGroup.POST("/NoteListUp", NotelistHandler.NoteListUp)
 	NoteListGroup.POST("/NoteListDown", NotelistHandler.NoteListDown)

@@ -8,44 +8,74 @@ service home{
 }
 
 enum CARDTYPE{
-    AD          = 0;
-    Info        = 1;
+    CARDTYPE_UNKNOWN     = 0;
+    AD          = 1;
+    Info        = 2;
 }
 
 enum ADTYPE{
-    HOTEL       = 0;
-    FOOD        = 1;
+    ADTYPE_UNKNOWN     = 0;
+    HOTEL       = 1;
+    FOOD        = 2;
 }
 
 enum INFOTYPE{
-    NEWS        = 0;
+    INFOTYPE_UNKNOWN     = 0;
+    NEWS        = 1;
+}
+enum MEDIATYPE{
+    MEDIATYPE_UNKNOWN   = 0;
+    IMAGE       = 1;
+    AUDIO       = 2;
 }
 
 /*获取主页卡片参数*/
 
 /*获取首页卡片状态*/
 message CardRespStatus{
-    string GetCardRes  = 1; //获取卡片状态，成功或失败原因
-    string GetCardCode = 2; //获取卡片状态码
+    string OpCardRes    = 1; //操作卡片状态，上传或获取时成功或失败原因
+    int32 OpCardCode    = 2; //操作卡片状态码
 }
 
 /*首页卡片的基本信息*/
 message HomeCardInfo{
+    // @inject_tag: form:"CardType"
     CARDTYPE        CardType          = 1; //卡片类型，广告、咨询等
+    // @inject_tag: form:"AdType"
     ADTYPE          AdType            = 2; //广告类型
+    // @inject_tag: form:"InfoType"
     INFOTYPE        InfoType          = 3; //资讯类型
+    // @inject_tag: form:"Title"
     string          Title             = 4; //卡片标题
+    // @inject_tag: form:"Content"
     string          Content           = 5; //卡片内容
-    string          TypeDesc          = 6; //卡片类型说明
-    int64           CreateTime        = 7; //卡片创建时间
-    int32           ShowIndex         = 8; //卡片显示排名
-    bool            IsMainCard        = 9; //卡片是否为主卡片
-    string          UpLoadUserId      = 10; //上传用户ID
-    string          CardId            = 11; //该卡片的ID
+    // @inject_tag: form:"HomeHtmlUrl"
+    string          HomeHtmlUrl       = 6; //卡片内容的HTML文件Url
+    // @inject_tag: form:"TypeDesc"
+    string          TypeDesc          = 7; //卡片类型说明
+    // @inject_tag: form:"CreateTime"
+    int64           CreateTime        = 8; //卡片创建时间
+    // @inject_tag: form:"ShowIndex"
+    int32           ShowIndex         = 9; //卡片显示排名
+    // @inject_tag: form:"IsMainCard"
+    bool            IsMainCard        = 10; //卡片是否为主卡片
+    // @inject_tag: form:"UpLoadUserId" binding:"required"
+    string          UpLoadUserId      = 11; //上传用户ID
+    // @inject_tag: form:"CardId"
+    string          CardId            = 12; //该卡片的ID
+    // @inject_tag: form:"HomeImgUrl"
+    string          HomeImgUrl        = 13; //卡片在主页显示的图片
+    // @inject_tag: form:"CardMediaType"
+    MEDIATYPE       CardMediaType     = 14; //卡片媒体类型
+    // @inject_tag: form:"AudioFileUrl"
+    string          AudioFileUrl      = 15; //音频文件地址
+    // @inject_tag: form:"AudioLength"
+    string          AudioLength       = 16; //音频长度
 }
 
 
 message GetMainCardReq{
+    string  UserId = 1;
 }
 message GetMainCardResp{
     CardRespStatus          RespStatus = 1;

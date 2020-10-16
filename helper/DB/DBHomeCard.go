@@ -12,8 +12,13 @@ type HomeCardInfo struct {
 	InfoType int 	//资讯类型
 	Title    string //卡片标题
 	Content	 string //卡片内容
+	HomeHtmlUrl string //卡片内容的HTML文件Url
 	TypeDesc string //卡片类型说明
 	CreateTime int64 //卡片创建时间
 	ShowIndex	int	//卡片显示排名，热度
 	IsMainCard	bool //是否为主卡片
+	HomeImgUrl	string //卡片在主页显示的图片
+	CardMediaType int //卡片媒体类型
+	AudioFileUrl string //音频文件地址
+	AudioLength string //音频长度
 }

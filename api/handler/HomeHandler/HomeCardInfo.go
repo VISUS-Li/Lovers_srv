@@ -7,23 +7,21 @@ import (
 	proto "Lovers_srv/server/home-service/proto"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
-	"strconv"
 )
 
 var home_client = client.NewHomeMicroClient()
 
 func GetMainCard(c *gin.Context){
-
-	mainCardList,err := home_client.Client_GetMainCard(c,nil)
+	getMainCardReq := &proto.GetMainCardReq{}
+	mainCardList,err := home_client.Client_GetMainCard(c,getMainCardReq)
 	if err == nil && mainCardList != nil{
 		total := len(mainCardList.MainCardInfo)
 		Utils.CreateSuccessByList(c, total, mainCardList)
 	}else{
 		if mainCardList == nil{
-			Utils.CreateErrorWithMsg(c, "GetMainCard failed error msg:"+err.Error() + "loginResp is nil",config.CODE_ERR_SERVER_INTERNAL)
+			Utils.CreateErrorWithMsg(c, err.Error(),config.CODE_ERR_SERVER_INTERNAL)
 		}else {
-			code, err := strconv.Atoi(mainCardList.RespStatus.GetCardCode)
-			Utils.CreateErrorWithMsg(c, "GetMainCard failed error msg:"+err.Error(), code)
+			Utils.CreateErrorWithMsg(c, err.Error(), int(mainCardList.RespStatus.OpCardCode))
 		}
 	}
 }
@@ -41,33 +39,24 @@ func GetCardInfoByType(c *gin.Context){
 
 
 func PostCardInfo(c* gin.Context){
-	var cardInfo = &proto.PostCardInfoReq{}
-	cardType, _ := strconv.Atoi(c.PostForm("CardType"))
-	cardInfo.PostCardInfo.CardType = proto.CARDTYPE(cardType)
-
-	adType, _ := strconv.Atoi(c.PostForm("AdType"))
-	cardInfo.PostCardInfo.AdType = proto.ADTYPE(adType)
-
-	infoType, _ := strconv.Atoi(c.PostForm("InfoType"))
-	cardInfo.PostCardInfo.InfoType = proto.INFOTYPE(infoType)
-
-	cardInfo.PostCardInfo.Title = c.PostForm("Title")
-	cardInfo.PostCardInfo.Content = c.PostForm("Content")
-	cardInfo.PostCardInfo.TypeDesc = c.PostForm("TypeDesc")
-
-	showIndex, _ := strconv.Atoi(c.PostForm("ShowIndex"))
-	cardInfo.PostCardInfo.ShowIndex = int32(showIndex)
-	isMainCard,_ := strconv.Atoi(c.PostForm("IsMainCard"))
-	if isMainCard != 0{
-		cardInfo.PostCardInfo.IsMainCard = true
-	}else{
-		cardInfo.PostCardInfo.IsMainCard = false
+	var NewCardInfo = &proto.HomeCardInfo{}
+	var cardInfo = &proto.PostCardInfoReq{PostCardInfo:NewCardInfo}
+	err := c.ShouldBind(cardInfo)
+	if err != nil{
+		Utils.CreateErrorWithMsg(c,err.Error(),config.INVALID_PARAMS)
+		return
 	}
-
-	cardInfo.PostCardInfo.UpLoadUserId = c.PostForm("UpLoadUserId")
 
 	cardInfo.PostCardInfo.CardId = uuid.NewV1().String()
 
-
-	home_client.Client_PostCardInfo(c, cardInfo)
+	PostCardResp,err := home_client.Client_PostCardInfo(c, cardInfo)
+	if err != nil{
+		if PostCardResp == nil{
+			Utils.CreateErrorWithMsg(c,err.Error(),config.CODE_ERR_SERVER_INTERNAL)
+		}else{
+			Utils.CreateErrorWithMsg(c, PostCardResp.RespStatus.OpCardRes, int(PostCardResp.RespStatus.OpCardCode))
+		}
+	}else{
+		Utils.CreateSuccess(c,nil)
+	}
 }
