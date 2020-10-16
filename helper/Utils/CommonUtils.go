@@ -99,11 +99,25 @@ func SplitMicroErr(err error) (string, int){
 	}
 	errInfo := err.Error()
 	errVec := strings.Split(errInfo,"_")
-	msg := errVec[0]
-	code, covErr := strconv.Atoi(errVec[1])
-	if covErr != nil{
-		logrus.Errorf("分割错误码失败，err:%s",covErr)
-		return config.MSG_SERVER_INTERNAL,config.CODE_ERR_SERVER_INTERNAL
+	var msg string
+	var code int
+	if len(errVec) > 0 {
+		msg = errVec[0]
+	}else{
+		msg = config.MSG_SERVER_INTERNAL
+		code = config.CODE_ERR_SERVER_INTERNAL
 	}
+	if len(errVec) > 1{
+		codeErr, covErr := strconv.Atoi(errVec[1])
+		if covErr != nil{
+			logrus.Errorf("分割错误码失败，err:%s",covErr)
+			return config.MSG_SERVER_INTERNAL,config.CODE_ERR_SERVER_INTERNAL
+		}
+		code = codeErr
+	}else{
+		code = config.CODE_ERR_SERVER_INTERNAL
+	}
+
+
 	return msg, code
 }

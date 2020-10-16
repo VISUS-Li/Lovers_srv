@@ -16,10 +16,14 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
+type TokenInfo struct{
+	Token string
+	ExpireTime int64
+}
 /******
 通过用户名密码生成token
 ******/
-func GenerateToken(username string, password string)(string, error){
+func GenerateToken(username string, password string)(TokenInfo, error){
 	//token超时时间
 	nowTime := time.Now()
 	expireTime := nowTime.Add(3 * time.Hour)
@@ -38,7 +42,8 @@ func GenerateToken(username string, password string)(string, error){
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256,claims)
 	secret := []byte(config.GlobalConfig.JwtSecret)
 	token,err := tokenClaims.SignedString(secret)
-	return token,err
+	tokenInfo := TokenInfo{token,expireTime.Unix()}
+	return tokenInfo,err
 }
 
 /******

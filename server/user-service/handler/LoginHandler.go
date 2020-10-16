@@ -133,7 +133,8 @@ func (user* UserHandler)loginSuccessResp(out *lovers_srv_user.LoginResp,userId s
 	if err != nil{
 		return user.loginFailResp(out, config.MSG_DB_LOGIN_TOKEN_ERROR, config.CODE_ERR_LOGIN_TOKEN_ERROR)
 	}
-	out.Token = token
+	out.Token = token.Token
+	out.TokenExpireTime = strconv.FormatInt(token.ExpireTime,10)
 	out.LoginRes = config.MSG_DB_LOGIN_OK
 	out.LoginCode = strconv.Itoa(config.CODE_ERR_SUCCESS)
 	out.LoginTime = strconv.FormatInt(time.Now().Unix(),10)

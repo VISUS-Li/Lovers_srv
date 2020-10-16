@@ -86,6 +86,7 @@ func (user* UserHandler)RegisterSuccessResp(out *lovers_srv_user.RegisterResp, r
 	out.RegisteredInfo.UserInfo = user.DBBaseInfoToRespBaseInfo(regBaseInfo)
 	out.RegisteredInfo.LoginRes = config.MSG_DB_REG_OK
 	out.RegisteredInfo.LoginTime = strconv.FormatInt(time.Now().Unix(),10)
-	out.RegisteredInfo.Token = token
+	out.RegisteredInfo.Token = token.Token
+	out.RegisteredInfo.TokenExpireTime =  strconv.FormatInt(token.ExpireTime,10)
 	return nil
 }

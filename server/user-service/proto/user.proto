@@ -63,10 +63,11 @@ message LoginReq{
 
 message LoginResp{
      string Token = 1;
-     BaseInfo UserInfo = 2;
-     string LoginTime = 3;
-     string LoginRes = 4; //登录状态,登录成功或者失败的原因
-     string LoginCode = 5; //登录状态码,0.成功,其余参考status_info定义
+     string  TokenExpireTime = 2;
+     BaseInfo UserInfo = 3;
+     string LoginTime = 4;
+     string LoginRes = 5; //登录状态,登录成功或者失败的原因
+     string LoginCode = 6; //登录状态码,0.成功,其余参考status_info定义
 }
 
 message LogoutReq{
