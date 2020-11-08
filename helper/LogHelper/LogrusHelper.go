@@ -49,7 +49,7 @@ func (l *LoversLog)SetOutPut(srvName string) (error){
 	} else {
 		logrus.SetOutput(file)
 	}
-	logrus.SetLevel(logrus.InfoLevel)
+	logrus.SetLevel(logrus.DebugLevel)
 	logrus.SetReportCaller(true)
 	return err
 }

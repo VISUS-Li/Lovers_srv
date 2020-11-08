@@ -35,6 +35,8 @@ var _ server.Option
 
 type HomeService interface {
 	GetMainCard(ctx context.Context, in *GetMainCardReq, opts ...client.CallOption) (*GetMainCardResp, error)
+	GetCardByCount(ctx context.Context, in *GetCardByCountReq, opts ...client.CallOption) (*GetCardByCountResp, error)
+	GetCardByIndex(ctx context.Context, in *GetCardByIndexReq, opts ...client.CallOption) (*GetCardByIndexResp, error)
 	PostCardInfo(ctx context.Context, in *PostCardInfoReq, opts ...client.CallOption) (*PostCardInfoResp, error)
 }
 
@@ -66,6 +68,26 @@ func (c *homeService) GetMainCard(ctx context.Context, in *GetMainCardReq, opts 
 	return out, nil
 }
 
+func (c *homeService) GetCardByCount(ctx context.Context, in *GetCardByCountReq, opts ...client.CallOption) (*GetCardByCountResp, error) {
+	req := c.c.NewRequest(c.name, "Home.GetCardByCount", in)
+	out := new(GetCardByCountResp)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *homeService) GetCardByIndex(ctx context.Context, in *GetCardByIndexReq, opts ...client.CallOption) (*GetCardByIndexResp, error) {
+	req := c.c.NewRequest(c.name, "Home.GetCardByIndex", in)
+	out := new(GetCardByIndexResp)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *homeService) PostCardInfo(ctx context.Context, in *PostCardInfoReq, opts ...client.CallOption) (*PostCardInfoResp, error) {
 	req := c.c.NewRequest(c.name, "Home.PostCardInfo", in)
 	out := new(PostCardInfoResp)
@@ -80,12 +102,16 @@ func (c *homeService) PostCardInfo(ctx context.Context, in *PostCardInfoReq, opt
 
 type HomeHandler interface {
 	GetMainCard(context.Context, *GetMainCardReq, *GetMainCardResp) error
+	GetCardByCount(context.Context, *GetCardByCountReq, *GetCardByCountResp) error
+	GetCardByIndex(context.Context, *GetCardByIndexReq, *GetCardByIndexResp) error
 	PostCardInfo(context.Context, *PostCardInfoReq, *PostCardInfoResp) error
 }
 
 func RegisterHomeHandler(s server.Server, hdlr HomeHandler, opts ...server.HandlerOption) error {
 	type home interface {
 		GetMainCard(ctx context.Context, in *GetMainCardReq, out *GetMainCardResp) error
+		GetCardByCount(ctx context.Context, in *GetCardByCountReq, out *GetCardByCountResp) error
+		GetCardByIndex(ctx context.Context, in *GetCardByIndexReq, out *GetCardByIndexResp) error
 		PostCardInfo(ctx context.Context, in *PostCardInfoReq, out *PostCardInfoResp) error
 	}
 	type Home struct {
@@ -101,6 +127,14 @@ type homeHandler struct {
 
 func (h *homeHandler) GetMainCard(ctx context.Context, in *GetMainCardReq, out *GetMainCardResp) error {
 	return h.HomeHandler.GetMainCard(ctx, in, out)
+}
+
+func (h *homeHandler) GetCardByCount(ctx context.Context, in *GetCardByCountReq, out *GetCardByCountResp) error {
+	return h.HomeHandler.GetCardByCount(ctx, in, out)
+}
+
+func (h *homeHandler) GetCardByIndex(ctx context.Context, in *GetCardByIndexReq, out *GetCardByIndexResp) error {
+	return h.HomeHandler.GetCardByIndex(ctx, in, out)
 }
 
 func (h *homeHandler) PostCardInfo(ctx context.Context, in *PostCardInfoReq, out *PostCardInfoResp) error {

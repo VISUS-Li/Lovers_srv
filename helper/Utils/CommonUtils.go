@@ -3,6 +3,8 @@ package Utils
 import (
 	"Lovers_srv/config"
 	"errors"
+	"fmt"
+	"github.com/go-sql-driver/mysql"
 	"github.com/sirupsen/logrus"
 	"os"
 	"os/exec"
@@ -25,7 +27,11 @@ func VerifyPhoneFormat(phone string) bool{
 	reg := regexp.MustCompile(pattern)
 	return  reg.MatchString(phone)
 }
-
+func VerifyUUIDFormat(uuid string) bool{
+	pattern := "^[A-Fa-f0-9]{8}(-[A-Fa-f0-9]{4}){3}-[A-Fa-f0-9]{12}$"
+	reg := regexp.MustCompile(pattern)
+	return reg.MatchString(uuid)
+}
 func GetCurrentExecPath()(string,error){
 	file,err := exec.LookPath(os.Args[0])
 	if err != nil{
@@ -120,4 +126,64 @@ func SplitMicroErr(err error) (string, int){
 
 
 	return msg, code
+}
+
+/******
+	构建微服务返回的错误格式
+******/
+func MicroErr(msg string, code int) error{
+	return errors.New(msg + "_" + strconv.Itoa(code))
+}
+
+/******
+ErrorOutputf，构建error的同时，将这个error的信息打印到日志中，支持格式化字符串
+******/
+func ErrorOutputf(format string, args ...interface{}) error{
+	msg := fmt.Sprintf(format, args...)
+	if(config.GlobalConfig.RunMode == config.RUNMODE_DEV){
+		logrus.Error(msg)
+	}
+	return errors.New(msg)
+}
+
+/******
+	处理mysql返回的错误，并将错误码转换成自定义错误码
+******/
+func ErrorOutputMysqlf(defCode int, err error,format string, args ...interface{}) (int, error){
+	msg := fmt.Sprintf(format, args...)
+	if(config.GlobalConfig.RunMode == config.RUNMODE_DEV){
+		logrus.Error(msg)
+	}
+	t := reflect.TypeOf(err)
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+	var errCode int
+	if t.Name() == "MySQLError"{
+		mySqlErr := err.(*mysql.MySQLError)
+		//将mysql错误码，转换成自定义错误码
+		switch mySqlErr.Number {
+		case 1062:
+			errCode = config.ENUM_ERR_DB_INSERT_DUPLICATE //插入时，主键重复
+			break;
+		default:
+			errCode = defCode
+			if(config.GlobalConfig.RunMode == config.RUNMODE_DEV){
+				logrus.Errorf("MYSQLError msg:%, code:%d",mySqlErr.Message, mySqlErr.Number)
+			}
+			break;
+		}
+		return errCode, mySqlErr
+	}else{
+		if err.Error() == config.MSG_ERR_DB_RECORD_NOT_FOUND_ENG{
+			errCode = config.ENUM_ERR_DB_QUERY_NOT_FOUND
+		}else{
+			errCode = defCode
+		}
+		return errCode, err
+	}
+}
+
+func ParseError(){
+
 }

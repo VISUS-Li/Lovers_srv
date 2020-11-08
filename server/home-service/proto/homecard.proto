@@ -4,6 +4,8 @@ package lovers.srv.home;
 
 service home{
     rpc GetMainCard(GetMainCardReq) returns (GetMainCardResp){}
+    rpc GetCardByCount(GetCardByCountReq)returns (GetCardByCountResp){}
+    rpc GetCardByIndex(GetCardByIndexReq)returns (GetCardByIndexResp){}
     rpc PostCardInfo(PostCardInfoReq)returns (PostCardInfoResp){}
 }
 
@@ -71,6 +73,8 @@ message HomeCardInfo{
     string          AudioFileUrl      = 15; //音频文件地址
     // @inject_tag: form:"AudioLength"
     string          AudioLength       = 16; //音频长度
+    // @inject_tag: form:"ImgMaskType"
+    int32           ImgMaskType           = 17; //在前端图片显示样式
 }
 
 
@@ -83,13 +87,29 @@ message GetMainCardResp{
 }
 
 message GetCardByCountReq{
+    // @inject_tag: form:"StartTime"
      int64   StartTime       = 1;
+     // @inject_tag: form:"EndTime"
      int64   EndTime         = 2;
+     // @inject_tag: form:"CardCount"
      int32   CardCount       = 3;
 }
 
 message GetCardByCountResp{
     repeated HomeCardInfo   CardList = 1;
+}
+
+message GetCardByIndexReq{
+     // @inject_tag: form:"StartIndex"
+     int32     StartIndex       = 1;
+     // @inject_tag: form:"EndIndex"
+     int32     EndIndex         = 2;
+}
+
+message GetCardByIndexResp{
+    repeated HomeCardInfo   CardList = 1;
+    int32    GetCardCount = 2; //CardList中卡片的数量
+    int32    TotalCardCount = 3; //整个数据库总共有多少卡片数量
 }
 
 message PostCardInfoReq{

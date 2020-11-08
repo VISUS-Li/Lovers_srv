@@ -3,7 +3,7 @@ package handler
 import (
 	"Lovers_srv/config"
 	"Lovers_srv/helper/DB"
-	lovers_srv_notelist "Lovers_srv/server/note-list/proto"
+	lovers_srv_notelist "Lovers_srv/server/lovers-tools/note-list/proto"
 	"context"
 	"errors"
 	"fmt"

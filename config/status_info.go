@@ -23,9 +23,11 @@ const(
 
 const(
 	CODE_ERR_PARAM_EMPTY			 = 1005
+	CODE_ERR_PARAM_WRONG			 = 1019 //传入参数错误
 	CODE_ERR_SERVER_INTERNAL		 = 1011 //服务器内部错误
 	CODE_ERR_INSERT_DB_FAIL		  	 = 1013	//插入数据库失败
 	CODE_ERR_SELECT_DB_FAIL		  	 = 1014	//查询数据库失败
+	CODE_ERR_DB_RECORD_NOT_FOUND	 = 1020 //从数据库中未查询到数据
 
 )
 //用户登录相关
@@ -75,6 +77,8 @@ const(
 	MSG_SERVER_INTERNAL 	= "服务器内部错误"
 	MSG_ERR_INSERT_DB_FAIL 	= "插入数据库失败"
 	MSG_ERR_SELECT_DB_FAIL 	= "查询数据库失败"
+	MSG_ERR_DB_RECORD_NOT_FOUND = "未查询到记录"
+	MSG_ERR_DB_RECORD_NOT_FOUND_ENG = "record not found"
 	MSG_ERR_PARAM_WRONG		= "传入参数错误"
 )
 
@@ -124,5 +128,9 @@ const(
 
 const(
 	NOTELISTUP_INVALID_PARAM = "事件清单参数错误"
+)
+
+//数据库错误集合
+const(
 
 )

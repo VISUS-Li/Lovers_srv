@@ -3,11 +3,11 @@ package handler
 import (
 	"Lovers_srv/api/handler/JWTHandler"
 	"Lovers_srv/config"
+	"Lovers_srv/helper/Cache/UserCache"
 	"Lovers_srv/helper/DB"
 	"Lovers_srv/helper/Utils"
 	lovers_srv_user "Lovers_srv/server/user-service/proto"
 	"context"
-	"errors"
 	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
@@ -28,11 +28,6 @@ func (user* UserHandler)RegisterUser(ctx context.Context, in *lovers_srv_user.Re
 		return user.RegisterFailResp(out,config.MSG_DB_REG_PHONE_ERR,config.CODE_ERR_REG_PHONE_ERR)
 	}
 
-	var dupliPhone []DB.UserBaseInfo
-	user.DB.Where("Phone = ?",in.Phone).Find(&dupliPhone)
-	if len(dupliPhone) > 0{
-		return user.RegisterFailResp(out,config.MSG_DB_REG_EXIST,config.CODE_ERR_REG_PHONE_EXIST)
-	}
 	//创建UUID
 	userUUID := uuid.NewV1()
 
@@ -45,24 +40,47 @@ func (user* UserHandler)RegisterUser(ctx context.Context, in *lovers_srv_user.Re
 		Phone:         in.Phone,
 		Sex:           int(in.Gender),
 	}
+
+	//添加用户基础信息
+	code, _ := UserCache.SetUserBaseInfoByUserId(userUUID.String(), regBaseInfo,true)
+	if code != config.ENUM_ERR_OK{
+		switch code {
+		case config.ENUM_ERR_DB_INSERT_DUPLICATE:
+			return user.RegisterFailResp(out,config.MSG_DB_REG_EXIST,config.CODE_ERR_REG_PHONE_EXIST)
+		default:
+			return user.RegisterFailResp(out,config.MSG_DB_REG_REG_ERR,config.CODE_ERR_SERVER_INTERNAL)
+		}
+	}else{
+		//存基本信息成功后,添加通过Phone查找的redis缓存
+		UserCache.SetUserBaseInfoByPhone(in.Phone, regBaseInfo, false)
+	}
+
+
 	regLoginInf := DB.LoginInfo{
 		Model:    gorm.Model{},
 		UserId:   userUUID.String(),
 		PassWord: in.PassWord,
 		Phone:  in.Phone,
 	}
+	//添加用户登录信息
+	code, _ = UserCache.SetUserLoginInfobyUserId(userUUID.String(), regLoginInf,true)
+	if code != config.ENUM_ERR_OK{
+		var err error
+		switch code {
+		case config.ENUM_ERR_DB_INSERT_DUPLICATE:
+			err = user.RegisterFailResp(out,config.MSG_DB_REG_EXIST,config.CODE_ERR_REG_PHONE_EXIST)
+		default:
+			err = user.RegisterFailResp(out,config.MSG_DB_REG_REG_ERR,config.CODE_ERR_SERVER_INTERNAL)
+		}
 
-	err := user.DB.Create(&regLoginInf).Error
-
-	if err != nil{
-		logrus.Errorf("插入Login数据库失败,err:%s",err.Error())
-		return user.RegisterFailResp(out,config.MSG_DB_REG_REG_ERR,config.CODE_ERR_SERVER_INTERNAL)
-
-	}
-	err = user.DB.Create(&regBaseInfo).Error
-	if err != nil{
-		logrus.Errorf("插入Register数据库失败,err:%s",err.Error())
-		return user.RegisterFailResp(out,config.MSG_DB_REG_REG_ERR,config.CODE_ERR_SERVER_INTERNAL)
+		//最后一步执行错误，要从数据库和redis中删除已经添加了的用户基本信息情况
+		UserCache.DelUserBaseInfobyUserId(userUUID.String(),true,true)
+		UserCache.DelUserBaseInfobyPhone(in.Phone, false,false)
+		UserCache.DelUserLoginInfobyUserId(userUUID.String(),true,true)
+		return err
+	}else{
+		//存登录信息成功后,添加通过Phone查找的redis缓存
+		UserCache.SetUserLoginInfobyPhone(in.Phone, regLoginInf, false)
 	}
 
 	return user.RegisterSuccessResp(out,regBaseInfo)
@@ -73,7 +91,7 @@ func (user* UserHandler)RegisterFailResp(out *lovers_srv_user.RegisterResp, msg 
 	out.RegisteredInfo = new(lovers_srv_user.LoginResp)
 	out.RegisteredInfo.LoginRes = msg
 	out.RegisteredInfo.LoginCode = strconv.Itoa(code)
-	return errors.New(msg+"_"+strconv.Itoa(code))
+	return Utils.MicroErr(msg,code)
 }
 
 func (user* UserHandler)RegisterSuccessResp(out *lovers_srv_user.RegisterResp, regBaseInfo DB.UserBaseInfo) error{

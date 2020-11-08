@@ -3,8 +3,8 @@ package NotelistHandler
 import (
 	"Lovers_srv/config"
 	"Lovers_srv/helper/Utils"
-	noteListClient "Lovers_srv/server/note-list/client"
-	lovers_srv_notelist "Lovers_srv/server/note-list/proto"
+	noteListClient "Lovers_srv/server/lovers-tools/note-list/client"
+	lovers_srv_notelist "Lovers_srv/server/lovers-tools/note-list/proto"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )

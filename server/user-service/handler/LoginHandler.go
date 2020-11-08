@@ -3,11 +3,11 @@ package handler
 import (
 	"Lovers_srv/api/handler/JWTHandler"
 	"Lovers_srv/config"
+	"Lovers_srv/helper/Cache/UserCache"
 	"Lovers_srv/helper/DB"
 	"Lovers_srv/helper/Utils"
 	lovers_srv_user "Lovers_srv/server/user-service/proto"
 	"context"
-	"errors"
 	"github.com/jinzhu/gorm"
 	"github.com/sirupsen/logrus"
 	"strconv"
@@ -85,29 +85,30 @@ Type:1
 通过电话号码密码登录
 ******/
 func (user* UserHandler)PhoneAndPwdLogin(phone string, password string, out *lovers_srv_user.LoginResp)(error){
-	if(len(phone) <= 0 || len(password) <= 0){
+	if(len(phone) <= 0 || len(password) <= 0 || Utils.VerifyPhoneFormat(phone)){
 		return user.loginFailResp(out, config.MSG_DB_LOGIN_IN_EMPTY,config.CODE_ERR_PARAM_EMPTY)
 	}
 
-	var logins []DB.LoginInfo
-	err := user.DB.Where("Phone = ?", phone).Find(&logins).Error
-	if err != nil{
-		logrus.Error("query table Phone failed: " + err.Error())
-		return user.loginFailResp(out,config.MSG_DB_LOGIN_QUERY_ERR,config.CODE_ERR_LOGIN_QUERY)
-	}
-	if len(logins) > 1{
-		//该用户名不唯一，逻辑有问题
+	login,code, _ := UserCache.GetUserLoginByPhone(phone)
+	if code != config.ENUM_ERR_OK{
+		switch code {
+		case config.ENUM_ERR_DB_QUERY_NOT_FOUND:
+			return user.loginFailResp(out,config.MSG_DB_LOGIN_NO_USER,config.CODE_ERR_LOGIN_NO_USER)
+			break
+		default:
+			return user.loginFailResp(out,config.MSG_DB_LOGIN_QUERY_ERR,config.CODE_ERR_LOGIN_QUERY)
+		}
 	}
 
-	if len(logins) <= 0{
+	if login == nil{
 		return user.loginFailResp(out,config.MSG_DB_LOGIN_NO_USER,config.CODE_ERR_LOGIN_NO_USER)
 	}
 
-	if logins[0].PassWord != password{
+	if login.PassWord != password{
 		return user.loginFailResp(out,config.MSG_DB_LOGIN_PWD_ERROR,config.CODE_ERR_LOGIN_PWD_ERROR)
 	}
 
-	return user.loginSuccessResp(out,logins[0].UserId,phone,password)
+	return user.loginSuccessResp(out,login.UserId,phone,password)
 }
 
 
@@ -117,15 +118,25 @@ func (user* UserHandler)loginFailResp(out *lovers_srv_user.LoginResp, res string
 	out.UserInfo = nil
 	out.LoginRes = res
 	out.LoginCode = strconv.Itoa(code)
-	return errors.New(res)
+	return Utils.MicroErr(res,code)
 }
 
 //创建登录成功信息，在其中查询用户信息
 func (user* UserHandler)loginSuccessResp(out *lovers_srv_user.LoginResp,userId string, username string, password string)(error){
 	//通过用户ID，查询用户信息
-	baseInfo := []DB.UserBaseInfo{}
-	user.DB.Where("user_id = ?",userId).Find(&baseInfo)
-	if len(baseInfo) <= 0{
+	baseInfo, code, _ := UserCache.GetUserBaseInfoByUserId(userId)
+	if code != config.ENUM_ERR_OK{
+		switch code {
+		case config.ENUM_ERR_DB_QUERY_NOT_FOUND:
+			//虽然登录成功，但是没有找到基本信息，删除登录数据，返回用户未注册
+			UserCache.DelUserLoginInfobyUserId(userId,true,true)
+			UserCache.DelUserLoginInfobyPhone(username,false,false)
+			return user.loginFailResp(out, config.MSG_DB_LOGIN_NO_USER,config.CODE_ERR_LOGIN_NO_USER)
+		default:
+			return user.loginFailResp(out,config.MSG_DB_LOGIN_QUERY_ERR,config.CODE_ERR_LOGIN_QUERY)
+		}
+	}
+	if baseInfo == nil{
 		return user.loginFailResp(out, config.MSG_DB_LOGIN_NO_USER,config.CODE_ERR_LOGIN_NO_USER)
 	}
 
@@ -138,7 +149,7 @@ func (user* UserHandler)loginSuccessResp(out *lovers_srv_user.LoginResp,userId s
 	out.LoginRes = config.MSG_DB_LOGIN_OK
 	out.LoginCode = strconv.Itoa(config.CODE_ERR_SUCCESS)
 	out.LoginTime = strconv.FormatInt(time.Now().Unix(),10)
-	out.UserInfo = user.DBBaseInfoToRespBaseInfo(baseInfo[0])
+	out.UserInfo = user.DBBaseInfoToRespBaseInfo(*baseInfo)
 	return nil
 }
 

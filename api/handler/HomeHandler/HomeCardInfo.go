@@ -26,14 +26,40 @@ func GetMainCard(c *gin.Context){
 	}
 }
 
-func GetCardInfoByCount(c *gin.Context){
-
+func GetCardByCount(c *gin.Context){
+	getCardByCountReq := &proto.GetCardByCountReq{}
+	err := c.ShouldBind(getCardByCountReq)
+	if err != nil{
+		Utils.CreateErrorWithMsg(c,err.Error(),config.INVALID_PARAMS)
+		return
+	}
+	HomeCardList,err := home_client.Client_GetCardByCount(c,getCardByCountReq)
+	if err == nil && HomeCardList != nil{
+		total := len(HomeCardList.CardList)
+		Utils.CreateSuccessByList(c, total, HomeCardList)
+	}else{
+			msg,code := Utils.SplitMicroErr(err)
+			Utils.CreateErrorWithMsg(c, msg,code)
+	}
 }
-func GetCardInfoByIndx(c *gin.Context){
-
+func GetCardByIndex(c *gin.Context){
+	getCardByIndexReq := &proto.GetCardByIndexReq{}
+	err := c.ShouldBind(getCardByIndexReq)
+	if err != nil{
+		Utils.CreateErrorWithMsg(c,err.Error(),config.INVALID_PARAMS)
+		return
+	}
+	HomeCardList,err := home_client.Client_GetCardByIndex(c, getCardByIndexReq)
+	if err == nil && HomeCardList != nil{
+		total := len(HomeCardList.CardList)
+		Utils.CreateSuccessByList(c, total, HomeCardList)
+	}else{
+		msg,code := Utils.SplitMicroErr(err)
+		Utils.CreateErrorWithMsg(c, msg,code)
+	}
 }
 
-func GetCardInfoByType(c *gin.Context){
+func GetCardByType(c *gin.Context){
 
 }
 
@@ -49,13 +75,9 @@ func PostCardInfo(c* gin.Context){
 
 	cardInfo.PostCardInfo.CardId = uuid.NewV1().String()
 
-	PostCardResp,err := home_client.Client_PostCardInfo(c, cardInfo)
+	_, err = home_client.Client_PostCardInfo(c, cardInfo)
 	if err != nil{
-		if PostCardResp == nil{
-			Utils.CreateErrorWithMsg(c,err.Error(),config.CODE_ERR_SERVER_INTERNAL)
-		}else{
-			Utils.CreateErrorWithMsg(c, PostCardResp.RespStatus.OpCardRes, int(PostCardResp.RespStatus.OpCardCode))
-		}
+		Utils.CreateErrorWithMicroErr(c, err)
 	}else{
 		Utils.CreateSuccess(c,nil)
 	}

@@ -17,6 +17,10 @@ service User{
 
     //用户账户相关操作
     rpc QueryUserIsExistById(QueryUserIsExistByIdReq) returns (QueryUserIsExistByIdResp){}
+
+
+    //用户设置相关操作
+    rpc UpdateUserAllConfig(UpdateUserAllConfigReq) returns (UpdateUserAllConfigResp){}
 }
 
 /*登录信息*/
@@ -138,4 +142,13 @@ message QueryUserIsExistByIdResp{
     bool    IsExist     = 1;
     int32   QueryCode   = 2;
     string  QueryRes    = 3;
+}
+
+//用户设置相关
+message UpdateUserAllConfigReq{
+
+}
+
+message UpdateUserAllConfigResp{
+
 }

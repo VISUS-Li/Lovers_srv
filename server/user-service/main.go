@@ -2,6 +2,7 @@ package main
 
 import (
 	"Lovers_srv/config"
+	"Lovers_srv/helper/Cache"
 	"Lovers_srv/helper/DB"
 	"Lovers_srv/helper/LogHelper"
 	"Lovers_srv/helper/Utils"
@@ -10,19 +11,19 @@ import (
 	"github.com/micro/go-micro"
 	"github.com/sirupsen/logrus"
 )
-var HOME_SRV_NAME = "lovers.srv.user"
+var USER_SRV_NAME = "lovers.srv.user"
 
 func main(){
 	config.Init()
+
 	//初始化日志
-
-
 	myLog := LogHelper.LoversLog{}
-	var dbName string
 
+	//配置服务名和日志输出文件
+	var dbName string
 	var serverName string
 	if (config.GlobalConfig.Srv_name == "") {
-		serverName = HOME_SRV_NAME
+		serverName = USER_SRV_NAME
 		dbName = Utils.GetDBNameFromSrvName(serverName)
 		myLog.SetOutPut(serverName)
 	}else{
@@ -30,6 +31,8 @@ func main(){
 		dbName = Utils.GetDBNameFromSrvName(serverName)
 		myLog.SetOutPut(serverName)
 	}
+
+	//初始化数据库
 	dbUtil := DB.DBUtil{}
 	err := dbUtil.CreateConnect(dbName)
 	if err != nil{
@@ -46,6 +49,10 @@ func main(){
 	if err != nil{
 		logrus.Error("create table UserBaseInfo error:"+err.Error())
 	}
+
+	//初始化Redis缓存
+	Cache.NewRedisPool(dbUtil.DB)
+	defer Cache.CloseRedis()
 
 	userHandler := handler.UserHandler{dbUtil.DB}
 

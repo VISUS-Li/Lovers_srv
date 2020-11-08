@@ -71,6 +71,19 @@ func CreateErrorWithMsg(c *gin.Context, msg string, code int){
 	)
 }
 
+func CreateErrorWithMicroErr(c *gin.Context, err error){
+	msg, code := SplitMicroErr(err)
+	json := NewResult()
+	json.Data = nil
+	json.Msg = msg
+	json.Code = code
+
+	c.JSON(
+		http.StatusBadRequest,
+		json,
+	)
+}
+
 func CreateErrorParams(c *gin.Context){
 	json := NewResult()
 	json.Data = nil

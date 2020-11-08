@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 )
 
 var GlobalConfig Config
@@ -18,10 +19,30 @@ const FILE_SRV_NAME		= "lovers.srv.file"
 const API_NAME = "lovers.api"
 const REGISTER_HOST = "127.0.0.1"
 
+//运行模式，开发、生产
+const (
+	RUNMODE_DEF = "dev"
+	RUNMODE_DEV = "dev" //开发模式
+	RUNMODE_PRO = "pro" //生产模式
+)
+
 const (
 	DB_HOST = "127.0.0.1"
 	DB_USER = "root"
 	DB_PASSWORD = "123456"
+)
+
+const (
+	REDIS_NETWORK = "tcp"
+	REDIS_ADDR = "127.0.0.1:6379"
+	REDIS_PWD = ""
+	REDIS_EXPIRETIME = "30m"
+	REDIS_MAXIDLE = 1024
+	REDIS_MAXACTIVE = 60000
+	REDIS_IDLETIMEOUT = "120s"
+	REDIS_DIALTIMEOUT = "200ms"
+	REDIS_READTIMEOUT = "5s"
+	REDIS_WRITETIMEOUT = "5s"
 )
 
 const(
@@ -30,7 +51,13 @@ const(
 	JWT_SECRET 		= "liningtao"
 )
 
+//主页
+const(
+	DEFAULT_CARD_COUNT = 10
+)
 type Config struct{
+	//运行模式
+	RunMode string;
 	//服务名
 	Srv_name     string;
 
@@ -43,9 +70,29 @@ type Config struct{
 	DB_password string;
 
 	//jwt
-	JwtIDKey string;
-	ExpireTime int; // token过期时间，单位小时
-	JwtSecret string;
+	JwtIDKey      string;
+	JwtExpireTime int; // token过期时间，单位小时
+	JwtSecret     string;
+
+	//主页
+	DefaultCardCount int; //默认获取卡片数量
+
+	//Redis
+	Redis_NetWork string;
+	Redis_Addr string;
+	Redis_Pwd string
+	Redis_MaxIdle int;
+	Redis_MaxActive int;
+	redis_IdleTimeoutStr string;
+	Redis_IdleTimeout time.Duration;
+	redis_DialTimeoutStr string;
+	Redis_DialTimeout time.Duration;
+	redis_ReadTimeoutStr string;
+	Redis_ReadTimeout time.Duration;
+	redis_WriteTimeout string;
+	Redis_WriteTimeout time.Duration;
+	redis_ExpireTimeStr string;
+	Redis_ExpireTime time.Duration;
 }
 
 func Init(){
@@ -54,6 +101,11 @@ func Init(){
 }
 
 func getDefaultConfig(){
+	//运行模式
+	if(GlobalConfig.RunMode == ""){
+		GlobalConfig.RunMode = RUNMODE_DEF;
+	}
+
 	//服务发现注册
 	if(len(GlobalConfig.RegisterHosts) <= 0){
 		GlobalConfig.RegisterHosts = append(GlobalConfig.RegisterHosts, REGISTER_HOST)
@@ -74,11 +126,63 @@ func getDefaultConfig(){
 	if(GlobalConfig.JwtIDKey == ""){
 		GlobalConfig.JwtIDKey = JWT_IDKEY;
 	}
-	if(GlobalConfig.ExpireTime <= 0){
-		GlobalConfig.ExpireTime = JWT_EXPIRETIME;
+	if(GlobalConfig.JwtExpireTime <= 0){
+		GlobalConfig.JwtExpireTime = JWT_EXPIRETIME;
 	}
 	if(GlobalConfig.JwtSecret == ""){
 		GlobalConfig.JwtSecret = JWT_SECRET;
+	}
+
+	//主页
+	if(GlobalConfig.DefaultCardCount <= 0){
+		GlobalConfig.DefaultCardCount = DEFAULT_CARD_COUNT;
+	}
+
+	//Redis
+	if(GlobalConfig.Redis_Addr == ""){
+		GlobalConfig.Redis_Addr = REDIS_ADDR;
+	}
+	if(GlobalConfig.Redis_MaxIdle <= 0){
+		GlobalConfig.Redis_MaxIdle = REDIS_MAXIDLE;
+	}
+	if(GlobalConfig.Redis_MaxActive <= 0){
+		GlobalConfig.Redis_MaxActive = REDIS_MAXACTIVE;
+	}
+	if(GlobalConfig.Redis_NetWork == ""){
+		GlobalConfig.Redis_NetWork = REDIS_NETWORK;
+	}
+	if(GlobalConfig.Redis_Pwd == ""){
+		GlobalConfig.Redis_Pwd = REDIS_PWD
+	}
+
+	UnMarshDuration(&GlobalConfig.Redis_IdleTimeout, &GlobalConfig.redis_IdleTimeoutStr, REDIS_IDLETIMEOUT);
+
+	UnMarshDuration(&GlobalConfig.Redis_DialTimeout, &GlobalConfig.redis_DialTimeoutStr, REDIS_DIALTIMEOUT);
+
+	UnMarshDuration(&GlobalConfig.Redis_ReadTimeout, &GlobalConfig.redis_ReadTimeoutStr, REDIS_READTIMEOUT);
+
+	UnMarshDuration(&GlobalConfig.Redis_WriteTimeout, &GlobalConfig.redis_WriteTimeout, REDIS_WRITETIMEOUT);
+
+	UnMarshDuration(&GlobalConfig.Redis_ExpireTime, &GlobalConfig.redis_ExpireTimeStr, REDIS_EXPIRETIME);
+}
+
+func UnMarshDuration(target *time.Duration, confStr *string, defaultStr string){
+	var tmpConfStr string
+	if(confStr == nil){
+		tmpConfStr = defaultStr;
+	}else if *confStr == ""{
+		tmpConfStr = defaultStr;
+		*confStr = defaultStr;
+	}else{
+		tmpConfStr = *confStr;
+	}
+
+	d,err := time.ParseDuration(tmpConfStr)
+	if err != nil{
+		logrus.Error("ParseDuration Error:"+err.Error())
+		*target,_ = time.ParseDuration(defaultStr)
+	}else{
+		*target = d
 	}
 }
 

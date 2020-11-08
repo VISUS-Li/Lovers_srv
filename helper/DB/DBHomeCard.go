@@ -1,10 +1,13 @@
 package DB
 
+import "github.com/jinzhu/gorm"
+
 /******
 卡片存数据库信息
 说明：ImgUrl，ViewoUrl直接包含在Content中，Content就是个富文本
 ******/
 type HomeCardInfo struct {
+	gorm.Model
 	UpLoadUserId	string //上传该卡片用户ID
 	CardId			string //该卡片的ID
 	CardType int 	//卡片类型，广告、咨询等
@@ -21,4 +24,5 @@ type HomeCardInfo struct {
 	CardMediaType int //卡片媒体类型
 	AudioFileUrl string //音频文件地址
 	AudioLength string //音频长度
+	ImgMaskType int //图片在前端显示的样式
 }

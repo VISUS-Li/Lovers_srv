@@ -23,8 +23,7 @@ func Register(c *gin.Context){
 	}else{
 		regResp,err := user_clent.Client_Register(c,registerReq)
 		if err != nil{
-			msg,code := Utils.SplitMicroErr(err)
-			Utils.CreateErrorWithMsg(c,msg,code)
+			Utils.CreateErrorWithMicroErr(c,err)
 			return
 		}
 		Utils.CreateSuccess(c,regResp.RegisteredInfo.UserInfo)

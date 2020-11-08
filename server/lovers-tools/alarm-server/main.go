@@ -5,62 +5,67 @@ import (
 	"Lovers_srv/helper/DB"
 	"Lovers_srv/helper/LogHelper"
 	"Lovers_srv/helper/Utils"
-	"Lovers_srv/server/note-list/handler"
-	lovers_srv_user "Lovers_srv/server/note-list/proto"
+	"Lovers_srv/server/user-service/handler"
+	lovers_srv_user "Lovers_srv/server/user-service/proto"
 	"github.com/micro/go-micro"
 	"github.com/sirupsen/logrus"
 )
+var ALARM_SRV_NAME = "lovers.srv.alarm"
 
-var NOTELIST_SRV_NAME = "lovers.srv.notelist"
+func main(){
 
-func main() {
+	//初始化配置
 	config.Init()
-	//create log
+	//初始化日志
 	myLog := LogHelper.LoversLog{}
 	var dbName string
+
 	var serverName string
 	if (config.GlobalConfig.Srv_name == "") {
-		serverName = NOTELIST_SRV_NAME
+		serverName = ALARM_SRV_NAME
 		dbName = Utils.GetDBNameFromSrvName(serverName)
 		myLog.SetOutPut(serverName)
-	} else {
+	}else{
 		serverName = config.GlobalConfig.Srv_name
 		dbName = Utils.GetDBNameFromSrvName(serverName)
 		myLog.SetOutPut(serverName)
 	}
-	//create database
 	dbUtil := DB.DBUtil{}
 	err := dbUtil.CreateConnect(dbName)
-
-	if err != nil {
-		logrus.Error("NoteList database create failed, msg:" +err.Error())
+	if err != nil{
+		logrus.Error("create DB:" + dbName + "error:"+ err.Error())
 		return
 	}
 	defer dbUtil.CloseConnect()
 
-	err = dbUtil.CreateTable(DB.NoteListDB{})
-	if err != nil {
-		logrus.Error("create table NoteListDB error:"+err.Error())
-		return
+	err = dbUtil.CreateTable(DB.LoginInfo{})
+	if err != nil{
+		logrus.Error("create table LoginInfo error:"+err.Error())
+	}
+	err = dbUtil.CreateTable(DB.UserBaseInfo{})
+	if err != nil{
+		logrus.Error("create table UserBaseInfo error:"+err.Error())
 	}
 
-	noteListHandler := handler.NoteListHandler{dbUtil.DB}
+	userHandler := handler.UserHandler{dbUtil.DB}
 
 	//注册中心为consul
 	//reg := consul.NewRegistry(func(op *registry.Options) {
 	//	op.Addrs = config.GlobalConfig.RegisterHosts
 	//})
 
+	//新建serivce
 	service := micro.NewService(
 		micro.Name(serverName),
+		//micro.Registry(reg),
 	)
 
 	service.Init()
 
-	err = lovers_srv_user.RegisterNoteListHandler(service.Server(), &noteListHandler)
+	err = lovers_srv_user.RegisterUserHandler(service.Server(), &userHandler)
 
-	if err = service.Run(); err != nil {
-		logrus.Error("NoteList service Run error, msg:" + err.Error())
+	if err = service.Run(); err != nil{
+		logrus.Error("service Run error,msg:"+ err.Error())
 	}
-}
 
+}

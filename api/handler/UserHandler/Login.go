@@ -6,7 +6,6 @@ import (
 	userClient "Lovers_srv/server/user-service/client"
 	lovers_srv_user "Lovers_srv/server/user-service/proto"
 	"github.com/gin-gonic/gin"
-	"strconv"
 )
 var(
 	user_clent = userClient.NewUserClient()
@@ -21,14 +20,9 @@ func Login(c *gin.Context){
 	}
 	var loginResp = &lovers_srv_user.LoginResp{}
 	loginResp,err = user_clent.Client_Login(c,login)
-	if err == nil && loginResp != nil{
+	if err != nil{
+		Utils.CreateErrorWithMicroErr(c, err)
+	}else {
 		Utils.CreateSuccess(c, loginResp)
-	}else{
-		if loginResp == nil{
-			Utils.CreateErrorWithMsg(c, err.Error() ,config.CODE_ERR_UNKNOW)
-		}else {
-			code,err := strconv.Atoi(loginResp.LoginCode)
-			Utils.CreateErrorWithMsg(c, err.Error(),code)
-		}
 	}
 }

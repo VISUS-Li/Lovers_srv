@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package lovers.srv.alarm;
+
+service User{
+    //用户设置相关操作
+    rpc UpdateUserAllConfig(UpdateUserAllConfigReq) returns (UpdateUserAllConfigResp){}
+}

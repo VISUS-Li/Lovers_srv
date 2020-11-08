@@ -2,7 +2,7 @@ package client
 
 import (
 	"Lovers_srv/config"
-	proto "Lovers_srv/server/note-list/proto"
+	proto "Lovers_srv/server/lovers-tools/note-list/proto"
 	"context"
 	"github.com/micro/go-micro/client"
 	//文件IO
@@ -12,8 +12,8 @@ import (
 const NOTELIST_SRV_NAME = "lovers.srv.notelist"
 
 type NoteListClient struct {
-	client proto.NoteListService
-	serviceName  string
+	client      proto.NoteListService
+	serviceName string
 }
 
 func NewNoteListClient() *NoteListClient{

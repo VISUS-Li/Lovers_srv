@@ -24,9 +24,9 @@ func ClientEngine() *gin.Engine{
 	//首页接口
 	homeGroup := api.Group("home")
 	homeGroup.GET("/GetMainCard",HomeHandler.GetMainCard) //获取首页按照日期排列的主卡片
-	homeGroup.GET("/GetCardInfoByCount",HomeHandler.GetCardInfoByCount) //获取指定数量的随机首页卡片
-	homeGroup.GET("/GetCardInfoByIndex",HomeHandler.GetCardInfoByIndx)  //通过下标范围获取首页卡片
-	homeGroup.GET("/GetCardInfoByType",HomeHandler.GetCardInfoByType)   //通过卡片类型和数量获取首页卡片
+	homeGroup.GET("/GetCardByCount",HomeHandler.GetCardByCount) //获取指定数量的随机首页卡片
+	homeGroup.GET("/GetCardByIndex",HomeHandler.GetCardByIndex)  //通过下标范围获取首页卡片
+	homeGroup.GET("/GetCardByType",HomeHandler.GetCardByType)   //通过卡片类型和数量获取首页卡片
 	homeGroup.POST("/PostCardInfo",HomeHandler.PostCardInfo)
 	//需要验证的接口
 	AuthGroup := api.Group("/Auth")

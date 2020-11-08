@@ -30,6 +30,16 @@ func (home *HomeMicroClient)Client_GetMainCard(ctx context.Context, req *proto.G
 	return resp,err
 }
 
+func (home *HomeMicroClient)Client_GetCardByCount(ctx context.Context, req *proto.GetCardByCountReq)(*proto.GetCardByCountResp,error){
+	resp, err := home.client.GetCardByCount(ctx,req)
+	return resp,err
+}
+
+func (home *HomeMicroClient)Client_GetCardByIndex(ctx context.Context, req *proto.GetCardByIndexReq)(*proto.GetCardByIndexResp,error){
+	resp, err := home.client.GetCardByIndex(ctx,req)
+	return resp,err
+}
+
 func (home *HomeMicroClient)Client_PostCardInfo(ctx context.Context, req *proto.PostCardInfoReq)(* proto.PostCardInfoResp,error){
 	resp, err := home.client.PostCardInfo(ctx,req)
 	return resp, err
