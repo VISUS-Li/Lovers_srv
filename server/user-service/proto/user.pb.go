@@ -1033,7 +1033,8 @@ func (x *GetLoverInfoResp) GetGotLoverInfo() *LoverInfo {
 	return nil
 }
 
-//用户账户相关操作
+////用户账户相关操作
+//查询用户是否存在
 type QueryUserIsExistByIdReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1142,6 +1143,194 @@ func (x *QueryUserIsExistByIdResp) GetQueryRes() string {
 		return x.QueryRes
 	}
 	return ""
+}
+
+//查询用户的恋人Id
+type QueryLoverIdByIdReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserId string `protobuf:"bytes,1,opt,name=UserId,proto3" json:"UserId,omitempty"`
+}
+
+func (x *QueryLoverIdByIdReq) Reset() {
+	*x = QueryLoverIdByIdReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryLoverIdByIdReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryLoverIdByIdReq) ProtoMessage() {}
+
+func (x *QueryLoverIdByIdReq) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryLoverIdByIdReq.ProtoReflect.Descriptor instead.
+func (*QueryLoverIdByIdReq) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *QueryLoverIdByIdReq) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+type QueryLoverIdByIdResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	LoverId   string `protobuf:"bytes,1,opt,name=LoverId,proto3" json:"LoverId,omitempty"`
+	QueryCode int32  `protobuf:"varint,2,opt,name=QueryCode,proto3" json:"QueryCode,omitempty"`
+	QueryRes  string `protobuf:"bytes,3,opt,name=QueryRes,proto3" json:"QueryRes,omitempty"`
+}
+
+func (x *QueryLoverIdByIdResp) Reset() {
+	*x = QueryLoverIdByIdResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryLoverIdByIdResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryLoverIdByIdResp) ProtoMessage() {}
+
+func (x *QueryLoverIdByIdResp) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryLoverIdByIdResp.ProtoReflect.Descriptor instead.
+func (*QueryLoverIdByIdResp) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *QueryLoverIdByIdResp) GetLoverId() string {
+	if x != nil {
+		return x.LoverId
+	}
+	return ""
+}
+
+func (x *QueryLoverIdByIdResp) GetQueryCode() int32 {
+	if x != nil {
+		return x.QueryCode
+	}
+	return 0
+}
+
+func (x *QueryLoverIdByIdResp) GetQueryRes() string {
+	if x != nil {
+		return x.QueryRes
+	}
+	return ""
+}
+
+//用户设置相关
+type UpdateUserAllConfigReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *UpdateUserAllConfigReq) Reset() {
+	*x = UpdateUserAllConfigReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateUserAllConfigReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateUserAllConfigReq) ProtoMessage() {}
+
+func (x *UpdateUserAllConfigReq) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateUserAllConfigReq.ProtoReflect.Descriptor instead.
+func (*UpdateUserAllConfigReq) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{19}
+}
+
+type UpdateUserAllConfigResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *UpdateUserAllConfigResp) Reset() {
+	*x = UpdateUserAllConfigResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_proto_msgTypes[20]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateUserAllConfigResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateUserAllConfigResp) ProtoMessage() {}
+
+func (x *UpdateUserAllConfigResp) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[20]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateUserAllConfigResp.ProtoReflect.Descriptor instead.
+func (*UpdateUserAllConfigResp) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{20}
 }
 
 var File_user_proto protoreflect.FileDescriptor
@@ -1273,7 +1462,20 @@ var file_user_proto_rawDesc = []byte{
 	0x12, 0x1c, 0x0a, 0x09, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x18, 0x02, 0x20,
 	0x01, 0x28, 0x05, 0x52, 0x09, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x1a,
 	0x0a, 0x08, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x08, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x73, 0x32, 0xc4, 0x04, 0x0a, 0x04, 0x55,
+	0x52, 0x08, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x73, 0x22, 0x2d, 0x0a, 0x13, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x4c, 0x6f, 0x76, 0x65, 0x72, 0x49, 0x64, 0x42, 0x79, 0x49, 0x64, 0x52, 0x65,
+	0x71, 0x12, 0x16, 0x0a, 0x06, 0x55, 0x73, 0x65, 0x72, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x06, 0x55, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x6a, 0x0a, 0x14, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x4c, 0x6f, 0x76, 0x65, 0x72, 0x49, 0x64, 0x42, 0x79, 0x49, 0x64, 0x52, 0x65, 0x73,
+	0x70, 0x12, 0x18, 0x0a, 0x07, 0x4c, 0x6f, 0x76, 0x65, 0x72, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x4c, 0x6f, 0x76, 0x65, 0x72, 0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x09,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x52, 0x65, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x52, 0x65, 0x73, 0x22, 0x18, 0x0a, 0x16, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x55,
+	0x73, 0x65, 0x72, 0x41, 0x6c, 0x6c, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71, 0x22,
+	0x19, 0x0a, 0x17, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x55, 0x73, 0x65, 0x72, 0x41, 0x6c, 0x6c,
+	0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x73, 0x70, 0x32, 0x93, 0x06, 0x0a, 0x04, 0x55,
 	0x73, 0x65, 0x72, 0x12, 0x40, 0x0a, 0x05, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x12, 0x19, 0x2e, 0x6c,
 	0x6f, 0x76, 0x65, 0x72, 0x73, 0x2e, 0x73, 0x72, 0x76, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x4c,
 	0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x1a, 0x2e, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x73,
@@ -1310,7 +1512,20 @@ var file_user_proto_rawDesc = []byte{
 	0x64, 0x52, 0x65, 0x71, 0x1a, 0x29, 0x2e, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x73, 0x2e, 0x73, 0x72,
 	0x76, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x55, 0x73, 0x65, 0x72,
 	0x49, 0x73, 0x45, 0x78, 0x69, 0x73, 0x74, 0x42, 0x79, 0x49, 0x64, 0x52, 0x65, 0x73, 0x70, 0x22,
-	0x00, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x00, 0x12, 0x61, 0x0a, 0x10, 0x51, 0x75, 0x65, 0x72, 0x79, 0x4c, 0x6f, 0x76, 0x65, 0x72, 0x49,
+	0x64, 0x42, 0x79, 0x49, 0x64, 0x12, 0x24, 0x2e, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x73, 0x2e, 0x73,
+	0x72, 0x76, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x4c, 0x6f, 0x76,
+	0x65, 0x72, 0x49, 0x64, 0x42, 0x79, 0x49, 0x64, 0x52, 0x65, 0x71, 0x1a, 0x25, 0x2e, 0x6c, 0x6f,
+	0x76, 0x65, 0x72, 0x73, 0x2e, 0x73, 0x72, 0x76, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x4c, 0x6f, 0x76, 0x65, 0x72, 0x49, 0x64, 0x42, 0x79, 0x49, 0x64, 0x52, 0x65,
+	0x73, 0x70, 0x22, 0x00, 0x12, 0x6a, 0x0a, 0x13, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x55, 0x73,
+	0x65, 0x72, 0x41, 0x6c, 0x6c, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x27, 0x2e, 0x6c, 0x6f,
+	0x76, 0x65, 0x72, 0x73, 0x2e, 0x73, 0x72, 0x76, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x55, 0x70,
+	0x64, 0x61, 0x74, 0x65, 0x55, 0x73, 0x65, 0x72, 0x41, 0x6c, 0x6c, 0x43, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x52, 0x65, 0x71, 0x1a, 0x28, 0x2e, 0x6c, 0x6f, 0x76, 0x65, 0x72, 0x73, 0x2e, 0x73, 0x72,
+	0x76, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x55, 0x73, 0x65,
+	0x72, 0x41, 0x6c, 0x6c, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1325,7 +1540,7 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_user_proto_goTypes = []interface{}{
 	(*LoginInfo)(nil),                // 0: lovers.srv.user.LoginInfo
 	(*BaseInfo)(nil),                 // 1: lovers.srv.user.BaseInfo
@@ -1344,6 +1559,10 @@ var file_user_proto_goTypes = []interface{}{
 	(*GetLoverInfoResp)(nil),         // 14: lovers.srv.user.GetLoverInfoResp
 	(*QueryUserIsExistByIdReq)(nil),  // 15: lovers.srv.user.QueryUserIsExistByIdReq
 	(*QueryUserIsExistByIdResp)(nil), // 16: lovers.srv.user.QueryUserIsExistByIdResp
+	(*QueryLoverIdByIdReq)(nil),      // 17: lovers.srv.user.QueryLoverIdByIdReq
+	(*QueryLoverIdByIdResp)(nil),     // 18: lovers.srv.user.QueryLoverIdByIdResp
+	(*UpdateUserAllConfigReq)(nil),   // 19: lovers.srv.user.UpdateUserAllConfigReq
+	(*UpdateUserAllConfigResp)(nil),  // 20: lovers.srv.user.UpdateUserAllConfigResp
 }
 var file_user_proto_depIdxs = []int32{
 	2,  // 0: lovers.srv.user.BaseInfo.AnotherInfo:type_name -> lovers.srv.user.LoverInfo
@@ -1359,15 +1578,19 @@ var file_user_proto_depIdxs = []int32{
 	11, // 10: lovers.srv.user.User.UnBindLover:input_type -> lovers.srv.user.UnBindLoverReq
 	13, // 11: lovers.srv.user.User.GetLoverInfo:input_type -> lovers.srv.user.GetLoverInfoReq
 	15, // 12: lovers.srv.user.User.QueryUserIsExistById:input_type -> lovers.srv.user.QueryUserIsExistByIdReq
-	4,  // 13: lovers.srv.user.User.Login:output_type -> lovers.srv.user.LoginResp
-	6,  // 14: lovers.srv.user.User.Logout:output_type -> lovers.srv.user.LogoutResp
-	8,  // 15: lovers.srv.user.User.RegisterUser:output_type -> lovers.srv.user.RegisterResp
-	10, // 16: lovers.srv.user.User.BindLover:output_type -> lovers.srv.user.BindLoverResp
-	12, // 17: lovers.srv.user.User.UnBindLover:output_type -> lovers.srv.user.UnBindLoverResp
-	14, // 18: lovers.srv.user.User.GetLoverInfo:output_type -> lovers.srv.user.GetLoverInfoResp
-	16, // 19: lovers.srv.user.User.QueryUserIsExistById:output_type -> lovers.srv.user.QueryUserIsExistByIdResp
-	13, // [13:20] is the sub-list for method output_type
-	6,  // [6:13] is the sub-list for method input_type
+	17, // 13: lovers.srv.user.User.QueryLoverIdById:input_type -> lovers.srv.user.QueryLoverIdByIdReq
+	19, // 14: lovers.srv.user.User.UpdateUserAllConfig:input_type -> lovers.srv.user.UpdateUserAllConfigReq
+	4,  // 15: lovers.srv.user.User.Login:output_type -> lovers.srv.user.LoginResp
+	6,  // 16: lovers.srv.user.User.Logout:output_type -> lovers.srv.user.LogoutResp
+	8,  // 17: lovers.srv.user.User.RegisterUser:output_type -> lovers.srv.user.RegisterResp
+	10, // 18: lovers.srv.user.User.BindLover:output_type -> lovers.srv.user.BindLoverResp
+	12, // 19: lovers.srv.user.User.UnBindLover:output_type -> lovers.srv.user.UnBindLoverResp
+	14, // 20: lovers.srv.user.User.GetLoverInfo:output_type -> lovers.srv.user.GetLoverInfoResp
+	16, // 21: lovers.srv.user.User.QueryUserIsExistById:output_type -> lovers.srv.user.QueryUserIsExistByIdResp
+	18, // 22: lovers.srv.user.User.QueryLoverIdById:output_type -> lovers.srv.user.QueryLoverIdByIdResp
+	20, // 23: lovers.srv.user.User.UpdateUserAllConfig:output_type -> lovers.srv.user.UpdateUserAllConfigResp
+	15, // [15:24] is the sub-list for method output_type
+	6,  // [6:15] is the sub-list for method input_type
 	6,  // [6:6] is the sub-list for extension type_name
 	6,  // [6:6] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name
@@ -1583,6 +1806,54 @@ func file_user_proto_init() {
 				return nil
 			}
 		}
+		file_user_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryLoverIdByIdReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_user_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryLoverIdByIdResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_user_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateUserAllConfigReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_user_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateUserAllConfigResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1590,7 +1861,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_user_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   17,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

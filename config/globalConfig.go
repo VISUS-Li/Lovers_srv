@@ -16,6 +16,8 @@ var GlobalConfig Config
 const USER_SRV_NAME = "lovers.srv.user"
 const NOTELIST_SRV_NAME = "lovers.srv.notelist"
 const FILE_SRV_NAME		= "lovers.srv.file"
+const MSG_PUSH_SRV_NAME = "lovers.srv.msg_push"
+const MSG_PUSH_SRV_SPORT = "lovers.srv.msg_push.sport"
 const API_NAME = "lovers.api"
 const REGISTER_HOST = "127.0.0.1"
 
@@ -57,47 +59,58 @@ const(
 )
 type Config struct{
 	//运行模式
-	RunMode string;
+	RunMode string `json:"RunMode"`;
 	//服务名
-	Srv_name     string;
+	Srv_name     string `json:"Srv_name"`;
 
 	//服务发现注册地址
-	RegisterHosts []string
+	RegisterHosts []string `json:"RegisterHosts"`;
 
 	//数据库
-	DB_host     string;
-	DB_user     string;
-	DB_password string;
+	DB_host     string `json:"DB_host"`;
+	DB_user     string `json:"DB_user"`;
+	DB_password string `json:"DB_password"`;
 
 	//jwt
-	JwtIDKey      string;
-	JwtExpireTime int; // token过期时间，单位小时
-	JwtSecret     string;
+	JwtIDKey      string `json:"JwtIDkey"`;
+	JwtExpireTime int `json:"JwtExpireTime"`; // token过期时间，单位小时
+	JwtSecret     string `json:"JwtSecret"`;
 
 	//主页
-	DefaultCardCount int; //默认获取卡片数量
+	DefaultCardCount int `json:"DefaultCardCount"`; //默认获取卡片数量
 
 	//Redis
-	Redis_NetWork string;
-	Redis_Addr string;
-	Redis_Pwd string
-	Redis_MaxIdle int;
-	Redis_MaxActive int;
-	redis_IdleTimeoutStr string;
-	Redis_IdleTimeout time.Duration;
-	redis_DialTimeoutStr string;
-	Redis_DialTimeout time.Duration;
-	redis_ReadTimeoutStr string;
-	Redis_ReadTimeout time.Duration;
-	redis_WriteTimeout string;
-	Redis_WriteTimeout time.Duration;
-	redis_ExpireTimeStr string;
-	Redis_ExpireTime time.Duration;
+	Redis_NetWork string `json:"Redis_NetWork"`;
+	Redis_Addr            string `json:"Redis_Addr"`;
+	Redis_Pwd             string `json:"Redis_Pwd";`
+	Redis_MaxIdle         int `json:"Redis_MaxIdle"`;
+	Redis_MaxActive       int `json:"Redis_MaxActive"`;
+	redis_IdleTimeoutStr  string `json:"redis_IdleTimeoutStr"`;
+	Redis_IdleTimeout     time.Duration;
+	redis_DialTimeoutStr  string `json:"redis_DialTimeoutStr"`;
+	Redis_DialTimeout     time.Duration;
+	redis_ReadTimeoutStr  string `json:"redis_ReadTimeoutStr"`;
+	Redis_ReadTimeout     time.Duration;
+	redis_WriteTimeoutStr string `json:"redis_WriteTimeoutStr"`;
+	Redis_WriteTimeout    time.Duration;
+	redis_ExpireTimeStr   string `json:"redis_ExpireTimeStr"`;
+	Redis_ExpireTime      time.Duration;
 }
 
-func Init(){
+//给定默认服务名，用以判定要加载哪些配置
+func Init(defSrvName string){
+
+	//公共配置都加载
 	GlobalConfig,_= getJsonConfig();
 	getDefaultConfig();
+
+	//判断要加载哪些服务的配置
+	switch defSrvName {
+	case MSG_PUSH_SRV_NAME:
+		WSConfig, _ = GetWSJsonConfig();
+		GetWSDefaultConfig();
+		break
+	}
 }
 
 func getDefaultConfig(){
@@ -161,7 +174,7 @@ func getDefaultConfig(){
 
 	UnMarshDuration(&GlobalConfig.Redis_ReadTimeout, &GlobalConfig.redis_ReadTimeoutStr, REDIS_READTIMEOUT);
 
-	UnMarshDuration(&GlobalConfig.Redis_WriteTimeout, &GlobalConfig.redis_WriteTimeout, REDIS_WRITETIMEOUT);
+	UnMarshDuration(&GlobalConfig.Redis_WriteTimeout, &GlobalConfig.redis_WriteTimeoutStr, REDIS_WRITETIMEOUT);
 
 	UnMarshDuration(&GlobalConfig.Redis_ExpireTime, &GlobalConfig.redis_ExpireTimeStr, REDIS_EXPIRETIME);
 }

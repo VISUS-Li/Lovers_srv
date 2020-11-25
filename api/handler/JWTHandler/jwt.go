@@ -3,6 +3,7 @@ package JWTHandler
 import (
 	"Lovers_srv/config"
 	"Lovers_srv/helper/Utils"
+	"errors"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -58,7 +59,7 @@ func ParseToken(token string) (*Claims, error){
 			return claims, nil
 		}
 	}
-	return nil,err
+	return nil,Utils.ErrorOutputf("parse token:%s failed,err:",token,err.Error())
 }
 
 /******
@@ -106,4 +107,38 @@ func JWTMidWare() gin.HandlerFunc{
 		}
 		c.Next()
 	}
+}
+
+func SportJWTAuth(r *http.Request) (int, error) {
+
+		//从请求中拿到token
+		token ,err := Utils.HttpGetTokenFromHeader(r)
+		if err != nil {
+			token = r.URL.Query().Get("token")
+		}
+
+		var code int
+		var msg  = config.MSG_REQUEST_SUCCESS
+		code = config.CODE_ERR_SUCCESS
+		if (token == ""){
+			code = config.CODE_ERR_AUTH_TOKEN_EMPTY
+			msg = config.MSG_AUTH_TOKEN_EMPTY
+		}else{
+			_,err := ParseToken(token)
+			if err != nil{
+				switch err.(*jwt.ValidationError).Errors {
+				case jwt.ValidationErrorExpired:
+					code = config.CODE_ERR_AUTH_CHECK_TOKEN_TIMEOUT
+					msg = config.MSG_AUTH_TOKEN_EXPIRE
+				default:
+					code = config.CODE_ERR_AUTH_CHECK_TOKEN_FAIL
+					msg = config.MSG_AUTH_TOKEN_ERROR
+				}
+			}
+		}
+		if code != config.CODE_ERR_SUCCESS{
+			return code, errors.New(msg)
+		}else{
+			return code, nil
+		}
 }

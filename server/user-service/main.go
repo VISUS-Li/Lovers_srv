@@ -14,7 +14,7 @@ import (
 var USER_SRV_NAME = "lovers.srv.user"
 
 func main(){
-	config.Init()
+	config.Init(USER_SRV_NAME)
 
 	//初始化日志
 	myLog := LogHelper.LoversLog{}

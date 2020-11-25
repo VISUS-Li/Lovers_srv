@@ -13,7 +13,7 @@ import (
 var HOME_SRV_NAME = "lovers.srv.home"
 
 func main(){
-	config.Init()
+	config.Init(HOME_SRV_NAME)
 	//初始化日志
 	myLog := LogHelper.LoversLog{}
 	var dbName string

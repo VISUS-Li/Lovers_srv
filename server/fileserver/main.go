@@ -16,7 +16,7 @@ import (
 var FILE_SRV_NAME = "lovers.srv.file"
 
 func main() {
-	config.Init()
+	config.Init(FILE_SRV_NAME)
 	//初始化日志
 	myLog := LogHelper.LoversLog{}
 

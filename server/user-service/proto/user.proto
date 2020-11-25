@@ -17,7 +17,7 @@ service User{
 
     //用户账户相关操作
     rpc QueryUserIsExistById(QueryUserIsExistByIdReq) returns (QueryUserIsExistByIdResp){}
-
+    rpc QueryLoverIdById(QueryLoverIdByIdReq) returns (QueryLoverIdByIdResp){}
 
     //用户设置相关操作
     rpc UpdateUserAllConfig(UpdateUserAllConfigReq) returns (UpdateUserAllConfigResp){}
@@ -134,7 +134,8 @@ message GetLoverInfoResp{
      LoverInfo GotLoverInfo = 1;
 }
 
-//用户账户相关操作
+////用户账户相关操作
+//查询用户是否存在
 message QueryUserIsExistByIdReq{
     string UserId = 1;
 }
@@ -143,6 +144,17 @@ message QueryUserIsExistByIdResp{
     int32   QueryCode   = 2;
     string  QueryRes    = 3;
 }
+
+//查询用户的恋人Id
+message QueryLoverIdByIdReq{
+    string UserId = 1;
+}
+message QueryLoverIdByIdResp{
+    string LoverId      = 1;
+    int32  QueryCode    = 2;
+    string QueryRes     = 3;
+}
+
 
 //用户设置相关
 message UpdateUserAllConfigReq{

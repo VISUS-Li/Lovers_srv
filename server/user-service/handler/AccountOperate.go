@@ -2,6 +2,7 @@ package handler
 
 import (
 	"Lovers_srv/config"
+	"Lovers_srv/helper/Cache/UserCache"
 	"Lovers_srv/helper/DB"
 	"Lovers_srv/helper/Utils"
 	lovers_srv_user "Lovers_srv/server/user-service/proto"
@@ -42,4 +43,26 @@ func (user* UserHandler)QueryUserIsExistById(ctx context.Context, in *lovers_srv
 	out.QueryCode = config.CODE_ERR_SUCCESS
 	out.QueryRes = config.MSG_REQUEST_SUCCESS
 	return  nil
+}
+
+
+func (uer *UserHandler)QueryLoverIdById(ctx context.Context, in *lovers_srv_user.QueryLoverIdByIdReq, out *lovers_srv_user.QueryLoverIdByIdResp) error{
+	_, err := uuid.Parse(in.UserId)
+	if err != nil{
+		out.LoverId = ""
+		out.QueryCode = config.INVALID_PARAMS
+		out.QueryRes = config.MSG_ERR_PARAM_WRONG
+		return Utils.MicroErr(config.MSG_ERR_PARAM_WRONG, config.INVALID_PARAMS)
+	}
+	baseInfo, code, err :=UserCache.GetUserBaseInfoByUserId(in.UserId)
+	if code != config.ENUM_ERR_OK{
+		out.LoverId = ""
+		out.QueryCode = int32(code)
+		out.QueryRes = err.Error()
+		return Utils.MicroErr(err.Error(), code)
+	}
+	out.LoverId = baseInfo.LoverId
+	out.QueryCode = config.ENUM_ERR_OK
+	out.QueryRes = config.MSG_REQUEST_SUCCESS
+	return nil
 }

@@ -42,6 +42,9 @@ type UserService interface {
 	GetLoverInfo(ctx context.Context, in *GetLoverInfoReq, opts ...client.CallOption) (*GetLoverInfoResp, error)
 	//用户账户相关操作
 	QueryUserIsExistById(ctx context.Context, in *QueryUserIsExistByIdReq, opts ...client.CallOption) (*QueryUserIsExistByIdResp, error)
+	QueryLoverIdById(ctx context.Context, in *QueryLoverIdByIdReq, opts ...client.CallOption) (*QueryLoverIdByIdResp, error)
+	//用户设置相关操作
+	UpdateUserAllConfig(ctx context.Context, in *UpdateUserAllConfigReq, opts ...client.CallOption) (*UpdateUserAllConfigResp, error)
 }
 
 type userService struct {
@@ -132,6 +135,26 @@ func (c *userService) QueryUserIsExistById(ctx context.Context, in *QueryUserIsE
 	return out, nil
 }
 
+func (c *userService) QueryLoverIdById(ctx context.Context, in *QueryLoverIdByIdReq, opts ...client.CallOption) (*QueryLoverIdByIdResp, error) {
+	req := c.c.NewRequest(c.name, "User.QueryLoverIdById", in)
+	out := new(QueryLoverIdByIdResp)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) UpdateUserAllConfig(ctx context.Context, in *UpdateUserAllConfigReq, opts ...client.CallOption) (*UpdateUserAllConfigResp, error) {
+	req := c.c.NewRequest(c.name, "User.UpdateUserAllConfig", in)
+	out := new(UpdateUserAllConfigResp)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for User service
 
 type UserHandler interface {
@@ -143,6 +166,9 @@ type UserHandler interface {
 	GetLoverInfo(context.Context, *GetLoverInfoReq, *GetLoverInfoResp) error
 	//用户账户相关操作
 	QueryUserIsExistById(context.Context, *QueryUserIsExistByIdReq, *QueryUserIsExistByIdResp) error
+	QueryLoverIdById(context.Context, *QueryLoverIdByIdReq, *QueryLoverIdByIdResp) error
+	//用户设置相关操作
+	UpdateUserAllConfig(context.Context, *UpdateUserAllConfigReq, *UpdateUserAllConfigResp) error
 }
 
 func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.HandlerOption) error {
@@ -154,6 +180,8 @@ func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.Handl
 		UnBindLover(ctx context.Context, in *UnBindLoverReq, out *UnBindLoverResp) error
 		GetLoverInfo(ctx context.Context, in *GetLoverInfoReq, out *GetLoverInfoResp) error
 		QueryUserIsExistById(ctx context.Context, in *QueryUserIsExistByIdReq, out *QueryUserIsExistByIdResp) error
+		QueryLoverIdById(ctx context.Context, in *QueryLoverIdByIdReq, out *QueryLoverIdByIdResp) error
+		UpdateUserAllConfig(ctx context.Context, in *UpdateUserAllConfigReq, out *UpdateUserAllConfigResp) error
 	}
 	type User struct {
 		user
@@ -192,4 +220,12 @@ func (h *userHandler) GetLoverInfo(ctx context.Context, in *GetLoverInfoReq, out
 
 func (h *userHandler) QueryUserIsExistById(ctx context.Context, in *QueryUserIsExistByIdReq, out *QueryUserIsExistByIdResp) error {
 	return h.UserHandler.QueryUserIsExistById(ctx, in, out)
+}
+
+func (h *userHandler) QueryLoverIdById(ctx context.Context, in *QueryLoverIdByIdReq, out *QueryLoverIdByIdResp) error {
+	return h.UserHandler.QueryLoverIdById(ctx, in, out)
+}
+
+func (h *userHandler) UpdateUserAllConfig(ctx context.Context, in *UpdateUserAllConfigReq, out *UpdateUserAllConfigResp) error {
+	return h.UserHandler.UpdateUserAllConfig(ctx, in, out)
 }

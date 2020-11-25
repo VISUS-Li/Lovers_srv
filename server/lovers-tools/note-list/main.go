@@ -14,7 +14,7 @@ import (
 var NOTELIST_SRV_NAME = "lovers.srv.notelist"
 
 func main() {
-	config.Init()
+	config.Init(NOTELIST_SRV_NAME)
 	//create log
 	myLog := LogHelper.LoversLog{}
 	var dbName string

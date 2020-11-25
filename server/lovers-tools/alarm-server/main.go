@@ -15,7 +15,7 @@ var ALARM_SRV_NAME = "lovers.srv.alarm"
 func main(){
 
 	//初始化配置
-	config.Init()
+	config.Init(ALARM_SRV_NAME)
 	//初始化日志
 	myLog := LogHelper.LoversLog{}
 	var dbName string

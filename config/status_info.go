@@ -77,7 +77,7 @@ const(
 	MSG_SERVER_INTERNAL 	= "服务器内部错误"
 	MSG_ERR_INSERT_DB_FAIL 	= "插入数据库失败"
 	MSG_ERR_SELECT_DB_FAIL 	= "查询数据库失败"
-	MSG_ERR_DB_RECORD_NOT_FOUND = "未查询到记录"
+	MSG_ERR_DB_RECORD_NOT_FOUND = "record not found"
 	MSG_ERR_DB_RECORD_NOT_FOUND_ENG = "record not found"
 	MSG_ERR_PARAM_WRONG		= "传入参数错误"
 )
