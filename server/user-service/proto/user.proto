@@ -9,15 +9,16 @@ service User{
 
     rpc RegisterUser(RegisterReq) returns (RegisterResp){}
 
+    //Lover相关操作
     rpc BindLover(BindLoverReq) returns (BindLoverResp){}
-
     rpc UnBindLover(UnBindLoverReq) returns (UnBindLoverResp){}
-
-    rpc GetLoverInfo(GetLoverInfoReq) returns (GetLoverInfoResp){}
+    rpc GetBindWaitCode(GetBindWaitCodeReq) returns (GetBindWaitCodeResp){} //获取绑定码，调用该接口会让该用户处于等待绑定状态
+    rpc GetWaitingUser(GetWaitingUserReq) returns (GetWaitingUserResp){} //获得等待绑定用户ID
 
     //用户账户相关操作
     rpc QueryUserIsExistById(QueryUserIsExistByIdReq) returns (QueryUserIsExistByIdResp){}
     rpc QueryLoverIdById(QueryLoverIdByIdReq) returns (QueryLoverIdByIdResp){}
+
 
     //用户设置相关操作
     rpc UpdateUserAllConfig(UpdateUserAllConfigReq) returns (UpdateUserAllConfigResp){}
@@ -42,6 +43,7 @@ message BaseInfo{
      string Sculpture = 6; /*头像地址*/
      string HomeTown = 7;
      LoverInfo AnotherInfo = 8; /*另一半信息*/
+     string CoupleId    = 9; /*情侣ID，绑定了情侣，就给两个人分配一个共同的ID*/
 }
 
 /*另一半信息*/
@@ -49,7 +51,10 @@ message LoverInfo{
      string LoverId = 1; /*另一半ID*/
      string LoverPhone = 2; /*另一半的电话*/
      string LoverNickName = 3; /*对另一半的昵称*/
-     string LoveDuration = 4; /*相爱时长*/
+     int64  LoveDuration = 4; /*相爱时长*/
+     string BindStartTime = 5; /*开始绑定时间*/
+     string BindEndTime   = 6; /*结束绑定时间*/
+     string CoupleId    = 7; /*情侣ID，绑定了情侣，就给两个人分配一个共同的ID*/
 }
 
 message LoginReq{
@@ -105,33 +110,47 @@ message RegisterResp{
 
 message BindLoverReq{
      string UserId = 1;
-     string Phone = 2;
-     string BindLoverId = 3; /*绑定ID*/
+     string LoverId = 2; /*绑定ID*/
 }
 
 message BindLoverResp{
-     LoverInfo BindLoverInfo = 1;
-     string BindTime = 2;
+     int32     BindCode = 1;
+     string    BindRes  = 2;
+     LoverInfo BindLoverInfo = 3;
 }
 
 message UnBindLoverReq{
      string UserId = 1;
      string Phone = 2;
      string PassWord = 3;
-     LoverInfo UnBindLoverInfo = 4;
+     string CoupleId = 4;
 }
 
 message UnBindLoverResp{
      string UnBindTime = 1;
+     int32  UnBindCode = 2;
+     string UnBindRes  = 3;
 }
 
-message GetLoverInfoReq{
-     string UserId = 1;
-     string Phone = 2;
+message GetBindWaitCodeReq{
+    // @inject_tag: form:"UserId" json:"user_id"
+    string UserId = 1;
 }
 
-message GetLoverInfoResp{
-     LoverInfo GotLoverInfo = 1;
+message GetBindWaitCodeResp{
+    string UserId = 1;
+    int32  WaitCode = 2;
+    int32  WaitCodeCode = 3;
+    string WaitCodeRes  = 4;
+}
+
+message GetWaitingUserReq{
+        // @inject_tag: form:"WaitCode" json:"wait_code"
+        int32 WaitCode = 1;
+}
+
+message GetWaitingUserResp{
+    string LoverId = 1;
 }
 
 ////用户账户相关操作
@@ -149,6 +168,7 @@ message QueryUserIsExistByIdResp{
 message QueryLoverIdByIdReq{
     string UserId = 1;
 }
+
 message QueryLoverIdByIdResp{
     string LoverId      = 1;
     int32  QueryCode    = 2;

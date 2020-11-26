@@ -51,3 +51,8 @@ func (user *UserClient)Client_QueryLoverIdById(ctx context.Context, req *proto.Q
 	resp, err := user.client.QueryLoverIdById(ctx,req)
 	return resp, err
 }
+
+func (user *UserClient)Client_BindLover(ctx context.Context, req *proto.BindLoverReq) (*proto.BindLoverResp, error){
+	resp, err := user.client.BindLover(ctx, req)
+	return resp, err
+}

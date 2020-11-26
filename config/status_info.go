@@ -48,6 +48,7 @@ const(
 //用户操作相关
 const(
 	CODE_ERR_USER_NOT_EXIST = 1015
+	CODE_ERR_USER_ALREADY_BOUND_ANOTHER = 1021 //该用户已经绑定了其他用户
 )
 
 //主页相关
@@ -119,6 +120,7 @@ const (
 //用户操作相关
 const(
 	MSG_USER_NOT_EXIST = "用户不存在"
+	MSG_USER_ALREADY_BOUND_ANOTHER = "用户已经绑定了其他用户"
 )
 
 //主页相关

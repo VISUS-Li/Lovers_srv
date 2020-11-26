@@ -384,3 +384,31 @@ func DelUserBaseInfobyUserId(userId string, delDB bool, phyDel bool) (int, error
 	}
 	return config.ENUM_ERR_OK, nil
 }
+
+/*****
+	设置等待绑定的用户到缓冲
+*****/
+func SetWaitUser(waitCode string, userId string)(int, error){
+	cacheKey := bindWaitCodeKey(waitCode)
+
+	//先判断waitCode是否存在，存在就返回
+	exist, _ := Cache.IsExistString(cacheKey)
+	if exist{
+		return config.ENUM_ERR_KEY_EXISTED, Utils.ErrorOutputf("[SetWaitUser] key:%s existed", waitCode)
+	}
+	//不存在，添加
+	err := Cache.SetString(waitCode, userId)
+	if err != nil{
+		return config.ENUM_ERR_SETKEY_FAILED, Utils.ErrorOutputf("[SetWaitUser] set key failed:%s", err.Error())
+	}
+	return config.ENUM_ERR_OK, nil
+}
+
+func DelWaitUser(waitCode string)(int, error){
+	cacheKey := bindWaitCodeKey(waitCode)
+	err := Cache.DelString(cacheKey)
+	if err != nil{
+		return config.ENUM_ERR_DELKEY_FAILED, Utils.ErrorOutputf("[DelWaitUser] del key failed:%s",err.Error())
+	}
+	return config.ENUM_ERR_OK, nil
+}
