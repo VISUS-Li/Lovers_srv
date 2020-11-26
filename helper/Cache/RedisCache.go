@@ -19,7 +19,7 @@ var (
 
 func NewRedisPool(serverDB *gorm.DB) *redis.Pool {
 	//初始化服务数据库
-	DB = serverDB;
+	DB = serverDB
 
 	//计算Redis存储元素的超时时间
 	d := time.Duration(config.GlobalConfig.Redis_ExpireTime)

@@ -2,6 +2,7 @@ package main
 
 import (
 	"Lovers_srv/config"
+	"Lovers_srv/helper/Cache"
 	"Lovers_srv/helper/DB"
 	"Lovers_srv/helper/LogHelper"
 	"Lovers_srv/helper/Utils"
@@ -43,6 +44,9 @@ func main() {
 		logrus.Error("create table NoteListDB error:"+err.Error())
 		return
 	}
+
+	Cache.NewRedisPool(dbUtil.DB)
+	defer Cache.CloseRedis()
 
 	noteListHandler := handler.NoteListHandler{dbUtil.DB}
 

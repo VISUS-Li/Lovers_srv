@@ -57,7 +57,7 @@ const(
 )
 type Config struct{
 	//运行模式
-	RunMode string;
+	RunMode string
 	//服务名
 	Srv_name     string;
 
