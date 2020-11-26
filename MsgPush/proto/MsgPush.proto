@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package lovers.srv.msg_push;
+
+service MSG_PUSH{
+    /******
+    运动相关
+    ******/
+    //获取给定用户累计跑步数据
+    rpc GetRunStatisticsByUserId(RunStatisByUserIdReq) returns (RunStatisByUserIdResp){}
+}
+
+message RunStatisByUserIdReq{
+
+}
+
+message RunStatisByUserIdResp{
+
+}

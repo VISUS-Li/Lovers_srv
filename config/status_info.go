@@ -48,6 +48,7 @@ const(
 //用户操作相关
 const(
 	CODE_ERR_USER_NOT_EXIST = 1015
+	CODE_ERR_USER_ALREADY_BOUND_ANOTHER = 1021 //该用户已经绑定了其他用户
 )
 
 //主页相关
@@ -77,7 +78,7 @@ const(
 	MSG_SERVER_INTERNAL 	= "服务器内部错误"
 	MSG_ERR_INSERT_DB_FAIL 	= "插入数据库失败"
 	MSG_ERR_SELECT_DB_FAIL 	= "查询数据库失败"
-	MSG_ERR_DB_RECORD_NOT_FOUND = "未查询到记录"
+	MSG_ERR_DB_RECORD_NOT_FOUND = "record not found"
 	MSG_ERR_DB_RECORD_NOT_FOUND_ENG = "record not found"
 	MSG_ERR_PARAM_WRONG		= "传入参数错误"
 )
@@ -119,6 +120,7 @@ const (
 //用户操作相关
 const(
 	MSG_USER_NOT_EXIST = "用户不存在"
+	MSG_USER_ALREADY_BOUND_ANOTHER = "用户已经绑定了其他用户"
 )
 
 //主页相关

@@ -15,6 +15,7 @@ import (
 const(
 	_preLoginKey = "login_%s" //手机号或userId从redis获取login信息的前缀: login_15002326233
 	_preBaseInfoKey = "base_info_%s" //通過user_id从redis获取baseInfo的前缀:base_info_a91559d8-0c99-11eb-9650-00163e2ed191
+	_preBindWaitCodeKey = "bind_waitcode_%s" //绑定另一半等待码前缀
 )
 
 const(
@@ -29,6 +30,10 @@ func loginKey(key string) string{
 
 func baseInfoKey(key string) string{
 	return fmt.Sprintf(_preBaseInfoKey,key)
+}
+
+func bindWaitCodeKey(key string)string{
+	return fmt.Sprintf(_preBindWaitCodeKey,key)
 }
 /******
  通过电话号码获取用户登录信息,先从缓存中找，没找到再从数据库找
@@ -204,3 +209,22 @@ func GetUserBaseInfoByUserId(userId string)(*DB.UserBaseInfo, int, error){
 	}
 	return nil, config.ENUM_ERR_OK, nil
 }
+
+func GetWaitBindUser(waitCode string) (string, int, error){
+	cacheKey := bindWaitCodeKey(waitCode)
+	userId, err := Cache.GetString(cacheKey)
+	if err != nil {
+		return "", config.ENUM_ERR_GETKEY_FAILED, Utils.ErrorOutputf("[GetWaitBindUser]get key failed:%s", err.Error())
+	}
+	return userId, config.ENUM_ERR_OK, nil
+}
+
+func IsExistWaitCode(waitCode string) (bool, error){
+	cacheKey := bindWaitCodeKey(waitCode)
+	exist, err := Cache.IsExistString(cacheKey)
+	if err != nil{
+		return false, Utils.ErrorOutputf("[IsExistWaitCode] Exist key failed:%s", err.Error())
+	}
+	return exist, nil
+}
+

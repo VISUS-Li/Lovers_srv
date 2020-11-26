@@ -140,3 +140,70 @@ func DelHash(key string, fieldKey string) error{
 	}
 	return nil
 }
+
+func SetString(key string, val string)(error){
+	conn := RedisPool.Get()
+	defer conn.Close()
+
+	if key == "" || len(key) <= 0 || val == "" || len(val) <= 0{
+		return Utils.ErrorOutputf("param is nil")
+	}
+	//进行SET操作，将SET写入缓存中，还没有正式执行该操作的
+	if err := conn.Send("SET", key, val); err != nil{
+		return Utils.ErrorOutputf("conn.Send(SET %s,%s) error(%v)", key, val, err)
+	}
+
+	//设置该Key的过期时间
+	if err := conn.Send("EXPIRE", key, redisExpire); err != nil {
+		return Utils.ErrorOutputf("conn.Send(EXPIRE %s) error(%v)", key, err)
+	}
+
+	//正式执行HSET和EXPIRE操作
+	if err := conn.Flush(); err != nil{
+		return Utils.ErrorOutputf("conn.Flush() error(%v)", err)
+	}
+
+	//接受执行HSET和EXPIRE的执行结果
+	for i := 0; i < 2; i++ {
+		if _, err := conn.Receive(); err != nil {
+			return Utils.ErrorOutputf("conn.Receive() error(%v)", err)
+		}
+	}
+	return nil
+}
+
+func GetString(key string) (string, error){
+	conn := RedisPool.Get()
+	defer conn.Close()
+	b, err := redis.String(conn.Do("GET", key))
+	if err != nil{
+		if err != redis.ErrNil {
+			return "", Utils.ErrorOutputf("conn.Do(GET %s) error(%v)", key, err.Error())
+		}
+		return "", nil
+	}
+	return b, nil
+}
+
+func DelString(key string) error{
+	conn := RedisPool.Get()
+	defer conn.Close()
+	_, err := conn.Do("DEL", key)
+	if err != nil{
+		return Utils.ErrorOutputf("conn.Do(DEL %s) errovr(%v)", key,err.Error())
+	}
+	return nil
+}
+
+func IsExistString(key string) (bool, error){
+	conn := RedisPool.Get()
+	defer conn.Close()
+	b, err := redis.Bool(conn.Do("EXISTS", key))
+	if err != nil{
+		if err != redis.ErrNil {
+			return false, Utils.ErrorOutputf("conn.Do(EXISTS %s) error(%v)", key, err.Error())
+		}
+		return false, nil
+	}
+	return b, nil
+}

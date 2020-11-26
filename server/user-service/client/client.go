@@ -46,3 +46,13 @@ func (user *UserClient)Client_QueryUserExistById(ctx context.Context, req *proto
 	resp, err := user.client.QueryUserIsExistById(ctx,req)
 	return resp, err
 }
+
+func (user *UserClient)Client_QueryLoverIdById(ctx context.Context, req *proto.QueryLoverIdByIdReq) (*proto.QueryLoverIdByIdResp, error){
+	resp, err := user.client.QueryLoverIdById(ctx,req)
+	return resp, err
+}
+
+func (user *UserClient)Client_BindLover(ctx context.Context, req *proto.BindLoverReq) (*proto.BindLoverResp, error){
+	resp, err := user.client.BindLover(ctx, req)
+	return resp, err
+}

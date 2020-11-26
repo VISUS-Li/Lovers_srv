@@ -19,7 +19,6 @@ type UserHandler struct {
 	DB *gorm.DB
 }
 
-
 func (user* UserHandler) Login(ctx context.Context, in *lovers_srv_user.LoginReq, out *lovers_srv_user.LoginResp) error {
 
 	if in.Type == config.ENUM_LOGIN_VERCODE {
@@ -164,7 +163,7 @@ func (user* UserHandler)DBBaseInfoToRespBaseInfo(dbBaseInfo DB.UserBaseInfo)( *l
 	respBaseInfo.Sculpture = dbBaseInfo.Sculpture
 	respBaseInfo.Sex = strconv.Itoa(dbBaseInfo.Sex)
 	respBaseInfo.AnotherInfo.LoverId = dbBaseInfo.LoverId
-	respBaseInfo.AnotherInfo.LoveDuration = strconv.FormatInt(dbBaseInfo.LoveDuration,10)
+	respBaseInfo.AnotherInfo.LoveDuration = dbBaseInfo.LoveDuration
 	respBaseInfo.AnotherInfo.LoverNickName = dbBaseInfo.LoverNickName
 	respBaseInfo.AnotherInfo.LoverPhone = dbBaseInfo.LoverPhone
 	return respBaseInfo
@@ -173,14 +172,4 @@ func (user* UserHandler)Logout(ctx context.Context, in *lovers_srv_user.LogoutRe
 	return nil
 }
 
-
-func (user* UserHandler)BindLover(ctx context.Context, in *lovers_srv_user.BindLoverReq, out *lovers_srv_user.BindLoverResp) error{
-	return nil
-}
-func (user* UserHandler)UnBindLover(ctx context.Context, in *lovers_srv_user.UnBindLoverReq, out *lovers_srv_user.UnBindLoverResp) error{
-	return nil
-}
-func (user* UserHandler)GetLoverInfo(ctx context.Context, in *lovers_srv_user.GetLoverInfoReq, out *lovers_srv_user.GetLoverInfoResp) error{
-	return nil
-}
 

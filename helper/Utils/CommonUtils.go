@@ -2,6 +2,7 @@ package Utils
 
 import (
 	"Lovers_srv/config"
+	"bytes"
 	"errors"
 	"fmt"
 	"github.com/go-sql-driver/mysql"
@@ -14,6 +15,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func VerifyEmailFormat(email string) bool{
@@ -147,6 +149,16 @@ func ErrorOutputf(format string, args ...interface{}) error{
 }
 
 /******
+InfoOutputf,自己封装的信息打印，根据运行模式判断是否打印
+******/
+func InfoOutputf(format string, args ...interface{}){
+	msg := fmt.Sprintf(format, args...)
+	if config.GlobalConfig.RunMode == config.RUNMODE_DEV{
+		logrus.Info(msg)
+	}
+}
+
+/******
 	处理mysql返回的错误，并将错误码转换成自定义错误码
 ******/
 func ErrorOutputMysqlf(defCode int, err error,format string, args ...interface{}) (int, error){
@@ -169,7 +181,7 @@ func ErrorOutputMysqlf(defCode int, err error,format string, args ...interface{}
 		default:
 			errCode = defCode
 			if(config.GlobalConfig.RunMode == config.RUNMODE_DEV){
-				logrus.Errorf("MYSQLError msg:%, code:%d",mySqlErr.Message, mySqlErr.Number)
+				logrus.Errorf("MYSQLError msg:%s, code:%d",mySqlErr.Message, mySqlErr.Number)
 			}
 			break;
 		}
@@ -184,6 +196,27 @@ func ErrorOutputMysqlf(defCode int, err error,format string, args ...interface{}
 	}
 }
 
-func ParseError(){
+func GetGoroutineID() uint64 {
+	b := make([]byte, 64)
+	b = b[:runtime.Stack(b, false)]
+	b = bytes.TrimPrefix(b, []byte("goroutine "))
+	b = b[:bytes.IndexByte(b, ' ')]
+	n, _ := strconv.ParseUint(string(b), 10, 64)
+	return n
+}
 
+func GetNowDayStartEnd()( int64, int64){
+	timeStr := time.Now().Format("2006-01-02")
+
+	//设置当地时区
+	loc, _ := time.LoadLocation("Local")
+
+	//日期当天0点时间戳(拼接字符串)
+	startDate := timeStr+"_00:00:00"
+	startTime, _ := time.ParseInLocation("2006-01-02_15:04:05",startDate,loc)
+
+	//日期当天23时59分时间戳
+	endDate:=timeStr+"_23:59:59"
+	endTime,_:=time.ParseInLocation("2006-01-02_15:04:05",endDate,loc)
+	return startTime.Unix(), endTime.Unix()
 }

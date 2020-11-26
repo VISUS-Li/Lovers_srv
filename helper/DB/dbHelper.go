@@ -2,6 +2,7 @@ package DB
 
 import (
 	"Lovers_srv/config"
+	"Lovers_srv/helper/Utils"
 	"errors"
 	"fmt"
 	"github.com/jinzhu/gorm"
@@ -16,7 +17,7 @@ type DBUtil struct{
 }
 
 func (unit *DBUtil)CreateTable(tableModel interface{})(error){
-	logrus.Info("create talbe:" + reflect.TypeOf(tableModel).Name())
+	Utils.InfoOutputf("[CreateTable] create table %s",reflect.TypeOf(tableModel).Name())
 	unit.DB = unit.DB.AutoMigrate(tableModel)
 	return unit.DB.Error
 }

@@ -4,7 +4,6 @@ import (
 	"Lovers_srv/config"
 	"Lovers_srv/helper/Cache"
 	"Lovers_srv/helper/DB"
-	"Lovers_srv/helper/MyError"
 	"Lovers_srv/helper/Utils"
 	"github.com/jinzhu/gorm"
 )
@@ -23,11 +22,8 @@ func SetUserLoginInfobyPhone(phone string, data DB.LoginInfo, saveDB bool) (int,
 	Cache.DelHash(cacheKey,_fieldKeyPhone)
 	err := Cache.SetHashByJson(cacheKey,_fieldKeyPhone,data)
 	if err != nil{
-		if saveDB {
-			Utils.ErrorOutputf("[SetUserLoginInfobyPhone] failed:%s",err.Error())
-		}else{
-			return config.ENUM_ERR_SETHASH_FAILED, Utils.ErrorOutputf("[SetUserLoginInfobyPhone] set hash cache failed:%s",err.Error())
-		}
+		//缓存必须设置成功才能进行下一步操作，否则会导致缓存和数据库不同步
+		return config.ENUM_ERR_SETHASH_FAILED, Utils.ErrorOutputf("[SetUserLoginInfobyPhone] set hash cache failed:%s",err.Error())
 	}
 
 	//将该记录持久化到数据库中
@@ -36,9 +32,11 @@ func SetUserLoginInfobyPhone(phone string, data DB.LoginInfo, saveDB bool) (int,
 		findLogin := new(DB.LoginInfo)
 		err := Cache.DB.Where("user_id = ?",data.UserId).Find(&findLogin).Error
 		if err != nil{
-			if(err.Error() == MyError.MYERROR_DB_RECORD_NOT_FOUND){
+			if err.Error() == config.MSG_ERR_DB_RECORD_NOT_FOUND {
 				findLogin = nil
 			}else{
+				//对数据库操作失败，必须删除缓存，否则会导致缓存和数据库不同步
+				Cache.DelHash(cacheKey,_fieldKeyPhone)
 				return config.ENUM_ERR_DB_QUERY_FAILED, Utils.ErrorOutputf("[SetUserLoginInfobyPhone] query table login_info failed, user_id:%s errinfo:%s",data.UserId, err.Error())
 			}
 		}
@@ -49,6 +47,8 @@ func SetUserLoginInfobyPhone(phone string, data DB.LoginInfo, saveDB bool) (int,
 			updateLogin = data
 			err := Cache.DB.Model(DB.LoginInfo{}).Where("user_id = ?", data.UserId).Updates(&updateLogin).Error
 			if err != nil{
+				//对数据库操作失败，必须删除缓存，否则会导致缓存和数据库不同步
+				Cache.DelHash(cacheKey,_fieldKeyPhone)
 				return config.ENUM_ERR_DB_UPDATE_FAILED, Utils.ErrorOutputf("[SetUserLoginInfobyPhone] update table login_info failed, uer_id:%s errinfo:%s",data.UserId, err.Error())
 			}
 		}else{
@@ -58,6 +58,8 @@ func SetUserLoginInfobyPhone(phone string, data DB.LoginInfo, saveDB bool) (int,
 			newLoginInf.Model = gorm.Model{}
 			err := Cache.DB.Create(&newLoginInf).Error
 			if err != nil{
+				//对数据库操作失败，必须删除缓存，否则会导致缓存和数据库不同步
+				Cache.DelHash(cacheKey,_fieldKeyPhone)
 				code, err := Utils.ErrorOutputMysqlf(config.ENUM_ERR_DB_INSERT_FAILED, err, "[SetUserLoginInfobyPhone] save to db failed, user_id:%s errinfo:%s",data.UserId, err.Error())
 				return code, err
 			}
@@ -77,11 +79,8 @@ func SetUserLoginInfobyUserId(userId string, data DB.LoginInfo, saveDB bool) (in
 	Cache.DelHash(cacheKey,_fieldKeyUserId)
 	err := Cache.SetHashByJson(cacheKey,_fieldKeyUserId, data)
 	if err != nil{
-		if saveDB {
-			Utils.ErrorOutputf("[SetUserLoginInfobyUserId] failed:%s",err.Error())
-		}else{
-			return config.ENUM_ERR_SETHASH_FAILED, Utils.ErrorOutputf("[SetUserLoginInfobyUserId] set hash cache failed:%s",err.Error())
-		}
+		//缓存必须设置成功才能进行下一步操作，否则会导致缓存和数据库不同步
+		return config.ENUM_ERR_SETHASH_FAILED, Utils.ErrorOutputf("[SetUserLoginInfobyUserId] set hash cache failed:%s",err.Error())
 	}
 
 	//将该记录持久化到数据库中
@@ -90,9 +89,11 @@ func SetUserLoginInfobyUserId(userId string, data DB.LoginInfo, saveDB bool) (in
 		findLogin := new(DB.LoginInfo)
 		err := Cache.DB.Where("user_id = ?",data.UserId).Find(&findLogin).Error
 		if err != nil{
-			if(err.Error() == MyError.MYERROR_DB_RECORD_NOT_FOUND){
+			if err.Error() == config.MSG_ERR_DB_RECORD_NOT_FOUND {
 				findLogin = nil
 			}else{
+				//对数据库操作失败，必须删除缓存，否则会导致缓存和数据库不同步
+				Cache.DelHash(cacheKey,_fieldKeyUserId)
 				return config.ENUM_ERR_DB_QUERY_FAILED, Utils.ErrorOutputf("[SetUserLoginInfobyUserId] query table login_info failed, user_id:%s errinfo:%s",data.UserId, err.Error())
 			}
 		}
@@ -103,6 +104,8 @@ func SetUserLoginInfobyUserId(userId string, data DB.LoginInfo, saveDB bool) (in
 			updateLogin = data
 			err := Cache.DB.Model(DB.LoginInfo{}).Where("user_id = ?", data.UserId).Updates(&updateLogin).Error
 			if err != nil{
+				//对数据库操作失败，必须删除缓存，否则会导致缓存和数据库不同步
+				Cache.DelHash(cacheKey,_fieldKeyUserId)
 				return config.ENUM_ERR_DB_UPDATE_FAILED, Utils.ErrorOutputf("[SetUserLoginInfobyUserId] update table login_info failed, uer_id:%s errinfo:%s",data.UserId, err.Error())
 			}
 		}else{
@@ -112,6 +115,8 @@ func SetUserLoginInfobyUserId(userId string, data DB.LoginInfo, saveDB bool) (in
 			newLoginInf.Model = gorm.Model{}
 			err := Cache.DB.Create(&newLoginInf).Error
 			if err != nil{
+				//对数据库操作失败，必须删除缓存，否则会导致缓存和数据库不同步
+				Cache.DelHash(cacheKey,_fieldKeyUserId)
 				code, err := Utils.ErrorOutputMysqlf(config.ENUM_ERR_DB_INSERT_FAILED, err, "[SetUserLoginInfobyUserId] save to db failed, user_id:%s errinfo:%s",data.UserId, err.Error())
 				return code, err
 			}
@@ -135,11 +140,8 @@ func SetUserBaseInfoByPhone(phone string, data DB.UserBaseInfo, saveDB bool) (in
 	Cache.DelHash(cacheKey,_fieldKeyPhone)
 	err := Cache.SetHashByJson(cacheKey,_fieldKeyPhone, data)
 	if err != nil{
-		if saveDB {
-			Utils.ErrorOutputf("[SetUserBaseInfoByPhone] failed:%s",err.Error())
-		}else{
-			return config.ENUM_ERR_SETHASH_FAILED, Utils.ErrorOutputf("[SetUserBaseInfoByPhone] set hash cache failed:%s",err.Error())
-		}
+		//缓存必须设置成功才能进行下一步操作，否则会导致缓存和数据库不同步
+		return config.ENUM_ERR_SETHASH_FAILED, Utils.ErrorOutputf("[SetUserBaseInfoByPhone] set hash cache failed:%s",err.Error())
 	}
 
 	//将该记录持久化到数据库中
@@ -148,9 +150,11 @@ func SetUserBaseInfoByPhone(phone string, data DB.UserBaseInfo, saveDB bool) (in
 		findBase := new(DB.UserBaseInfo)
 		err := Cache.DB.Where("user_id = ?",data.UserId).Find(&findBase).Error
 		if err != nil{
-			if(err.Error() == MyError.MYERROR_DB_RECORD_NOT_FOUND){
+			if err.Error() == config.MSG_ERR_DB_RECORD_NOT_FOUND {
 				findBase = nil
 			}else{
+				//对数据库操作失败，必须删除缓存，否则会导致缓存和数据库不同步
+				Cache.DelHash(cacheKey,_fieldKeyPhone)
 				return config.ENUM_ERR_DB_QUERY_FAILED, Utils.ErrorOutputf("[SetUserBaseInfoByPhone] query table user_base_info failed, user_id:%s errinfo:%s",data.UserId, err.Error())
 			}
 		}
@@ -161,6 +165,8 @@ func SetUserBaseInfoByPhone(phone string, data DB.UserBaseInfo, saveDB bool) (in
 			updateBase = data
 			err := Cache.DB.Model(DB.UserBaseInfo{}).Where("user_id = ?", data.UserId).Updates(&updateBase).Error
 			if err != nil{
+				//对数据库操作失败，必须删除缓存，否则会导致缓存和数据库不同步
+				Cache.DelHash(cacheKey,_fieldKeyPhone)
 				return config.ENUM_ERR_DB_UPDATE_FAILED, Utils.ErrorOutputf("[SetUserBaseInfoByPhone] update table login_info failed, uer_id:%s errinfo:%s",data.UserId, err.Error())
 			}
 		}else{
@@ -171,6 +177,8 @@ func SetUserBaseInfoByPhone(phone string, data DB.UserBaseInfo, saveDB bool) (in
 
 			err := Cache.DB.Create(&newBaseInfo).Error
 			if err != nil{
+				//对数据库操作失败，必须删除缓存，否则会导致缓存和数据库不同步
+				Cache.DelHash(cacheKey,_fieldKeyPhone)
 				code, err := Utils.ErrorOutputMysqlf(config.ENUM_ERR_DB_INSERT_FAILED, err, "[SetUserBaseInfoByPhone] save to db failed, user_id:%s errinfo:%s",data.UserId, err.Error())
 				return code, err
 			}
@@ -190,11 +198,8 @@ func SetUserBaseInfoByUserId(userId string, data DB.UserBaseInfo, saveDB bool) (
 	Cache.DelHash(cacheKey,_fieldKeyUserId)
 	err := Cache.SetHashByJson(cacheKey,_fieldKeyUserId, data)
 	if err != nil{
-		if saveDB {
-			Utils.ErrorOutputf("[SetUserBaseInfoByUserId] failed:%s",err.Error())
-		}else{
-			return config.ENUM_ERR_SETHASH_FAILED, Utils.ErrorOutputf("[SetUserBaseInfoByUserId] set hash cache failed:%s",err.Error())
-		}
+		//缓存必须设置成功才能进行下一步操作，否则会导致缓存和数据库不同步
+		return config.ENUM_ERR_SETHASH_FAILED, Utils.ErrorOutputf("[SetUserBaseInfoByUserId] set hash cache failed:%s",err.Error())
 	}
 
 	//将该记录持久化到数据库中
@@ -203,9 +208,11 @@ func SetUserBaseInfoByUserId(userId string, data DB.UserBaseInfo, saveDB bool) (
 		findBase := new(DB.UserBaseInfo)
 		err := Cache.DB.Where("user_id = ?",data.UserId).Find(&findBase).Error
 		if err != nil{
-			if(err.Error() == MyError.MYERROR_DB_RECORD_NOT_FOUND){
+			if err.Error() == config.MSG_ERR_DB_RECORD_NOT_FOUND {
 				findBase = nil
 			}else{
+				//对数据库操作失败，必须删除缓存，否则会导致缓存和数据库不同步
+				Cache.DelHash(cacheKey,_fieldKeyUserId)
 				return config.ENUM_ERR_DB_QUERY_FAILED, Utils.ErrorOutputf("[SetUserBaseInfoByUserId] query table user_base_info failed, user_id:%s errinfo:%s",data.UserId, err.Error())
 			}
 		}
@@ -216,6 +223,8 @@ func SetUserBaseInfoByUserId(userId string, data DB.UserBaseInfo, saveDB bool) (
 			updateBase = data
 			err := Cache.DB.Model(DB.UserBaseInfo{}).Where("user_id = ?", data.UserId).Updates(&updateBase).Error
 			if err != nil{
+				//对数据库操作失败，必须删除缓存，否则会导致缓存和数据库不同步
+				Cache.DelHash(cacheKey,_fieldKeyUserId)
 				return config.ENUM_ERR_DB_UPDATE_FAILED, Utils.ErrorOutputf("[SetUserBaseInfoByUserId] update table user_base_info failed, uer_id:%s errinfo:%s",data.UserId, err.Error())
 			}
 		}else{
@@ -225,6 +234,8 @@ func SetUserBaseInfoByUserId(userId string, data DB.UserBaseInfo, saveDB bool) (
 			newBaseInfo.Model = gorm.Model{}
 			err := Cache.DB.Create(&newBaseInfo).Error
 			if err != nil{
+				//对数据库操作失败，必须删除缓存，否则会导致缓存和数据库不同步
+				Cache.DelHash(cacheKey,_fieldKeyUserId)
 				code, err := Utils.ErrorOutputMysqlf(config.ENUM_ERR_DB_INSERT_FAILED, err, "[SetUserBaseInfoByUserId] save to db failed, user_id:%s errinfo:%s",data.UserId, err.Error())
 				return code, err
 			}
@@ -246,7 +257,7 @@ func DelUserLoginInfobyPhone(phone string, delDB bool, phyDel bool) (int, error)
 	cacheKey := loginKey(phone)
 	err := Cache.DelHash(cacheKey,_fieldKeyPhone)
 	if err != nil{
-		Utils.ErrorOutputf("[DelUserLoginInfobyPhone] del hash cache failed:%s",err.Error())
+		return config.ENUM_ERR_DELHASH_FAILED, Utils.ErrorOutputf("[DelUserLoginInfobyPhone] del hash cache failed:%s",err.Error())
 	}
 
 	//通过phone删除数据库中的登录数据
@@ -281,7 +292,7 @@ func DelUserLoginInfobyUserId(userId string, delDB bool, phyDel bool) (int, erro
 	cacheKey := loginKey(userId)
 	err := Cache.DelHash(cacheKey,_fieldKeyUserId)
 	if err != nil{
-		Utils.ErrorOutputf("[DelUserLoginInfobyUserId] del hash cache failed:%s",err.Error())
+		return config.ENUM_ERR_DELHASH_FAILED,Utils.ErrorOutputf("[DelUserLoginInfobyUserId] del hash cache failed:%s",err.Error())
 	}
 
 	//通过UserId删除数据库中的登录数据
@@ -316,7 +327,7 @@ func DelUserBaseInfobyPhone(phone string, delDB bool, phyDel bool) (int, error) 
 	cacheKey := baseInfoKey(phone)
 	err := Cache.DelHash(cacheKey,_fieldKeyPhone)
 	if err != nil{
-		Utils.ErrorOutputf("[DelUserBaseInfobyPhone] del hash cache failed:%s",err.Error())
+		return config.ENUM_ERR_DELHASH_FAILED, Utils.ErrorOutputf("[DelUserBaseInfobyPhone] del hash cache failed:%s",err.Error())
 	}
 
 	//通过phone删除数据库中的用户基础信息
@@ -352,7 +363,7 @@ func DelUserBaseInfobyUserId(userId string, delDB bool, phyDel bool) (int, error
 	cacheKey := baseInfoKey(userId)
 	err := Cache.DelHash(cacheKey,_fieldKeyUserId)
 	if err != nil{
-		Utils.ErrorOutputf("[DelUserBaseInfobyUserId] del hash cache failed:%s",err.Error())
+		return config.ENUM_ERR_DELHASH_FAILED, Utils.ErrorOutputf("[DelUserBaseInfobyUserId] del hash cache failed:%s",err.Error())
 	}
 
 	//通过UserId删除数据库中的基本信息
@@ -370,6 +381,34 @@ func DelUserBaseInfobyUserId(userId string, delDB bool, phyDel bool) (int, error
 				return code, err
 			}
 		}
+	}
+	return config.ENUM_ERR_OK, nil
+}
+
+/*****
+	设置等待绑定的用户到缓冲
+*****/
+func SetWaitUser(waitCode string, userId string)(int, error){
+	cacheKey := bindWaitCodeKey(waitCode)
+
+	//先判断waitCode是否存在，存在就返回
+	exist, _ := Cache.IsExistString(cacheKey)
+	if exist{
+		return config.ENUM_ERR_KEY_EXISTED, Utils.ErrorOutputf("[SetWaitUser] key:%s existed", waitCode)
+	}
+	//不存在，添加
+	err := Cache.SetString(waitCode, userId)
+	if err != nil{
+		return config.ENUM_ERR_SETKEY_FAILED, Utils.ErrorOutputf("[SetWaitUser] set key failed:%s", err.Error())
+	}
+	return config.ENUM_ERR_OK, nil
+}
+
+func DelWaitUser(waitCode string)(int, error){
+	cacheKey := bindWaitCodeKey(waitCode)
+	err := Cache.DelString(cacheKey)
+	if err != nil{
+		return config.ENUM_ERR_DELKEY_FAILED, Utils.ErrorOutputf("[DelWaitUser] del key failed:%s",err.Error())
 	}
 	return config.ENUM_ERR_OK, nil
 }

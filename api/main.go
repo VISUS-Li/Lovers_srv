@@ -7,9 +7,10 @@ import (
 	"github.com/micro/go-micro/web"
 	"github.com/sirupsen/logrus"
 )
+var API_SRV_NAME = "lovers.srv.api"
 func main(){
 	//从配置文件获取配置信息
-	config.Init()
+	config.Init(API_SRV_NAME)
 	//初始化日志
 	myLog := LogHelper.LoversLog{}
 	var serverName string

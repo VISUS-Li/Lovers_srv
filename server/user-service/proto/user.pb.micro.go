@@ -37,11 +37,16 @@ type UserService interface {
 	Login(ctx context.Context, in *LoginReq, opts ...client.CallOption) (*LoginResp, error)
 	Logout(ctx context.Context, in *LogoutReq, opts ...client.CallOption) (*LogoutResp, error)
 	RegisterUser(ctx context.Context, in *RegisterReq, opts ...client.CallOption) (*RegisterResp, error)
+	//Lover相关操作
 	BindLover(ctx context.Context, in *BindLoverReq, opts ...client.CallOption) (*BindLoverResp, error)
 	UnBindLover(ctx context.Context, in *UnBindLoverReq, opts ...client.CallOption) (*UnBindLoverResp, error)
-	GetLoverInfo(ctx context.Context, in *GetLoverInfoReq, opts ...client.CallOption) (*GetLoverInfoResp, error)
+	GetBindWaitCode(ctx context.Context, in *GetBindWaitCodeReq, opts ...client.CallOption) (*GetBindWaitCodeResp, error)
+	GetWaitingUser(ctx context.Context, in *GetWaitingUserReq, opts ...client.CallOption) (*GetWaitingUserResp, error)
 	//用户账户相关操作
 	QueryUserIsExistById(ctx context.Context, in *QueryUserIsExistByIdReq, opts ...client.CallOption) (*QueryUserIsExistByIdResp, error)
+	QueryLoverIdById(ctx context.Context, in *QueryLoverIdByIdReq, opts ...client.CallOption) (*QueryLoverIdByIdResp, error)
+	//用户设置相关操作
+	UpdateUserAllConfig(ctx context.Context, in *UpdateUserAllConfigReq, opts ...client.CallOption) (*UpdateUserAllConfigResp, error)
 }
 
 type userService struct {
@@ -112,9 +117,19 @@ func (c *userService) UnBindLover(ctx context.Context, in *UnBindLoverReq, opts 
 	return out, nil
 }
 
-func (c *userService) GetLoverInfo(ctx context.Context, in *GetLoverInfoReq, opts ...client.CallOption) (*GetLoverInfoResp, error) {
-	req := c.c.NewRequest(c.name, "User.GetLoverInfo", in)
-	out := new(GetLoverInfoResp)
+func (c *userService) GetBindWaitCode(ctx context.Context, in *GetBindWaitCodeReq, opts ...client.CallOption) (*GetBindWaitCodeResp, error) {
+	req := c.c.NewRequest(c.name, "User.GetBindWaitCode", in)
+	out := new(GetBindWaitCodeResp)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) GetWaitingUser(ctx context.Context, in *GetWaitingUserReq, opts ...client.CallOption) (*GetWaitingUserResp, error) {
+	req := c.c.NewRequest(c.name, "User.GetWaitingUser", in)
+	out := new(GetWaitingUserResp)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -132,17 +147,42 @@ func (c *userService) QueryUserIsExistById(ctx context.Context, in *QueryUserIsE
 	return out, nil
 }
 
+func (c *userService) QueryLoverIdById(ctx context.Context, in *QueryLoverIdByIdReq, opts ...client.CallOption) (*QueryLoverIdByIdResp, error) {
+	req := c.c.NewRequest(c.name, "User.QueryLoverIdById", in)
+	out := new(QueryLoverIdByIdResp)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) UpdateUserAllConfig(ctx context.Context, in *UpdateUserAllConfigReq, opts ...client.CallOption) (*UpdateUserAllConfigResp, error) {
+	req := c.c.NewRequest(c.name, "User.UpdateUserAllConfig", in)
+	out := new(UpdateUserAllConfigResp)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for User service
 
 type UserHandler interface {
 	Login(context.Context, *LoginReq, *LoginResp) error
 	Logout(context.Context, *LogoutReq, *LogoutResp) error
 	RegisterUser(context.Context, *RegisterReq, *RegisterResp) error
+	//Lover相关操作
 	BindLover(context.Context, *BindLoverReq, *BindLoverResp) error
 	UnBindLover(context.Context, *UnBindLoverReq, *UnBindLoverResp) error
-	GetLoverInfo(context.Context, *GetLoverInfoReq, *GetLoverInfoResp) error
+	GetBindWaitCode(context.Context, *GetBindWaitCodeReq, *GetBindWaitCodeResp) error
+	GetWaitingUser(context.Context, *GetWaitingUserReq, *GetWaitingUserResp) error
 	//用户账户相关操作
 	QueryUserIsExistById(context.Context, *QueryUserIsExistByIdReq, *QueryUserIsExistByIdResp) error
+	QueryLoverIdById(context.Context, *QueryLoverIdByIdReq, *QueryLoverIdByIdResp) error
+	//用户设置相关操作
+	UpdateUserAllConfig(context.Context, *UpdateUserAllConfigReq, *UpdateUserAllConfigResp) error
 }
 
 func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.HandlerOption) error {
@@ -152,8 +192,11 @@ func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.Handl
 		RegisterUser(ctx context.Context, in *RegisterReq, out *RegisterResp) error
 		BindLover(ctx context.Context, in *BindLoverReq, out *BindLoverResp) error
 		UnBindLover(ctx context.Context, in *UnBindLoverReq, out *UnBindLoverResp) error
-		GetLoverInfo(ctx context.Context, in *GetLoverInfoReq, out *GetLoverInfoResp) error
+		GetBindWaitCode(ctx context.Context, in *GetBindWaitCodeReq, out *GetBindWaitCodeResp) error
+		GetWaitingUser(ctx context.Context, in *GetWaitingUserReq, out *GetWaitingUserResp) error
 		QueryUserIsExistById(ctx context.Context, in *QueryUserIsExistByIdReq, out *QueryUserIsExistByIdResp) error
+		QueryLoverIdById(ctx context.Context, in *QueryLoverIdByIdReq, out *QueryLoverIdByIdResp) error
+		UpdateUserAllConfig(ctx context.Context, in *UpdateUserAllConfigReq, out *UpdateUserAllConfigResp) error
 	}
 	type User struct {
 		user
@@ -186,10 +229,22 @@ func (h *userHandler) UnBindLover(ctx context.Context, in *UnBindLoverReq, out *
 	return h.UserHandler.UnBindLover(ctx, in, out)
 }
 
-func (h *userHandler) GetLoverInfo(ctx context.Context, in *GetLoverInfoReq, out *GetLoverInfoResp) error {
-	return h.UserHandler.GetLoverInfo(ctx, in, out)
+func (h *userHandler) GetBindWaitCode(ctx context.Context, in *GetBindWaitCodeReq, out *GetBindWaitCodeResp) error {
+	return h.UserHandler.GetBindWaitCode(ctx, in, out)
+}
+
+func (h *userHandler) GetWaitingUser(ctx context.Context, in *GetWaitingUserReq, out *GetWaitingUserResp) error {
+	return h.UserHandler.GetWaitingUser(ctx, in, out)
 }
 
 func (h *userHandler) QueryUserIsExistById(ctx context.Context, in *QueryUserIsExistByIdReq, out *QueryUserIsExistByIdResp) error {
 	return h.UserHandler.QueryUserIsExistById(ctx, in, out)
+}
+
+func (h *userHandler) QueryLoverIdById(ctx context.Context, in *QueryLoverIdByIdReq, out *QueryLoverIdByIdResp) error {
+	return h.UserHandler.QueryLoverIdById(ctx, in, out)
+}
+
+func (h *userHandler) UpdateUserAllConfig(ctx context.Context, in *UpdateUserAllConfigReq, out *UpdateUserAllConfigResp) error {
+	return h.UserHandler.UpdateUserAllConfig(ctx, in, out)
 }

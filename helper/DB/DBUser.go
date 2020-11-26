@@ -15,6 +15,7 @@ type UserBaseInfo struct{
 	LoverPhone		string `json:"lover_phone"`
 	LoverNickName 	string `json:"lover_nick_name"`/*对另一半的昵称*/
 	LoveDuration	int64 `gorm:type:BIGINT json:"lover_duration"`
+	CoupleId		string `gorm:"unique" json:"couple_id"` /*情侣ID，绑定情侣后，双方有一个共同的ID*/
 }
 
 type LoginInfo struct{

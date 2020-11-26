@@ -3,6 +3,7 @@ package Utils
 
 import (
 	"Lovers_srv/config"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -123,4 +124,44 @@ func CreateErrorRequest(c *gin.Context){
 		http.StatusForbidden,
 		json,
 	)
+}
+
+func HttpCreateJsonSuccess(rw http.ResponseWriter, data interface{}, msg string, code int){
+	resJson := NewResult()
+	resJson.Data = data
+	resJson.Msg = msg
+	resJson.Code = code
+
+	body,_ := json.Marshal(resJson)
+	rw.Header().Set("content-type","text/json")
+	rw.WriteHeader(http.StatusOK)
+	rw.Write(body)
+}
+
+func HttpCreateErrorBadReq(rw http.ResponseWriter, msg string, code int){
+	resJson := NewResult()
+	resJson.Data = nil
+	resJson.Msg = msg
+	resJson.Code = code
+
+	body,_ := json.Marshal(resJson)
+	rw.Header().Set("content-type","text/json")
+	rw.WriteHeader(http.StatusBadRequest)
+	rw.Write(body)
+}
+
+func HttpCreateErrorInterErr(rw http.ResponseWriter, msg string, code int){
+	resJson := NewResult()
+	resJson.Data = nil
+	resJson.Msg = msg
+	resJson.Code = code
+
+	body,_ := json.Marshal(resJson)
+	rw.Header().Set("content-type","text/json")
+	rw.WriteHeader(http.StatusInternalServerError)
+	rw.Write(body)
+}
+
+func WSCreateError(){
+
 }
